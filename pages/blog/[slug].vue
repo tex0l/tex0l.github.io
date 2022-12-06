@@ -21,7 +21,7 @@
       <main class="min-h-full sm:m-12 sm:-mt-12 sm:shadow-2xl p-6 z-10 bg-white relative">
         <ContentRenderer
             id="article"
-            class="my-4 space-y-3 indent-4 text-justify text-xl font-lightblog"
+            class="my-4 space-y-3 indent-4 text-justify text-xl font-light"
             :value="doc"/>
       </main>
     </ContentDoc>
