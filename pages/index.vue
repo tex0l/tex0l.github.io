@@ -3,7 +3,7 @@
     <div class="
     flex
     flex-col
-    lg:flex-row lg:space-x-12 h-[calc(100vh-4rem)] items-center justify-center">
+    lg:flex-row lg:space-x-12 h-[calc(100vh-16rem)] items-center justify-center">
       <div class="inline-block flex-shrink-0 flex-grow-0 max-w-sm relative" >
         <div class="rounded-b-full aspect-[10/11] relative overflow-hidden" >
             <div class="w-4/5 ml-[11%]">

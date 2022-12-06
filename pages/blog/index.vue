@@ -4,7 +4,7 @@
         class="
     flex
     flex-col
-    h-[calc(100vh-4rem)] items-center px-2">
+    h-[calc(100vh-16rem)] items-center px-2">
       <h1 class="text-7xl font-bold my-8">
         Blog
       </h1>

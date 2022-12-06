@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute w-screen min-h-screen">
+  <div class="absolute w-screen min-h-screen overflow-hidden">
     <div class="
     sticky h-20 -top-4 w-full z-20
     before:sticky
@@ -34,7 +34,7 @@
         </div>
       </div>
     </div>
-    <div class="container sm:px-16 md:px-20 lg:px-32 m-auto min-h-fit h-screen pt-16">
+    <div class="container sm:px-16 md:px-20 lg:px-32 m-auto min-h-[calc(100vh-20rem)] pt-16">
       <slot/>
     </div>
   </div>
