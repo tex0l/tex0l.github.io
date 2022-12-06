@@ -1,5 +1,5 @@
 <template>
-  <div class="absolute w-screen min-h-screen overflow-hidden">
+  <div class="absolute w-screen min-h-screen">
     <div class="
     sticky h-20 -top-4 w-full z-20
     before:sticky
