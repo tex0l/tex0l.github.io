@@ -2,6 +2,7 @@
   <NuxtLayout name="default">
     <ContentDoc
         :path="$route.params.slug"
+        v-if="$route.params.slug"
         class="min-h-screen"
         v-slot="{ doc }">
       <div class="space-y-2 mb-2">
