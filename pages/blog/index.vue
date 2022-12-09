@@ -38,7 +38,7 @@
                     class="absolute bottom-6 right-6 text-sm text-gray-600"
                     v-if="isValid(article.date)">
                   <ClientOnly>
-                    {{ formatDateFromNow(article.date) }} ({{ formatDateAbsolute(article.date) }})
+                    <div class="first-letter:uppercase">{{ formatDateFromNow(article.date) }} ({{ formatDateAbsolute(article.date) }})</div>
                     <template #fallback>
                       ({{ formatDateAbsolute(article.date) }})
                     </template>
@@ -57,4 +57,8 @@
 import { formatDateFromNow, formatDateAbsolute, isValid } from '~/utils/formatDate'
 
 const query = { path: '/', limit: 10, sort: { date: -1 } }
+
+useHead({
+  title: 'Blog | Timothée Rebours'
+})
 </script>

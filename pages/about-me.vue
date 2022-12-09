@@ -8,3 +8,9 @@
     </div>
   </NuxtLayout>
 </template>
+
+<script setup lang="ts">
+useHead({
+  title: 'About me | Timothée Rebours'
+})
+</script>

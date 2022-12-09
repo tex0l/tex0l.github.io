@@ -19,3 +19,9 @@
     </div>
   </NuxtLayout>
 </template>
+
+<script setup>
+useHead({
+  title: 'Timothée Rebours'
+})
+</script>

@@ -10,8 +10,11 @@ export const formatDateFromNow = date => {
     daysAgo = -daysAgo
   }
   if (daysAgo < 7) return `${daysAgo} days ${ago}`
+  if (daysAgo < 14) return `${Math.floor(daysAgo / 7)} week ${ago}`
   if (daysAgo < 30) return `${Math.floor(daysAgo / 7)} weeks ${ago}`
+  if (daysAgo < 60) return `${Math.floor(daysAgo / 30)} month ${ago}`
   if (daysAgo < 365) return `${Math.floor(daysAgo / 30)} months ${ago}`
+  if (daysAgo < 365 * 2) return `${Math.floor(daysAgo / 365)} year ${ago}`
   return `${Math.floor(daysAgo / 365)} years ${ago}`
 }
 

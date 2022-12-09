@@ -31,6 +31,10 @@
 
 <script setup>
 import { formatDateFromNow, formatDateAbsolute, isValid } from '~/utils/formatDate'
+
+useHead({
+  titleTemplate: string => `${string} | Timothée Rebours`
+})
 </script>
 
 <style lang="scss">
