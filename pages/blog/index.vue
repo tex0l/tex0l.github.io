@@ -20,7 +20,7 @@
           <p>No article yet.</p>
         </template>
         <template v-slot="{ list }">
-          <div class="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-8">
+          <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8">
             <div
                 v-for="article in list"
                 :key="article._path"
