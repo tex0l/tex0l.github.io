@@ -33,6 +33,7 @@ export default defineNuxtConfig({
       },
       plugins: [
         require('@tailwindcss/line-clamp'),
+        require('@tailwindcss/typography')
       ]
     }
   },
