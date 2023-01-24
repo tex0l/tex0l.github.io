@@ -197,7 +197,7 @@ export default {
   },
   computed: {
     ready () {
-      return !!this.salt && !!this.encryptedContactInfo && !!this.encryptionKey
+      return !!this.salt && !!this.encryptedContactInfo && (!!this.encryptionKey || this.password === '')
     }
   }
 }
