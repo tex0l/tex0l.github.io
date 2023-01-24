@@ -75,7 +75,7 @@
       <div v-else
            class="flex justify-center items-center min-h-screen">
         <div class="px-12 py-8 shadow-2xl rounded-md flex flex-col justify-center items-center space-y-6">
-          <div>The password seem to be incorrect! Please try again:</div>
+          <div>The password seems to be incorrect! Please try again:</div>
           <input class="rounded-md border border-gray-200 px-4 py-2 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-gray-300" :value="password" @input="$emit('update:password', $event.target.value)">
         </div>
       </div>
