@@ -9,9 +9,11 @@ const scryptAsync = promisify(scrypt)
 const N = 1024, r = 8, p = 1
 const dkLen = 32
 
-const saltFile = path.join(__dirname, 'public', 'salt')
-const toEncryptDir = path.join(__dirname, 'public_to_encrypt')
-const publicEncrypted = path.join(__dirname, 'public', 'encrypted')
+const isDummy = process.env.DUMMY === 'true'
+
+const saltFile = path.join(__dirname, 'public', isDummy ? 'saltDummy' : 'salt')
+const toEncryptDir = path.join(__dirname, isDummy ? 'publicDummy_to_encrypt' : 'public_to_encrypt')
+const publicEncrypted = path.join(__dirname, 'public', isDummy ? 'encryptedDummy' : 'encrypted')
 
 const getSalt = async (path = saltFile) => {
   try {
@@ -27,13 +29,12 @@ const getSalt = async (path = saltFile) => {
 
 const getPassword = () => {
   if (process.env.PASSWORD) return normalizePassword(process.env.PASSWORD)
+  else if (isDummy) return normalizePassword('my-super-secret-password')
   else throw new Error('Password is undefined')
 }
 
 const normalizePassword = password => {
-  console.log('password', password)
   const b = Buffer.from(password.normalize('NFKC'), 'utf8')
-  console.log('password b64', b.toString('base64'))
   return b
 }
 
@@ -43,10 +44,8 @@ const encryptFile = async (buf, key) => {
   const iv = randomBytes(12)
   const cipher = createCipheriv('aes-256-gcm', key, iv)
   const encryptedData = Buffer.concat([cipher.update(buf), cipher.final()])
-  console.log('iv', iv.toString('base64'))
 
   const authTag = cipher.getAuthTag()
-  console.log('ciphertext', Buffer.concat([encryptedData, authTag]).toString('base64'))
 
   return Buffer.concat([iv, encryptedData, authTag])
 }
@@ -67,7 +66,6 @@ const main = async () => {
   const salt = await getSalt()
   const password = getPassword()
   const key = await deriveKey(password, salt)
-  console.log('derived key', key.toString('base64'))
 
   await encryptDir(toEncryptDir, key)
 }
