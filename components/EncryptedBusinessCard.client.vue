@@ -149,7 +149,7 @@ export default {
       }
     },
     async deriveKey () {
-      if (!this.password || !this.salt) return
+      if (!this.salt) return
       try {
         this.encryptionKey = await deriveKey(this.password, Buffer.from(this.salt, 'base64'))
       } catch (error) {
@@ -173,7 +173,6 @@ export default {
     },
     password: {
       handler () {
-        console.log(this.password)
         this.deriveKey()
       },
       immediate: true
