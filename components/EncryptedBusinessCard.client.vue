@@ -1,7 +1,7 @@
 <template>
-  <div>
+  <div class="min-h-screen">
     <div v-if="!ready">
-      <div class="grid min-h-screen place-content-center">
+      <div class="grid place-content-center">
         <div class="flex items-center gap-2 text-gray-500">
           <span class="h-6 w-6 block rounded-full border-4 border-t-blue-300 animate-spin"></span>
           loading...
@@ -73,14 +73,14 @@
         </div>
       </div>
       <div v-else
-           class="flex justify-center items-center min-h-screen">
+           class="flex justify-center items-center min-h-[80vh]">
         <div class="px-12 py-8 shadow-2xl rounded-md flex flex-col justify-center items-center space-y-6">
           <div>The password seems to be incorrect! Please try again:</div>
           <input class="rounded-md border border-gray-200 px-4 py-2 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-gray-300" :value="password" @input="$emit('update:password', $event.target.value)">
         </div>
       </div>
     </ClientOnly>
-
+    <div class="mt-6 w-full text-center italic">The content of this web page is end-2-end encrypted, for more details please read the <a class="underline cursor-pointer" href="/blog/encrypted-card" target="_blank" rel="noopener">related blog article</a>.</div>
   </div>
 </template>
 
