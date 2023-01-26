@@ -64,7 +64,7 @@
       <p>
         I founded <a class="not-prose" href="https://www.seald.io" target="_blank" rel="noopener"><nuxt-img class="inline" src="seald-logo.png" width="80px"/></a> in 2016 with 3 other co-founders. Our mission is to help protect data on the web, and we strongly believe this can only be done through a zero-trust architecture, fine-grained encryption and if possible end-2-end encryption.
         <br/>
-        Our value proposition is to end-to-end encryption and other tools to developers so that they can build secure by design applications.
+        Our value proposition is to bring end-to-end encryption and other tools to developers so that they can build secure by design applications.
       </p>
       <h2>Education</h2>
       <div class="space-x-4"><span class="italic">2012-2016</span><span>École Polytechnique</span></div>
