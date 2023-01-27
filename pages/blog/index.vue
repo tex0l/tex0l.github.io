@@ -4,7 +4,7 @@
         class="
     flex
     flex-col
-    h-[calc(100vh-16rem)] items-center px-2">
+    min-h-[calc(100vh-5rem)] items-center px-2">
       <h1 class="text-6xl font-bold my-6">
         Blog
       </h1>
@@ -28,7 +28,7 @@
             >
               <nuxt-link :to="`/blog${article._path}`">
                 <div class="width-full aspect-video overflow-hidden flex items-center justify-center">
-                  <nuxt-img
+                  <nuxt-picture
                       preload
                       v-if="article.image"
                       :src="article.image"/>

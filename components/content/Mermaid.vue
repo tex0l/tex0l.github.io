@@ -12,7 +12,6 @@
 </template>
 
 <script>
-import mermaid from 'mermaid'
 import { htmlDecode } from '~/utils/utils'
 
 export default {
@@ -25,15 +24,16 @@ export default {
     render () {
       try {
         this.input = htmlDecode(this.$refs.raw.innerHTML.replace(/<!--.*?-->/g, ''))
-        if (mermaid.parse(this.input)) this.svg = mermaid.render('test', this.input)
+        if (window.mermaid.parse(this.input)) this.svg = window.mermaid.render('test', this.input)
       } catch (error) {
         console.error(error)
       }
     }
   },
   async mounted () {
-    mermaid.initialize({ startOnLoad: false, theme: 'base' })
-    await this.render()
+    if (!window.mermaid) window.mermaid = (await import('mermaid')).default
+    window.mermaid.initialize({ startOnLoad: false, theme: 'base' })
+    this.render()
   }
 }
 </script>

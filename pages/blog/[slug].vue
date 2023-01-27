@@ -17,7 +17,7 @@
         </p>
       </div>
       <div class="max-h-60 md:max-h-72 lg:max-h-96 overflow-hidden flex items-center justify-center" v-if="doc.image">
-        <nuxt-img preload :src="doc.image"/>
+        <nuxt-picture preload :src="doc.image"/>
       </div>
       <main class="min-h-[70vh] sm:mx-auto sm:-mt-12 sm:mb-12 sm:shadow-2xl px-6 py-12 z-10 bg-white relative md:max-w-3xl lg:max-w-4xl">
         <ContentRenderer

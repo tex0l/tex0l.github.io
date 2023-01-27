@@ -34,8 +34,10 @@
         </div>
       </div>
     </div>
-    <div class="container sm:px-16 md:px-20 lg:px-32 m-auto min-h-[calc(100vh-20rem)] pt-16">
-      <slot/>
+    <div class="container sm:px-16 md:px-20 lg:px-32 m-auto min-h-[calc(100vh-5rem)] space-y-4 mb-4">
+      <div><slot/></div>
+      <div class="text-center w-full text-xs">This website is hosted with Github Pages, the source code is <a href="https://github.com/tex0l/tex0l.github.io" rel="noopener" class="underline cursor-pointer">available here</a>.</div>
+      <div class="text-center w-full text-xs">All rights reserved, Timothée Rebours 2022-<ClientOnly :fallback="(new Date()).getFullYear()">{{(new Date()).getFullYear()}}.</ClientOnly></div>
     </div>
   </div>
 </template>
