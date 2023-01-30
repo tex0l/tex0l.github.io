@@ -4,12 +4,12 @@
         class="
     flex
     flex-col mx-auto sm:shadow-2xl mb-12 px-6 py-12 min-h-[70vh] md:max-w-3xl lg:max-w-4xl">
-      <div class="prose lg:prose-lg prose-slate mx-auto">
+      <div class="prose lg:prose-lg prose-slate mx-auto text-justify">
         <h1>About me</h1>
         I was born in 1993 near Paris, I have always been passionate about science and technology. I'm an engineer from
         the École Polytechnique, and I founded my company in cybersecurity.
         <h2>Areas of interest</h2>
-        <div class="grid grid-cols-2">
+        <div class="grid grid-cols-2 gap-x-6 gap-y-2">
           <div>
             <h3>
               <Icon
