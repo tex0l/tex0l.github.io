@@ -9,7 +9,7 @@
         I was born in 1993 near Paris, I have always been passionate about science and technology. I'm an engineer from
         the École Polytechnique, and I founded my company in cybersecurity.
         <h2>Areas of interest</h2>
-        <div class="grid grid-cols-2 gap-x-6 gap-y-2">
+        <div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2">
           <div>
             <h3>
               <Icon
