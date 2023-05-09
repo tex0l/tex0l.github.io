@@ -21,10 +21,10 @@ export default {
     }
   },
   methods: {
-    render () {
+    async render () {
       try {
         this.input = htmlDecode(this.$refs.raw.innerHTML.replace(/<!--.*?-->/g, ''))
-        if (window.mermaid.parse(this.input)) this.svg = window.mermaid.render('test', this.input)
+        if (window.mermaid.parse(this.input)) this.svg = (await window.mermaid.render('test', this.input)).svg
       } catch (error) {
         console.error(error)
       }
@@ -33,7 +33,7 @@ export default {
   async mounted () {
     if (!window.mermaid) window.mermaid = (await import('mermaid')).default
     window.mermaid.initialize({ startOnLoad: false, theme: 'base' })
-    this.render()
+    await this.render()
   }
 }
 </script>

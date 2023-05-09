@@ -1,7 +1,9 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import type { NuxtPage } from '@nuxt/schema'
 
+
 export default defineNuxtConfig({
+  // @ts-ignore
   modules: [
     '@nuxt/content',
     '@nuxt/image-edge',
@@ -32,7 +34,6 @@ export default defineNuxtConfig({
         }
       },
       plugins: [
-        require('@tailwindcss/line-clamp'),
         require('@tailwindcss/typography')
       ]
     }
@@ -53,7 +54,7 @@ export default defineNuxtConfig({
     }
   },
   hooks: {
-    'prerender:routes' (ctx) {
+    'prerender:routes' (ctx: { routes: { add: (arg0: string) => void } }) {
       ctx.routes.add('/sitemap.xml')
     }
   }

@@ -21,7 +21,7 @@
       </div>
       <main class="min-h-[70vh] sm:mx-auto sm:-mt-12 sm:mb-12 sm:shadow-2xl px-6 py-12 z-10 bg-white relative md:max-w-3xl lg:max-w-4xl">
         <ContentRenderer
-            class="mx-auto prose lg:prose-lg prose-slate prose-headings:scroll-mt-20 [&_h1>a]:no-underline [&_h2>a]:no-underline [&_h3>a]:no-underline [&_h4>a]:no-underline [&_h5>a]:no-underline [&_h6>a]:no-underline"
+            class="mx-auto text-justify prose lg:prose-lg prose-slate prose-headings:scroll-mt-20 [&_h1>a]:no-underline [&_h2>a]:no-underline [&_h3>a]:no-underline [&_h4>a]:no-underline [&_h5>a]:no-underline [&_h6>a]:no-underline"
             :value="doc"/>
       </main>
     </ContentDoc>
