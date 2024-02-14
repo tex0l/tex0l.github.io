@@ -1,0 +1,21 @@
+---
+import {getLangFromUrl, useTranslations} from "../../i18n/utils";
+
+export interface Props {
+    keyPath: string;
+}
+
+const { keyPath, ns } = Astro.props;
+
+const slots = {}
+for (const slotName in Astro.slots) {
+    slots[slotName === 'default' ? '0' : slotName] = await Astro.slots.render(slotName)
+}
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+
+const interpolatedHTML = t(keyPath, slots)
+---
+
+<Fragment set:html={interpolatedHTML} />

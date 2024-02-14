@@ -1,0 +1,63 @@
+---
+import {createHash} from 'node:crypto'
+import {PintoraConfig} from '@pintora/standalone';
+import {render} from '@pintora/cli'
+
+interface Cache {
+    [key: string]: string;
+}
+export interface Props {
+    config?: PintoraConfig;
+    code: string;
+}
+
+const cache: Cache = {}
+
+const generateHash = (input: string) => {
+    const hash = createHash('sha256')
+    hash.update(input)
+    return hash.digest().toString('hex')
+}
+
+
+const {config, code} = Astro.props
+
+const uniqueKey = generateHash(JSON.stringify(Astro.props));
+
+if (cache[uniqueKey] === undefined) {
+    /* Render the mermaid diagram */
+    try {
+        const result = await render({
+            code: code,
+            pintoraConfig: config,
+            mimeType: 'image/svg+xml'
+        });
+        if (typeof result === 'string' && result !== '') {
+            cache[uniqueKey] = result;
+        } else if (result instanceof Buffer) throw new Error('Unexpected buffer')
+    } catch (error) {
+        console.error(error)
+    }
+}
+---
+
+{
+    cache[uniqueKey] && (
+    <div class="pintora">
+        <Fragment set:html={cache[uniqueKey]}/>
+    </div>
+        )
+    }
+
+<style>
+    .pintora {
+        /* Necessary to avoid pixelated font rendering on macOS/Chrome, why? */
+        /* Also, why this looks awful on Safari with every settings tested? */
+        -webkit-font-smoothing: auto;
+        -moz-osx-font-smoothing: auto;
+        /* Necessary for Safari, which doesn't make the SVG full width, why? */
+        display: flex;
+        justify-content: center;
+        width: 100%;
+    }
+</style>

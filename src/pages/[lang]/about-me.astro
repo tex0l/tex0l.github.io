@@ -1,0 +1,88 @@
+---
+import Layout from "../../layouts/Layout.astro";
+import { Icon } from "astro-icon/components";
+import {Image} from "astro:assets";
+import {languages} from "../../i18n";
+import {getLangFromUrl,useTranslations} from "../../i18n/utils";
+import Trans from "../../components/i18n/Trans.astro";
+import ariaPicture from '../../resources/PXL_20230106_141516359.PORTRAIT.jpg'
+import sealdLogo from '../../resources/seald-logo.png'
+export async function getStaticPaths() {
+    return Object.keys(languages).map(lang => ({params: {lang}}))
+    }
+
+const lang = getLangFromUrl(Astro.url)
+const t = useTranslations(lang)
+---
+<Layout title={t('about-me.title')}>
+    <div
+            class="
+    flex
+    flex-col mx-auto sm:shadow-2xl mb-12 px-6 py-12 min-h-[70vh] md:max-w-3xl lg:max-w-4xl">
+        <div class="prose lg:prose-lg prose-slate mx-auto text-justify">
+            <h1>{t('about-me.h1')}</h1>
+            {t('about-me.subtitle')}
+            <h2>{t('about-me.areas-of-interest')}</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2">
+                <div>
+                    <h3>
+                        <Icon
+                                name="noto:man-technologist"
+                                class="inline mr-2 w-6"/>
+                        {t('about-me.area-1-title')}
+                    </h3>
+                    <p>
+                        <Trans keyPath="about-me.area-1-p">
+                            <Icon name="emojione:person-facepalming" class="inline w-4" />
+                        </Trans>
+                    </p>
+                </div>
+                <div>
+                    <h3>
+                        <Icon
+                                name="noto:man-scientist"
+                                class="inline mr-2 w-6"/>
+                        {t('about-me.area-2-title')}
+                    </h3>
+                    <p>{t('about-me.area-2-p')}</p>
+                </div>
+                <div>
+                    <h3>
+                        <Icon
+                                name="emojione:ballot-box-with-ballot"
+                                class="inline mr-2 w-6"/>
+                        {t('about-me.area-3-title')}
+                    </h3>
+                    <p>{t('about-me.area-3-p')}</p>
+                </div>
+                <div>
+                    <h3>
+                        <Icon
+                                name="emojione:cat"
+                                class="inline mr-2 w-6"/>
+                        {t('about-me.area-4-title')}
+                    </h3>
+                    <p>{t('about-me.area-4-p')}</p>
+                    <div class="not-prose flex justify-center">
+                        <Image src={ariaPicture} alt="Aria" width="400"></Image>
+                    </div>
+                </div>
+            </div>
+            <h2>{t('about-me.job-experiences')}</h2>
+            <div class="space-x-4"><span
+                    class="italic">{t('about-me.job-1-date')}</span><span>{t('about-me.job-1-company')}</span><span>{t('about-me.job-1-title')}</span></div>
+            <p>
+                <Trans keyPath="about-me.job-1-description">
+                    <a class="not-prose" href="https://www.seald.io" target="_blank" rel="noopener">
+                        <Image class="inline" src={sealdLogo} alt="Seald logo" width="80"/>
+                    </a>
+                </Trans>
+            </p>
+            <h2>{t('about-me.education')}</h2>
+            <div class="space-x-4"><span class="italic">{t('about-me.education-1-date')}</span><span>{t('about-me.education-1-name')}</span></div>
+            <p>
+                <Trans keyPath="about-me.education-1-description"/>
+            </p>
+        </div>
+    </div>
+</Layout>
