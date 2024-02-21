@@ -1,13 +1,11 @@
 ---
-import {getLangFromUrl} from "../i18n/utils";
-
 interface Props {
-    title?: string;
-    description?: string;
+  title?: string
+  description?: string
 }
 
-const {title, description} = Astro.props;
-const lang = getLangFromUrl(Astro.url)
+const { title, description } = Astro.props
+const { lang } = Astro.params
 ---
 
 <!doctype html>
@@ -16,7 +14,8 @@ const lang = getLangFromUrl(Astro.url)
     <meta charset="UTF-8"/>
     <meta name="description" content={description}/>
     <meta name="viewport" content="width=device-width"/>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg"/>
+    <link rel="icon" type="image/png" href="/favicon.png"/>
+    <link rel="sitemap" href="/sitemap-index.xml" />
     <meta name="generator" content={Astro.generator}/>
     <title>{title}</title>
     <slot name="head"/>

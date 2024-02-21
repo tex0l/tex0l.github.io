@@ -1,47 +1,50 @@
 ---
-import {languages} from "../../../i18n";
+import { languages } from '../../../i18n'
 import {
-    formatDateAbsolute,
-    getLangFromUrl,
-    useFormatDate,
-    useTranslatedPath,
-    useTranslations
-} from "../../../i18n/utils";
-import {Image} from "astro:assets";
-import Layout from "../../../layouts/Layout.astro";
-import profilePicture from "../resources/IMG-20220515-WA0004-removebg.png";
-import {getCollection} from "astro:content";
-import {slugify} from "../../../utils";
+  formatDateAbsolute,
+  useFormatDate,
+  useTranslations,
+  validateLang
+} from '../../../i18n/utils'
+import { Image } from 'astro:assets'
+import Layout from '../../../layouts/Layout.astro'
+import { getCollection, type CollectionEntry } from 'astro:content'
+import { slugify } from '../../../utils'
 
-export async function getStaticPaths() {
-    const blogEntries = await getCollection("blog");
-    return Object.keys(languages).flatMap(lang => {
-        return blogEntries
-            .filter(entry => entry.id.split("/")[0] === lang)
-            .map(entry => ({
-                params: {slug: slugify(entry.id), lang},
-                props: {entry: {...entry, slug: slugify(entry.id)}},
-            }));
-        // TODO: implement fallback when article does not exist
-    })
+export async function getStaticPaths (): Promise<Array<{ params: { lang: string, slug: string }, props: { post: CollectionEntry<'blog'> } }>> {
+  const blogEntries = await getCollection('blog')
+  return Object.keys(languages).flatMap(lang => {
+    return blogEntries
+      .filter(entry => entry.id.split('/')[0] === lang)
+      .map(entry => ({
+        params: { slug: slugify(entry.id), lang },
+        props: { post: entry }
+      }))
+  })
 }
-const {entry} = Astro.props;
-const {Content} = await entry.render();
-const lang = getLangFromUrl(Astro.url)
+interface Props {
+  post: CollectionEntry<'blog'>
+}
+const { post } = Astro.props
+const { Content } = await post.render()
+const { lang } = Astro.params
+validateLang(lang)
 const formatDate = useFormatDate(lang)
 const t = useTranslations(lang)
 ---
 
-<Layout title={entry.data.title}>
+<Layout title={post.data.title}>
     <div class="space-y-2 mb-2">
-        <h1 class="text-5xl font-medium text-center">{entry.data.title}</h1>
-        <p class="text-gray-500 text-center" title={formatDateAbsolute(entry.data.date)}>
-            {t('blog.published', [formatDate(entry.data.date)])}
+        <h1 class="text-5xl font-medium text-center">{post.data.title}</h1>
+        <p class="text-gray-500 text-center" title={formatDateAbsolute(post.data.date)}>
+            {t('blog.published', [formatDate(post.data.date)])}
         </p>
     </div>
     <div class="max-h-60 md:max-h-72 lg:max-h-96 overflow-hidden flex items-center justify-center">
-        {entry.data.image ? (
-                <Image src={entry.data.image} alt={entry.data.alt} width="1920"/>) : (
+        {(post.data.image != null)
+          ? (
+                <Image src={post.data.image} alt={post.data.alt} width="1920"/>)
+          : (
                 <div class="h-12"></div>)}
     </div>
     <main class="min-h-[70vh] sm:mx-auto sm:-mt-12 sm:mb-12 sm:shadow-2xl px-6 py-12 z-10 bg-white relative md:max-w-3xl lg:max-w-4xl">

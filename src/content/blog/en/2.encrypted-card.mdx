@@ -3,125 +3,281 @@ title: 'Encrypted business card'
 date: '2023-01-24T00:00:00.000Z'
 image: '../../../resources/hands-holding-blank-business-card.jpg'
 ---
+import { Icon } from "astro-icon/components"
 import Pintora from 'astro-pintora'
 
-Have you ever wondered if you could encrypt a business card? Me neither, yet I have done it.
+You may have already seen these reusable business cards which are not distributed, but scanned (by QRCode or NFC), and which allow the contact details to be downloaded directly (like [MyEverCard](https://myevercard.com/).
 
-## _Wait what?_
-Ok, fair question.
+Usually, these cards simply contain a link to a (paying) website, and the holder can update his or her contact details there. The problem is that this site holds the details of all its users in the clear, and I don't feel like sharing mine (or paying a subscription).
 
-First, you need to know about those NFC or QRCode business cards like [MyEverCard](https://myevercard.com/) for example. I met someone at business show who had one like this made of wood, and they hit the back of my phone with it. It asked me if I wanted to open the link, and from there I could import the contact directly.
+The aim of this article is to make an alternative to this kind of services, but with a link pointing to a static site (the blog you're reading), while preventing access to the data when simply browsing the website.
 
-The idea is to have a business card with minimal info printed on it, and your contact info is actually retrievable by opening a link contained within the QRCode or the RFID tag.
-
-The idea seems fun, but I would rather not rely on an external service to store my contact info, which is easy: QRCodes and RFID tags can contain arbitrary links!
-
-I could just store my bare contact info onto a webpage, but I don't want a search engine to index this webpage, otherwise my phone number would be publicly accessible.
-
-Two options:
-- either I host a web server that returns the contact info only if authenticated with a token contained in the link, but I don't want ot host a web server...
-- or encrypt the data, deploy it on a static web server, and decrypt it in the browser.
-
-If you know my love for server management (which is only matched by my love for mosquito bites), you can deduce that I chose the option where I encrypt my business card.
+TLDR: I explain how I coded an encrypted business card <Icon name="noto:man-shrugging" class="inline w-6"/>.
 
 ## How does it work?
-The general idea is:
-1. encrypt the confidential contact information locally with a secret key.
-2. upload the encrypted data onto a static hosting (like Github Pages).
-3. retrieve and decrypt it from my contact's browser.
+The principle is as follows:
+1. encrypt confidential contact data locally with a secret key.
+2. store the encrypted data on a static server (such as Github Pages).
+3. generate a link to the static server containing the secret key in the URL hash.
+4. retrieve and decrypt this data client-side from the browser of the person opening the link.
+5. display the contact data and download the contact form.
 
 <Pintora code={`
 componentDiagram
+@param hideGroupType true
     rectangle "My PC" {
-        [Confidential contact info] as A
-        [Encryption key] as B
-        [Encrypt] as C
+        [Contact info] as A
+        [Key] as B
+        [Encryption] as C
         [Encrypted contact info] as D
         B --> C
         A --> C
         C --> D
     }
+
     rectangle "GitHub" {
         [Encrypted contact info] as G
         D --> G
     }
-    rectangle "My contact's computer" {
+
+    rectangle "Business card" {
+        [https&colon;\/\/tex0l.github.io\/en\/encrypted-card\/#key] as KEY
+    }
+
+    rectangle "My contact's browser" {
         [Encrypted contact info] as K
-        [Decrypt] as L
-        [Confidential contact info] as M
+        [Key] as KEYBROWSER
+        [Decryption] as L
+        [Contact info] as M
         [Display] as N
         [vCard] as O
+        KEYBROWSER --> L
         G --> K
         K --> L
         L --> M
         M --> N
         M --> O
     }
-        B ..> L
-`}/>
 
-The challenges with this are:
-1. How to execute code onto my contact's computer to decrypt stuff? With [client-side decryption](#client-side-decryption).
-2. How to send the encryption key over to my contact without hosting it? With a trick that [uses a URI fragment](#using-the-uri-fragment).
-3. How do I allow my contact to import a vCard directly onto their phone? With [`vcard-creator`](https://github.com/joaocarmo/vcard-creator).
+        B --> KEY
+        KEY --> KEYBROWSER
+
+`} renderOptions={{mimeType: 'image/svg+xml'}}/>
+
+In fact, I literally created my company [Seald](https://www.seald.io) around the idea of client-side encryption in web and mobile applications.
 
 ### Known limits
-The attacks I knowingly don't care about here are:
-1. GitHub injecting code into the website that could exfiltrate data out of the webpage once decrypted.
-2. A contact's computer being hacked, which coud leak the confidential data and the secret key.
-3. A contact leaking the secret key on purpose.
+The most sensitive piece of data I want to protect with this project is my phone number, which is certainly already publicly accessible online given the number of sales calls I receive, so I'm not looking to fulfill any real security objectives.
 
-**Disclaimer:** the most sensitive piece of data protected with this is my phone number, and to be honest, I'm pretty sure it is already publicly accessible.
+In particular, the attacks I'm deliberately ignoring are:
+1. GitHub injecting code into the static site, which could then exfiltrate the data once encrypted.
+2. The connection to GitHub, which could be compromised to alter the static site's code.
+3. My contact's computer or browser could be compromised, which would compromise contact data and the secret key.
+4. A contact willingly or unwillingly sharing the link or secret key.
 
-## Client-side decryption
-The first issue is straightforward: browsers execute code when loading a website, why not decrypt stuff with it?
+## Encryption
+First of all, I need to encrypt the data on my PC: `contactInfo.json` and `profilePicture.jpg` which are placed in the `publicToEncrypt` folder of the project (which is in the `.gitignore` to avoid publishing it unencrypted in the code repository).
 
-By the way, I literally built my company [Seald](https://www.seald.io) out of this idea.
+To do this, I need to :
+- [derive a key from a password](#derive-the-password).
+- [encrypt each file with this key](#encrypt-a-file).
+- add the encrypted files to the code repository so that they can be accessed from the path `/encrypted/{filename}.encrypted`.
 
-### Encryption step
-The [`encryptAssets.js`](https://github.com/tex0l/tex0l.github.io/blob/main/encryptAssets.js) is executed locally and does the following:
-1. Generates a 16 bytes salt if there is none, and puts it encoded in base 64 in `/public/salt`.
-2. Derives a 32 bytes key with [SCrypt](https://fr.wikipedia.org/wiki/Scrypt) from the salt & password (given through the `PASSWORD` environment variable).
-3. Encrypts all files in a directory named `public_to_encrypt` (which is not uploaded to the repository as it is in the `.gitignore`) with [AES-GCM](https://en.wikipedia.org/wiki/Galois/Counter_Mode) and a random 12 bytes IV.
-4. Puts the encrypted version in the [`public/encrypted/`](https://github.com/tex0l/tex0l.github.io/tree/main/public/encrypted) which are served statically.
+### Derive the password
+Handling 32 random bytes encoded in base64 in a URL isn't practical, so I preferred to use a password.
 
-In order for my contact to decrypt the data, they only need to know the password I used to derive the key (we'll see how to do that in the next part).
+To derive a 32-byte key from this password, I use the `scrypt` derivation function and a random salt statically accessible in a file [`/salt.txt`](/salt.txt).
 
-Note that I could very well avoid the key derivation and use a raw 32 bytes key instead which would be more secure, but I want the key to be "readable" like: `doorknob-rejoicing-strength-whole-simple`.
+```typescript
+import { scrypt } from 'node:crypto'
+import { promisify } from 'node:util'
+import { readFile } from 'node:fs/promises'
+import { Buffer } from 'node:buffer'
 
-Also note that AES-GCM is probably not the best algorithm for this purpose as it is limited in how much data I can encrypt with a \{key + IV} (about `(2^32-2)*16 bytes = 64Go` because the counter is of 32 bits, and blocks are of 16 bytes), and since I use a random IV, I cannot encrypt more than `2^32` times otherwise there would be a high probability of IV collision, which would allow an attacker to [do that](https://twitter.com/angealbertini/status/425561082841690112), and which would break the authentication property for all ciphertexts. For more details see [NIST Special Publication 800-38D, paragraph 8.3 "Constraints on the Number of Invocation"](https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-38d.pdf).
+const scryptAsync = promisify(scrypt)
+const N = 1024, r = 8, p = 1
+const dkLen = 32
 
+const normalizePassword = (password: string): Buffer => Buffer.from(password.normalize('NFKC'), 'utf8')
 
-### Decryption step
-The decryption step is straightforward, we just have to do the same thing but in a browser, and instead of encrypting we just have to decrypt.
+const deriveKey = async (password: Buffer, salt: Buffer): Promise<Buffer> => scryptAsync(password, salt, dkLen, { N, r, p })
 
-The implementation is done using [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto), [`scrypt-js`](https://github.com/ricmoo/scrypt-js) and [`buffer`](https://github.com/feross/buffer).
+const salt = Buffer.from(await readFile('./public/salt.txt'), 'base64')
+const password = normalizePassword(process.env.PASSWORD)
+const key = await deriveKey(password, salt)
+```
 
-Once decrypted:
-1. If the file is a JSON, `JSON.parse` is used and the content used within the webpage.
-2. If the file is an image, I can then display the image using [`URL.createObjectURL`](https://developer.mozilla.org/fr/docs/Web/API/URL/createObjectURL), which is done automatically with the [EncryptedImage](https://github.com/tex0l/tex0l.github.io/blob/main/components/EncryptedImage.client.vue) component I made.
+### Encrypt a file
+To encrypt a file with a given `key`, I use AES-GCM and a random 12-byte nonce :
 
-## Using the URI Fragment
-Now that we understand how to encrypt, decrypt & display, how to securely exchange the password?
+```typescript
+import type { Cipher } from 'node:crypto'
+import type { Buffer } from 'node:buffer'
+import { createCipheriv, randomBytes } from 'node:crypto'
 
-We need something that's contained in the URL, accessible by the Javascript context but that is not sent over to the server in the HTTP request.
+// This function is call by `encryptDir` for each file to encrypt
+const encryptFile = async (data: Buffer, key: Buffer): Buffer => {
+  const nonce: Buffer = randomBytes(12)
+  const cipher: Cipher  = createCipheriv('aes-256-gcm', key, nonce)
+  const encryptedData: Buffer = Buffer.concat([cipher.update(data), cipher.final()])
+  const authTag: Buffer = cipher.getAuthTag()
 
-One idea could be to put the password in a query parameter (used for example for [S3 pre-signed URLs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-creating-signed-url-canned-policy.html)), but query parameters are sent to the server in the HTTP request.
+  return Buffer.concat([nonce, encryptedData, authTag])
+}
+```
 
-The trick is to use the [URI fragment](https://developer.mozilla.org/en-US/docs/Web/API/URL/hash). It is normally used by the browser to scroll to the node whose `id` is the content of the URI fragment, but if we ignore this, the URI fragment is a string which is:
-- contained in the link;
-- available in the Javascript context;
-- not sent over to the server.
+:::note
+The GCM mode chosen for AES requires :
+- that the nonce is not random, but "unique", and random is not considered unique in cryptography (see [the article I wrote on Seald's blog](https://www.seald.io/blog/3-common-mistakes-when-implementing-encryption#iv-generation)).
+- that the message does not exceed 64GB, otherwise it exceeds the counter used by AES-CTR (used internally by AES-GCM).
 
-For example, if I open this webpage: `https://tex0l.github.io/encrypted-card-dummy#my-super-secret-password`, it makes a GET request to `https://tex0l.github.io/encrypted-card` and the Javascript context can just read `window.location.hash` to retrieve `'#my-super-secret-password'` without it being accessible to the server.
+In my case :
+- I accept to use a random nonce as long as the number of encrypted files is very low, well below the 6 billion beyond which the nonce would no longer be "unique".
+- I don't encrypt files larger than 64GB.
+:::
 
-That's exactly what I do.
+After running this function on `profilePicture.jpg` and `contactInfo.json` (not published on the code repository), two encrypted files are produced and added to the code repository: `profilePicture.jpg.encrypted` and `contactInfo.json.encrypted`.
+
+## Sharing the password
+To share the password, I use the [URL hash](https://developer.mozilla.org/en-US/docs/Web/API/URL/hash) which is what's after the `#` in a URL. Normally, this is used to automatically scroll to an anchor in the page. But the URL hash has the property of not being transmitted in the network request; it remains exclusively within the Javascript context of the page.
+
+It is therefore possible to use this URL hash to transfer a secret in a URL to the Javascript context without the hosting server ever having access to it.
+
+> https://tex0l.github.io/fr/encrypted-card-dummy/#my-super-secret-password
+
+Once the page has been opened, this password can be retrieved from the page as follows:
+
+```typescript
+const password = window.location.hash.substring(1) // first character is `#`
+```
+
+## Decryption
+Decryption is a two-step process:
+- derive the password into the key.
+- decrypt the files with the key.
+
+### Deriving the password (bis)
+To derive the password in the browser, we proceed in the same way as in our initial script, except that the standard Node.js library is not available.
+
+We therefore use the [`scrypt-js`](https://github.com/ricmoo/scrypt-js) library to perform the derivation, [`buffer`](https://github.com/feross/buffer) to have a polyfill of `Buffer` in the browser, and we import the resulting key as `CryptoKey` from [SubtleCrypto](https://developer.mozilla.org/en-US/docs/Web/API/SubtleCrypto):
+
+```typescript
+import { Buffer } from 'buffer'
+import { scrypt } from 'scrypt-js'
+
+const normalizePassword = (password: string): Buffer => Buffer.from(password.normalize('NFKC'), 'utf8')
+
+const N = 1024, r = 8, p = 1
+const dkLen = 32
+
+const deriveKey = async (password:string, salt:Buffer): Promise<CryptoKey> =>
+  self.crypto.subtle.importKey(
+    'raw',
+    await scrypt(normalizePassword(password), salt, N, r, p, dkLen),
+    { name: 'AES-GCM' },
+    false,
+    ['decrypt']
+  )
+
+const salt = await (await window.fetch('/salt.txt')).text() // the salt is publicly available
+
+const key = await deriveKey(password, Buffer.from(salt, 'base64'))
+```
+
+### Decrypt a file
+We continue the operation by decrypting `encryptedContactInfo.json.encrypted` and `profilePicture.jpg.encrypted`.
+
+```typescript
+const decrypt = async (data: Uint8Array, key: CryptoKey): Promise<ArrayBuffer> => {
+  const nonce = data.slice(0, 12)
+  const ciphertext = data.slice(12)
+
+  return self.crypto.subtle.decrypt(
+    {
+      name: 'AES-GCM',
+      iv: nonce
+    },
+    key,
+    ciphertext
+  )
+}
+
+const encryptedContactInfo = await (await window.fetch('/encrypted/contactInfo.json.encrypted')).arrayBuffer()
+const encryptedProfilePicture = await (await window.fetch('/encrypted/profilePicture.jpg.encrypted')).arrayBuffer()
+
+const decryptedContactInfo = await decrypt(encryptedContactInfo, key)
+const decryptedProfilePicture = await decrypt(encryptedProfilePicture, key)
+```
+
+These raw versions of the decrypted data we have in `Blob` form are used in the context of the webpage as follows:
+
+```typescript
+import { Buffer } from 'buffer'
+const contactInfo = JSON.parse(Buffer.from(decryptedContactInfo).toString('utf-8'))
+// {
+//   "firstName": "John",
+//   "lastName": "Doe",
+//   "emailAddress": "john@doe.org",
+//   "phoneNumber": "+1 234 567 890",
+//   "linkedin": "jdoe",
+//   "twitter": "@DoeJ",
+//   "jobTitle": "Dummy job",
+//   "companyName": "Dummy company",
+//   "companyLink": "https://www.doe.org",
+//   "emailAddressLink": "mailto:john@doe.org",
+//   "phoneNumberLink": "tel:+1234567890",
+//   "twitterLink": "https://twitter.com/DoeJ",
+//   "linkedinLink": "https://www.linkedin.com/in/jdoe/",
+//   "personalWebsiteLink": "https://www.doe.org"
+// }
+
+const blobURL = URL.createObjectURL(new Blob([decryptedProfilePicture]))
+// blob:https://tex0l.github.io/95ef5165-ccb6-41c4-8157-5ec943509e46
+```
+
+### Downloading a contact form
+To generate the contact form, I use the [`vcard-creator`](https://github.com/joaocarmo/vcard-creator) package, and generate it on the fly on click and download it programmatically:
+
+```typescript
+import vCard from 'vcard-creator'
+const card = new vCard()
+const text = card
+    .addName(contactInfo.lastName, contactInfo.firstName)
+    .addCompany(contactInfo.companyName)
+    .addJobtitle(contactInfo.jobTitle)
+    .addEmail(contactInfo.emailAddress)
+    .addPhoneNumber(contactInfo.phoneNumber)
+    .addSocial(contactInfo.twitterLink, 'Twitter', contactInfo.twitter)
+    .addSocial(contactInfo.linkedinLink, 'LinkedIn', contactInfo.linkedin)
+    .addURL(contactInfo.personalWebsiteLink)
+    .addURL(contactInfo.companyLink)
+    .addPhoto(Buffer.from(decryptedProfilePicture).toString('base64'), 'JPEG')
+    .buildVCard()
+
+const blob = new Blob([text], { type: 'text/vcard' })
+
+const a = document.createElement('a')
+a.download = `${contactInfo.firstName}-${contactInfo.lastName}.vcard`
+a.href = URL.createObjectURL(blob)
+a.dataset.downloadurl = ['text/vcard', a.download, a.href].join(':')
+a.style.display = 'none'
+document.body.appendChild(a)
+a.click()
+document.body.removeChild(a)
+setTimeout(function () { URL.revokeObjectURL(a.href) }, 1500)
+```
+
+For the rest, the piping is done in Vue.js for ease of use, but it doesn't matter. If you'd like to take a look at the source code, it differs slightly from the snippets above, which I've simplified.
 
 ## Conclusion
-Ok, so I can't give you my actual password, that would defeat the purpose, you can try to brute force the password there though: [`https://tex0l.github.io/encrypted-card`](https://tex0l.github.io/encrypted-card).
+I can't give you the real password, that would be stupid (you can try brute-forcing it on this page [`https://tex0l.github.io/en/encrypted-card/`](/en/encrypted-card/), if you succeed, don't hesitate to tell me <Icon name="noto:winking-face" class="inline w-6"/>).
 
-However, here is a sanitized version: [https://tex0l.github.io/encrypted-card-dummy#my-super-secret-password](/encrypted-card-dummy#my-super-secret-password)
+However, here's a "dummy" version you can try: [https://tex0l.github.io/en/encrypted-card-dummy/#my-super-secret-password](/en/encrypted-card-dummy/#my-super-secret-password). This dummy version uses:
+- `my-super-secret-password` as the password.
+- [`/saltDummy.txt`](/saltDummy.txt) as the salt.
+- [`/encryptedDummy/contactInfo.json.encrypted`](/encryptedDummy/contactInfo.json.encrypted) as the encrypted contact info.
+- [`/encryptedDummy/stock-portrait.png.encrypted`](/encryptedDummy/stock-portrait.png.encrypted) as the encrypted photo.
 
-Now I have to order NFC business cards so that project can actually be at least a bit useful...
+Now I need to order some NFC business cards to make this project even remotely useful...
 
 Image by [Freepik](https://www.freepik.com/free-photo/hands-holding-blank-business-card_24488905.htm#query=business%20card&position=9&from_view=search&track=sph), Portrait Of Black Business Man Smiling In An Office With His Arms Crossed by Flamingo Images from NounProject.com

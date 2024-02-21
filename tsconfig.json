@@ -1,6 +1,7 @@
 {
   "extends": "astro/tsconfigs/strict",
   "compilerOptions": {
+    "verbatimModuleSyntax": true,
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
@@ -11,6 +12,6 @@
       {
         "name": "@astrojs/ts-plugin"
       },
-    ]
+    ],
   }
 }

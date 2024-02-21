@@ -1,9 +1,9 @@
 ---
-import {languages} from '../../i18n';
-import {getLangFromUrl, useTranslations, switchLang} from "../../i18n/utils";
-const currentLang = getLangFromUrl(Astro.url);
-
-const t = useTranslations(currentLang);
+import { languages } from '../../i18n'
+import { useTranslations, validateLang } from '../../i18n/utils'
+const { lang: currentLang } = Astro.params
+validateLang(currentLang)
+const t = useTranslations(currentLang)
 ---
 <form class="inline-block">
     <label for="language-selector">
@@ -15,4 +15,4 @@ const t = useTranslations(currentLang);
         </select>
     </label>
 </form>
-<script src="./LanguagePickerRuntime.ts"/>
+<script src="./LanguagePickerRuntime.client.ts"/>
