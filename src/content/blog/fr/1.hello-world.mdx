@@ -1,0 +1,42 @@
+---
+title: 'Bonjour world'
+date: '2023-01-17T00:00:00.000Z'
+image: '../../../resources/hello-world.png'
+---
+import { Icon } from "astro-icon/components";
+import {Image} from "astro:assets";
+import honestWork from '../../../resources/memes/work.jpg';
+
+Pourquoi créer un blog ? Honnêtement, en écrivant cet article, je me pose la même question...
+
+## Pourquoi ce blog ?
+Si vous me connaissez, vous savez que j'aime donner mon avis sur à peu près tout.
+En fait, je n'aime pas ce trait de caractère car j'ai tendance à tirer des conclusions trop rapidement, même sans en savoir trop sur le sujet de la discussion.
+
+De plus, ma ~~future~~ femme en a un peu assez de me voir déblatérer sur l'actualité tous les soirs.
+
+Le but de ce blog est d'avoir un moyen de m'exprimer qui ne l'ennuie pas <Icon name="emojione:winking-face" class="inline w-6"/>, et qui me forcera à faire des recherches sur les sujets que j'aborde, en espérant que cela m'empêchera d'être trop péremptoire.
+
+## A quoi s'attendre ?
+Pas grand-chose.
+
+En gros, chaque fois qu'il y aura un sujet que je trouve intéressant, j'essaierai d'écrire un article sur le sujet avec autant de sources que possible afin d'être assez confiant pour le publier.
+
+N'hésitez pas à me contacter si vous n'êtes pas d'accord avec moi ! Je suis ouvert à tout changement d'avis.
+
+## Pourquoi ne pas utiliser les médias sociaux comme tout le monde ?
+Je ne pense pas que les médias sociaux soient le bon outil pour faire ce blog : le but principal de cette entreprise n'est pas tant de partager mon opinion, mais de la former, alors que le but principal des médias sociaux est de la partager.
+
+## Pourquoi ne pas utiliser Medium alors ?
+Pour le plaisir principalement. Je suis un geek, et j'aime beaucoup faire les choses moi-même, et j'ai voulu construire mon blog moi-même. Il n'est peut-être pas aussi brillant, mais je l'ai fait.
+
+<Image src={honestWork} alt="Honest work" class="m-auto w-96"/>
+
+## Comment ça marche ?
+J'ai décidé d'utiliser :
+- [Nuxt 3](https://nuxt.com/v3) afin de pouvoir construire un site web statique.
+- [`@nuxt/content`](https://content.nuxtjs.org/) pour pouvoir écrire les articles en Markdown.
+- [TailwindCSS](https://tailwindcss.com/) pour le style.
+
+
+Il est déployé sur [GitHub Pages](https://pages.github.com/) en utilisant une [GitHub Action](https://github.com/actions/deploy-pages/).

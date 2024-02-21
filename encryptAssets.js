@@ -1,19 +1,22 @@
-const { createCipheriv, createDecipheriv, randomBytes, scrypt } = require('node:crypto')
-const { promisify } = require('node:util')
-const { readFile, writeFile, access, readdir, stat, mkdir } = require('node:fs/promises')
-const { constants } = require('node:fs')
-const { Buffer } = require('node:buffer')
-const path = require('node:path')
+import { createCipheriv, randomBytes, scrypt } from 'node:crypto'
+import { promisify } from 'node:util'
+import { access, mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { constants } from 'node:fs'
+import { Buffer } from 'node:buffer'
+import path, { dirname } from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const workingDirectory = dirname(fileURLToPath(import.meta.url))
 
 const scryptAsync = promisify(scrypt)
-const N = 1024, r = 8, p = 1
+const N = 1024; const r = 8; const p = 1
 const dkLen = 32
 
 const isDummy = process.env.DUMMY === 'true'
 
-const saltFile = path.join(__dirname, 'public', isDummy ? 'saltDummy' : 'salt')
-const toEncryptDir = path.join(__dirname, isDummy ? 'publicDummy_to_encrypt' : 'public_to_encrypt')
-const publicEncrypted = path.join(__dirname, 'public', isDummy ? 'encryptedDummy' : 'encrypted')
+const saltFile = path.join(workingDirectory, 'public', isDummy ? 'saltDummy.txt' : 'salt.txt')
+const toEncryptDir = path.join(workingDirectory, isDummy ? 'publicDummy_to_encrypt' : 'public_to_encrypt')
+const publicEncrypted = path.join(workingDirectory, 'public', isDummy ? 'encryptedDummy' : 'encrypted')
 
 const getSalt = async (path = saltFile) => {
   try {
@@ -21,6 +24,7 @@ const getSalt = async (path = saltFile) => {
     const saltB64 = await readFile(path)
     return Buffer.from(saltB64.toString(), 'base64')
   } catch (error) {
+    console.log(`No salt was found at ${path}, generating one.`)
     const salt = randomBytes(16)
     await writeFile(path, salt.toString('base64'))
     return salt
@@ -28,17 +32,14 @@ const getSalt = async (path = saltFile) => {
 }
 
 const getPassword = () => {
-  if (process.env.PASSWORD) return normalizePassword(process.env.PASSWORD)
-  else if (isDummy) return normalizePassword('my-super-secret-password')
+  if (isDummy) return normalizePassword('my-super-secret-password')
+  else if (process.env.PASSWORD) return normalizePassword(process.env.PASSWORD)
   else throw new Error('Password is undefined')
 }
 
-const normalizePassword = password => {
-  const b = Buffer.from(password.normalize('NFKC'), 'utf8')
-  return b
-}
+const normalizePassword = password => Buffer.from(password.normalize('NFKC'), 'utf8')
 
-const deriveKey = async (password, salt) => scryptAsync(password, salt, dkLen, { N, r, p })
+const deriveKey = async (password, salt) => await scryptAsync(password, salt, dkLen, { N, r, p })
 
 const encryptFile = async (buf, key) => {
   const iv = randomBytes(12)

@@ -1,0 +1,46 @@
+---
+import { validateLang, useTranslations } from '../i18n/utils'
+import { Icon } from 'astro-icon/components'
+
+export interface Props {
+  type?: 'note' | 'tip' | 'caution' | 'danger'
+  title?: string
+}
+const { lang } = Astro.params
+validateLang(lang)
+const t = useTranslations(lang)
+const { type = 'note', title = t(`aside.layout.${type}`) } = Astro.props
+let name = ''; let bgColor = ''; let borderColor = ''; let textColor = ''
+if (type === 'note') {
+  name = 'octicon:note-24'
+  bgColor = 'bg-gray-200'
+  borderColor = 'border-gray-400'
+  textColor = 'text-gray-600'
+} else if (type === 'tip') {
+  name = 'octicon:light-bulb-24'
+  bgColor = 'bg-green-200'
+  borderColor = 'border-green-400'
+  textColor = 'text-green-600'
+} else if (type === 'caution') {
+  name = 'octicon:alert-16'
+  bgColor = 'bg-orange-200'
+  borderColor = 'border-orange-400'
+  textColor = 'text-orange-600'
+} else if (type === 'danger') {
+  name = 'octicon:stop-24'
+  bgColor = 'bg-red-200'
+  borderColor = 'border-red-400'
+  textColor = 'text-red-600'
+}
+
+---
+
+<aside class={`${bgColor} border-2 ${borderColor} rounded-md px-3`} aria-label={title}>
+    <p class={`not-prose mt-4 -mb-2 ${textColor} font-bold`} aria-hidden="true">
+        <Icon name={name} class="inline mr-2 w-6"></Icon>
+        {title}
+    </p>
+    <section class="prose">
+        <slot />
+    </section>
+</aside>

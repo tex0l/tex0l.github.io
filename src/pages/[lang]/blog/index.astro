@@ -1,0 +1,58 @@
+---
+import { useFormatDate, formatDateAbsolute, useTranslatedPath, useTranslations, validateLang } from '../../../i18n/utils'
+import { Image } from 'astro:assets'
+import Layout from '../../../layouts/Layout.astro'
+import { getCollection } from 'astro:content'
+import { slugify } from '../../../utils'
+import { languages } from '../../../i18n'
+
+export function getStaticPaths (): Array<{ params: { lang: string } }> {
+  return Object.keys(languages).map(lang => ({ params: { lang } }))
+}
+
+const { lang } = Astro.params
+validateLang(lang)
+const t = useTranslations(lang)
+const localizePath = useTranslatedPath(lang)
+
+const blogPosts = (await getCollection('blog', ({ id }) => id.split('/')[0] === lang))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+
+const renderedBlogPosts = await Promise.all(blogPosts.map(async post => ({ ...post, Component: (await post.render()).Content })))
+const formatDate = useFormatDate(lang)
+---
+
+<Layout title={t('blog.title')}>
+    <div
+            class="
+    flex
+    flex-col
+    min-h-[calc(100vh-5rem)] items-center px-2">
+        <h1 class="text-6xl font-bold my-6">
+            {t('blog.h1')}
+        </h1>
+        <div class="text-justify my-8">
+            <p>{t('blog.subtitle')}</p>
+            <p>{t('blog.disclaimer')}</p>
+        </div>
+        <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8">
+
+        {renderedBlogPosts.map(post => (
+                <div class="flex flex-col max-w-sm hover:scale-105 rounded-md overflow-hidden shadow-xl hover:shadow-2xl transition shadow transform duration-300">
+                    <a href={localizePath(`/blog/${slugify(post.id)}`)} rel="prefetch">
+                        <div class="width-full aspect-video overflow-hidden flex items-center justify-center">
+                            {(post.data.image != null) ? (<Image src={post.data.image} alt={post.data.alt} width="400"/>) : (<div class="flex-grow"></div>)}
+                        </div>
+                        <div class="width-full aspect-video overflow-hidden relative p-6">
+                            <h2 class="text-xl font-medium mb-4">{post.data.title}</h2>
+                            <div class="italic text-justify mb-4 line-clamp-3 px-1 text-ellipsis overflow-hidden"><post.Component/></div>
+                            <div class="absolute bottom-6 right-6 text-sm text-gray-600">
+                                <div class="first-letter:uppercase" title={formatDateAbsolute(post.data.date)}>{formatDate(post.data.date)}</div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+        ))}
+            </div>
+    </div>
+</Layout>
