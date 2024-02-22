@@ -40,7 +40,7 @@ const t = useTranslations(lang)
     after:z-30
 ">
             <div x-data="{ open: false }" class="w-full h-16 flex items-center -mt-4 sticky top-0 px-3 md:px-12 z-50 bg-white select-none">
-                <a href={localizePath('/')} rel="prefetch">
+                <a href={localizePath('/')}>
                     <div class="flex flex-row h-full items-center">
                         <span class="bg-gray-900 w-10 h-10 text-2xl text-white flex justify-center items-center rounded-md flex-shrink-0">TR</span>
                         <span class="text-gray-900 ml-6 text-xl font-bold">Timothée Rebours</span>
@@ -49,14 +49,14 @@ const t = useTranslations(lang)
                 <div class="flex-grow"></div>
                 <div class="hidden md:block md:md:text-xl md:space-x-6 md:flex-shrink-0">
                     <LanguagePicker class="p-2 rounded border-2 border-gray-500/25 bg-white"/>
-                    <span><a href={localizePath('/about-me')} rel="prefetch">{t('layout.about-me')}</a></span>
-                    <span><a href={localizePath('/blog')} rel="prefetch">{t('layout.blog')}</a></span>
+                    <span><a href={localizePath('/about-me')}>{t('layout.about-me')}</a></span>
+                    <span><a href={localizePath('/blog')}>{t('layout.blog')}</a></span>
                 </div>
                 <Icon @click.prevent.throttle="open = !open" name="carbon:menu" class="z-20 inline h-6 w-6 cursor-pointer md:hidden"/>
                 <div class="z-10 fixed top-0 left-0 right-0 h-full bg-white md:hidden flex justify-center flex-col items-center space-y-10 capitalize text-4xl font-semibold" x-show="open">
                     <LanguagePicker class="p-2 rounded border-2 border-gray-500/25 bg-white"/>
-                    <span><a href={localizePath('/about-me')} rel="prefetch">{t('layout.about-me')}</a></span>
-                    <span><a href={localizePath('/blog')} rel="prefetch">{t('layout.blog')}</a></span>
+                    <span><a href={localizePath('/about-me')}>{t('layout.about-me')}</a></span>
+                    <span><a href={localizePath('/blog')}>{t('layout.blog')}</a></span>
                 </div>
             </div>
         </div>

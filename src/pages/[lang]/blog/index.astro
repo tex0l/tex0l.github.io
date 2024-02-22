@@ -40,7 +40,7 @@ const formatDate = useFormatDate(lang)
 
         {renderedBlogPosts.map(post => (
                 <div class="flex flex-col max-w-sm hover:scale-105 rounded-md overflow-hidden shadow-xl hover:shadow-2xl transition shadow transform duration-300">
-                    <a href={localizePath(`/blog/${slugify(post.id)}`)} rel="prefetch">
+                    <a href={localizePath(`/blog/${slugify(post.id)}`)}>
                         <div class="width-full aspect-video overflow-hidden flex items-center justify-center">
                             {(post.data.image != null) ? (<Image src={post.data.image} alt={post.data.alt} width="400"/>) : (<div class="flex-grow"></div>)}
                         </div>

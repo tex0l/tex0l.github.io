@@ -17,6 +17,7 @@ const t = useTranslations(currentLang)
 </form>
 <script>
     import { languages } from '~/i18n'
+    import { navigate } from 'astro:transitions/client'
 
     const switchLang = (path: string, lang: string): string => {
         if (!Object.hasOwn(languages, lang)) throw new Error('Provided lang prefix is unknown')
@@ -35,7 +36,7 @@ const t = useTranslations(currentLang)
             change($event) {
                 const l = ($event.target as HTMLSelectElement).value
                 window.localStorage.setItem('i18n', l)
-                window.location.assign(switchLang(window.location.pathname, l))
+                navigate(switchLang(window.location.pathname, l))
             }
         }))
     })
