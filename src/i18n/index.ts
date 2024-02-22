@@ -67,7 +67,7 @@ export const languages: Record<string, Locale> = {
       },
       index: {
         h1: 'Hey!',
-        subtitle: 'I\'m a France-based technology entrepreneur, involved in bringing end-2-end encryption to developers with {0}.',
+        subtitle: 'I\'m a tech entrepreneur based in France, involved in bringing end-2-end encryption to developers with {0}.',
         seald: 'Seald'
       },
       'about-me': {
