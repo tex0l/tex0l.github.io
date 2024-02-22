@@ -6,34 +6,7 @@ import { getCollection } from 'astro:content'
 import { slugify } from '~/utils'
 import { getAbsoluteLocaleUrl } from 'astro:i18n'
 import sanitizeHtml from 'sanitize-html'
-import { unified } from 'unified'
-import remarkParse from 'remark-parse'
-import remarkMDX from 'remark-mdx'
-import remarkHtml from 'remark-html'
-import type { Root, Node } from 'mdast'
-
-const removeImportsAndExports = () => {
-  return (tree: Root) => {
-    tree.children = tree.children.filter((node: Node) => {
-      return node.type !== 'mdxjsEsm' && // import tags
-        node.type !== 'mdxJsxFlowElement' // custom components (Image, Pintora)
-    })
-  }
-}
-const convertMDXToHTML = async (mdxContent: string): Promise<string> => {
-  try {
-    const file = await unified()
-      .use(remarkParse) // Parse the Markdown syntax
-      .use(remarkMDX) // Parse the MDX syntax
-      .use(removeImportsAndExports)
-      .use(remarkHtml) // Convert to HTML
-      .process(mdxContent) // Process the MDX content
-    return String(file)
-  } catch (error) {
-    console.error('Error converting MDX to HTML:', error)
-    throw error
-  }
-}
+import { convertMDXToHTML } from '~/utils/mdxToHtml.ts'
 
 export const GET: APIRoute = async (context) => {
   const lang = context.params.lang
