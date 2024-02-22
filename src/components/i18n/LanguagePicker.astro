@@ -8,7 +8,7 @@ const t = useTranslations(currentLang)
 <form x-data="languageSelector" class="inline-block" x-id="['language-selector']">
     <label :for="$id('language-selector')">
         <span class="hidden">{t('layout.language-selector')}</span>
-        <select @change="change($event)" :id="$id('language-selector')" class="p-2 rounded border-2 border-gray-500/25 bg-white">
+        <select @change="change($event)" :id="$id('language-selector')" class="p-2 bg-white">
             {Object.entries(languages).map(([lang, entry]) => (
                     <option value={lang} selected={lang === currentLang}>{entry.label}</option>
             ))}
