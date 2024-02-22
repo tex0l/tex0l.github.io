@@ -7,6 +7,8 @@ import AutoImport from 'astro-auto-import'
 import icon from 'astro-icon'
 import asides, { asideAutoImport } from './integrations/asides'
 
+import alpinejs from '@astrojs/alpinejs'
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [AutoImport({
@@ -19,7 +21,7 @@ export default defineConfig({
         fr: 'fr-FR'
       }
     }
-  }), icon()],
+  }), icon(), alpinejs()],
   trailingSlash: 'always',
   i18n: {
     defaultLocale: 'en',
