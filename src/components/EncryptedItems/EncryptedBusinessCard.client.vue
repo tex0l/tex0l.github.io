@@ -78,7 +78,7 @@
           <input class="rounded-md border border-gray-200 px-4 py-2 w-full focus-visible:outline focus-visible:outline-2 focus-visible:outline-gray-300" v-model="password">
         </div>
       </div>
-    <div class="mt-6 w-full text-center italic">The content of this web page is end-2-end encrypted, for more details please read the <a class="underline cursor-pointer" href="/blog/encrypted-card" target="_blank" rel="noopener">related blog article</a>.</div>
+    <div class="mt-6 w-full text-center italic">The content of this web page is end-2-end encrypted, for more details please read the <a class="underline cursor-pointer" href="/en/blog/encrypted-card" target="_blank" rel="noopener">related blog article</a>.</div>
   </div>
 </template>
 

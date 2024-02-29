@@ -6,6 +6,7 @@ import { existsSync } from 'node:fs'
 import AstroConfig, { PWD } from '../../astro.config'
 import { PNG } from '~/utils/createImage'
 import ogImage from './og-image'
+import { languages } from '~/i18n'
 
 export interface Props {
   title: string
@@ -14,7 +15,8 @@ export interface Props {
   width?: number
   height?: number
   author?: string
-  date?: Date
+  date?: Date,
+  dateFormat?: keyof languages
 }
 
 const {
@@ -24,7 +26,8 @@ const {
   author,
   date,
   width = 1200,
-  height = 630
+  height = 630,
+  dateFormat
 } = Astro.props
 
 const generateHash = (input: string): string => {
@@ -38,7 +41,7 @@ const ogDir = path.resolve(publicDir, 'og')
 
 if (!(existsSync(ogDir))) await mkdir(ogDir)
 
-const options = { image: Buffer.from(image), title, description, author, date, width, height }
+const options = { image: Buffer.from(image), title, description, author, date, width, height, dateFormat }
 
 const hash = generateHash(JSON.stringify({ ...options, image: options.image.toString('base64') }))
 

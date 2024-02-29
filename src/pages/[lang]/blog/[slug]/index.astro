@@ -50,8 +50,11 @@ const image = imageFilePath != null ? await readFile(imageFilePath) : undefined
       {
         (image != null)
           ? <MetaOGImage title={post.data.title}
-                             description={post.data.description ?? truncatedPost}
-                             image={image}
+                         description={post.data.description ?? truncatedPost}
+                         author="Timothée Rebours"
+                         date={post.data.date}
+                         dateFormat={lang}
+                         image={image}
                 />
           : <></>
       }
