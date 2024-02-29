@@ -58,7 +58,12 @@ const encryptDir = async (dir, key) => {
     else {
       const relativePath = path.relative(toEncryptDir, dir)
       await mkdir(path.join(publicEncrypted, relativePath), { recursive: true })
-      await writeFile(path.join(publicEncrypted, relativePath, file + '.encrypted'), await encryptFile(await readFile(path.join(toEncryptDir, relativePath, file)), key))
+      const encryptedFileName = path.join(publicEncrypted, relativePath, file + '.encrypted')
+      try {
+        await access(encryptedFileName, constants.F_OK)
+      } catch {
+        await writeFile(encryptedFileName, await encryptFile(await readFile(path.join(toEncryptDir, relativePath, file)), key))
+      }
     }
   }
 }

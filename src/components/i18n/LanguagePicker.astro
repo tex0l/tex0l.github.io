@@ -33,7 +33,7 @@ const t = useTranslations(currentLang)
 
     document.addEventListener('alpine:init', () => {
         Alpine.data('languageSelector', () => ({
-            change($event) {
+            change($event: Event) {
                 const l = ($event.target as HTMLSelectElement).value
                 window.localStorage.setItem('i18n', l)
                 navigate(switchLang(window.location.pathname, l))

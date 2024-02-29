@@ -1,10 +1,12 @@
 ---
-import { languages } from '../../i18n'
-import { Image } from 'astro:assets'
-import Layout from '../../layouts/Layout.astro'
-import Trans from '../../components/i18n/Trans.astro'
-import profilePicture from '../../resources/IMG-20220515-WA0004-removebg.png'
-import { useTranslations, validateLang } from '../../i18n/utils'
+import { languages } from '~/i18n'
+import { Picture } from 'astro:assets'
+import Layout from '~/layouts/Layout.astro'
+import Trans from '~/components/i18n/Trans.astro'
+import profilePicture from '~/resources/IMG-20220515-WA0004-removebg.png'
+import portrait from '~/resources/portrait-blog.png?arraybuffer'
+import { useTranslations, validateLang } from '~/i18n/utils'
+import MetaOGImage from '~/components/MetaOGImage.astro'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
@@ -14,8 +16,11 @@ const { lang } = Astro.params
 validateLang(lang)
 const t = useTranslations(lang)
 ---
-
-<Layout title="Timothée Rebours">
+<Layout title="Timothée Rebours" description={t('index.description')}>
+    <slot slot="head">
+        <MetaOGImage title="Timothée Rebours" description={t('index.description')} image={portrait}/>
+        <meta property="og:type" content="website" />
+    </slot>
     <div class="
     flex
     flex-col
@@ -23,7 +28,7 @@ const t = useTranslations(lang)
         <div class="inline-block shrink-0 max-w-sm relative lg:mt-20 mx-16 md:mx-0">
             <div class="rounded-b-full aspect-[10/11] relative overflow-hidden">
                 <div class="w-4/5 ml-[11%]">
-                    <Image src={profilePicture} alt="Timothée Rebours"/>
+                    <Picture src={profilePicture} alt="Timothée Rebours"/>
                 </div>
             </div>
             <div class="absolute bottom-0 left-0 rounded-full aspect-square bg-gradient-to-t from-gray-900 to-gray-500 w-full overflow-hidden -z-50"></div>

@@ -6,3 +6,5 @@ export const slugify = (id: string): string => {
   if (idWithoutI18n.length > 1 && (idWithoutI18n[idWithoutI18n.length - 1] === 'md' || idWithoutI18n[idWithoutI18n.length - 1] === 'mdx')) idWithoutI18n.pop() // if ends with md (expected format, but lenient anyway)
   return idWithoutI18n.join('.')
 }
+
+export function assertsType<T> (_val: unknown): asserts _val is T {}

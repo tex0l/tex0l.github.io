@@ -1,11 +1,13 @@
 ---
-import { useFormatDate, formatDateAbsolute, useTranslatedPath, useTranslations, validateLang } from '../../../i18n/utils'
-import { Image } from 'astro:assets'
-import Layout from '../../../layouts/Layout.astro'
+import { useFormatDate, formatDateAbsolute, useTranslatedPath, useTranslations, validateLang } from '~/i18n/utils'
+import { Picture } from 'astro:assets'
+import Layout from '~/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
-import { slugify } from '../../../utils'
-import { languages } from '../../../i18n'
-import { convertMDXToHTML } from '../../../utils/mdxToHtml'
+import { slugify } from '~/utils'
+import { languages } from '~/i18n'
+import { convertMDXToHTML } from '~/utils/mdxToHtml'
+import portrait from '~/resources/portrait-blog.png?arraybuffer'
+import MetaOGImage from '~/components/MetaOGImage.astro'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
@@ -19,11 +21,15 @@ const localizePath = useTranslatedPath(lang)
 const blogPosts = (await getCollection('blog', ({ id }) => id.split('/')[0] === lang))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 
-const renderedBlogPosts = await Promise.all(blogPosts.map(async post => ({ ...post, html: await convertMDXToHTML(post.body, 100) })))
+const renderedBlogPosts = await Promise.all(blogPosts.map(async post => ({ ...post, html: `${await convertMDXToHTML(post.body, 100)}...` })))
 const formatDate = useFormatDate(lang)
 ---
 
 <Layout title={t('blog.title')}>
+    <slot slot="head">
+        <MetaOGImage title="Timothée Rebours" description={t('index.description')} image={portrait}/>
+        <meta property="og:type" content="website" />
+    </slot>
     <div
             class="
     flex
@@ -42,11 +48,11 @@ const formatDate = useFormatDate(lang)
                 <div class="flex flex-col max-w-sm hover:scale-105 rounded-md overflow-hidden shadow-xl hover:shadow-2xl transition shadow transform duration-300">
                     <a href={localizePath(`/blog/${slugify(post.id)}`)}>
                         <div class="width-full aspect-video overflow-hidden flex items-center justify-center">
-                            {(post.data.image != null) ? (<Image src={post.data.image} alt={post.data.alt} width="400"/>) : (<div class="flex-grow"></div>)}
+                            {(post.data.image != null) ? (<Picture src={post.data.image} alt={post.data.alt} width="400"/>) : (<div class="flex-grow"></div>)}
                         </div>
                         <div class="width-full aspect-video overflow-hidden relative p-6">
                             <h2 class="text-xl font-medium mb-4">{post.data.title}</h2>
-                            <div class="italic text-justify mb-4 line-clamp-3 px-1 text-ellipsis overflow-hidden"><Fragment set:html={post.html}/></div>
+                            <div class="italic text-justify mb-4 line-clamp-3 px-1 text-ellipsis overflow-hidden"><Fragment set:html={post.data.description ?? post.html}/></div>
                             <div class="absolute bottom-6 right-6 text-sm text-gray-600">
                                 <div class="first-letter:uppercase" title={formatDateAbsolute(post.data.date)}>{formatDate(post.data.date)}</div>
                             </div>

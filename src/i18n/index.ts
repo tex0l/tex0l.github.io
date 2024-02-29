@@ -12,10 +12,13 @@ export const languages: Record<string, Locale> = {
       index: {
         h1: 'Bonjour!',
         subtitle: "Je suis un entrepreneur de la tech habitant en France, je m'emploie à apporter aux développeurs du chiffrement de bout-en-bout avec {0}.",
-        seald: 'Seald'
+        seald: 'Seald',
+        title: 'Timothée Rebours',
+        description: 'Mon site personnel, n\'en attendez pas trop'
       },
       'about-me': {
         title: 'À propos de moi',
+        description: 'Expérience, formation, centres d\'intérêt, ...',
         h1: 'À propos de moi',
         subtitle: 'Je suis né en 1993 près de Paris, j\'ai toujours été passionné de sciences et technologies. Je suis ingénieur diplômé de l\'École Polytechnique , et j\'ai créé mon entreprise dans le domaine de la cybersécurité.',
         'areas-of-interest': 'Centres d\'intérêt',
@@ -39,6 +42,7 @@ export const languages: Record<string, Locale> = {
       },
       blog: {
         title: 'Blog',
+        description: 'Mes élucubrations sur la technologie, la politique, le changement climatique, ...',
         h1: 'Blog',
         subtitle: 'Dans ce blog, je parle de changement climatique, de politique, d\'économie, de religion, de cybersécurité et d\'autres sujets qui m\'intéressent.',
         disclaimer: 'Je n\'exprime ici que mon opinion, si vous pensez que j\'ai fait une erreur ou que mon opinion est faussée, n\'hésitez pas à me contacter !',
@@ -68,11 +72,14 @@ export const languages: Record<string, Locale> = {
       index: {
         h1: 'Hey!',
         subtitle: 'I\'m a tech entrepreneur based in France, involved in bringing end-2-end encryption to developers with {0}.',
-        seald: 'Seald'
+        seald: 'Seald',
+        title: 'Timothée Rebours',
+        description: 'My personal website, don\'t expect too much'
       },
       'about-me': {
         title: 'About me',
         h1: 'About me',
+        description: 'Experience, education, interests, ...',
         subtitle: 'I was born in 1993 near Paris, I have always been passionate about science and technology. I\'m an engineer from the École Polytechnique, and I founded my company in cybersecurity.',
         'areas-of-interest': 'Areas of interest',
         'area-1-title': 'Digital technologies',
@@ -95,6 +102,7 @@ export const languages: Record<string, Locale> = {
       },
       blog: {
         title: 'Blog',
+        description: 'My ranting about tech, politics, climate change, ...',
         h1: 'Blog',
         subtitle: 'In this blog, I talk about climate change, politics, economics, religion, cybersecurity, and other topics I find interesting.',
         disclaimer: 'I only express my opinion here, if you think I made a mistake or that my opinion is flawed, feel free to contact me!',

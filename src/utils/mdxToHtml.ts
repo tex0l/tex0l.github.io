@@ -3,8 +3,7 @@ import { unified } from 'unified'
 import remarkParse from 'remark-parse'
 import remarkMDX from 'remark-mdx'
 import remarkHtml from 'remark-html'
-
-function assertsType<T> (val: unknown): asserts val is T {}
+import { assertsType } from '~/utils/index.ts'
 
 const truncateMDXContent = (limit: number): ((x: Root) => void) => {
   if (limit === -1) return () => {}
@@ -20,7 +19,7 @@ const truncateMDXContent = (limit: number): ((x: Root) => void) => {
       assertsType<Text>(node)
       const remainingCharacters = limit - charactersCount
       if (node.value.length > remainingCharacters) {
-        node.value = node.value.substring(0, remainingCharacters) + '...'
+        node.value = node.value.substring(0, remainingCharacters)
         reachedLimit = true
       }
       charactersCount += node.value.length
