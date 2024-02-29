@@ -3,7 +3,7 @@
   "compilerOptions": {
     "verbatimModuleSyntax": true,
     "jsx": "react-jsx",
-    "baseUrl": "/Users/timotheerebours/PersonalProjects/tex0l.github.io-astro",
+    "baseUrl": ".",
     "paths": {
       "~/*": [
         "src/*"
