@@ -1,0 +1,61 @@
+---
+title: 'Bonjour world 2.0'
+date: '2024-03-01T00:00:00.000Z'
+image: '../../../resources/hello-world.png'
+description: "Pourquoi j'ai arrêté d'utiliser Nuxt au profit d'Astro"
+---
+
+Il y a un peu plus d'un an, j'ai créé ce blog, et je ne l'ai quasiment pas alimenté en contenu depuis contrairement à ce que j'aurais souhaité. En revanche, j'ai complètement retravaillé la façon dont il est construit en migrant de [Nuxt 3](https://nuxt.com/v3) à [Astro](https://astro.build/).
+
+## Pourquoi migrer ?
+J'ai eu de très nombreux bugs avec Nuxt 3 (sur la génération statique, sur l'i18n, sur les images, etc.). À chaque fois que je creusais un peu, la cause était inextricable ou dépendante d'un paquet mal ou peu maintenu.
+
+En creusant un de ces bugs sur le module communautaire [nuxt-i18n](https://github.com/nuxt-modules/i18n), je suis tombé sur un échange de commentaires de [@riderx](https://github.com/riderx) qui manifestement en a eu marre et a mis un bounty de $300 pour migrer son site en Astro. Le créateur de Nuxt est même intervenu pour en savoir plus : https://github.com/LeducIT/captime-website/issues/47.
+
+J'ai l'impression que Nuxt s'est détourné de l'usage pour génération statique dont j'avais besoin lors de son passage à la version 3 et j'ai donc décidé de migrer à Astro également.
+
+PS: j'ai également testé https://islandjs.dev, mais il semble qu'il y ait une communauté moins importante, et la simplicité d'un projet Astro vierge m'a séduit, il y a moins de "magie".
+
+Pour ce qui est du style, je reste sur mon choix antérieur de [TailwindCSS](https://tailwindcss.com/).
+
+## Comment ça marche
+Il y a trois types de contenus sur le site :
+- les pages : il s'agit de fichiers `*.astro` dans le répertoire `src/pages/`.
+- les posts : il s'agit de fichiers `*.mdx`  dans le répertoire `src/content/blog`.
+- l'i18n : il s'agit d'un gros objet javascript contenant toutes les phrases et mots présents dans les pages, il est situé dans le fichier `src/i18n/index.ts`.
+
+### Pages
+Chaque page utilise un layout situé dans `src/layouts/Layout.astro` qui définit les élements communs à toutes les pages.
+
+Je produis une version en anglais et une version en français au moyen d'un paramètre nommé `[lang]` récupérable dans la page avec `const { lang } = Astro.params`, pour que les langues soient générées statiquement, j'exporte une fonction `getStaticPaths` dans chaque page qui liste les langues.
+
+### Posts
+Les fichiers `*.mdx` sont utilisés par le fichier `src/pages/[lang]/blog/[slug].astro` où `slug` correspond au nom du fichier `*.mdx` slugifié. Ces fichiers sont répartis en deux dossiers `fr` et `en` situées dans `src/content/blog/` contenant chacun les versions françaises et anglaises des mêmes articles.
+
+### i18n
+Astro ne fournissant pas de mécanisme pour faire l'interpolation, et les bibliothèques disponibles comme [i18next](https://www.i18next.com/) étant trop lourdes à mon gout, j'ai développé quelques fonctions utilisées pour le projet, mais cela sera certainement amené à être réécrit à l'avenir parce que l'état actuel n'est pas satisfaisant.
+
+## Fonctionnalités
+### Sitemap
+Un sitemap est généré automatiquement via l'intégration officielle [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), il permet à Google d'indexer les pages du site.
+
+Je génère également le `robots.txt` via un endpoint.
+
+### RSS
+Un flux RSS est généré et mis à disposition pour chaque langue via le "endpoint" `src/pages/[lang]/rss.xml.ts`. Pour la langue en cours, le lien est le suivant [../../rss.xml](../../rss.xml).
+
+### Changement de langue
+Un sélecteur de langue permet de changer de langue dynamiquement, il est codé avec [Alpine.js](https://alpinejs.dev/) que je ne connaissais pas qui permet d'écrire un peu de code réactif dans les composants sans utiliser une usine à gaz comme React ou Vue.
+
+### Balises OpenGraph
+En m'inspirant de [cet article sur la génération programmatique d'images OpenGraph avec Satori](https://techsquidtv.com/blog/generating-open-graph-images-for-astro/) à partir du titre, de la date et de la description, j'ai développé quelque chose de similaire en :
+1. créant un composant Astro `MetaOGImage.astro` qui prend une image, un titre, une description et une date.
+2. ce composant utilise ensuite [Satori](https://github.com/vercel/satori) pour convertir un composant React aux dimensions de l'image OpenGraph pour produire un SVG, puis [resvg-js](https://github.com/yisibl/resvg-js) pour produire un PNG.
+3. cette image au format PNG est ensuite enregistrée dans un répertoire `public/og` (qui est dans le `.gitignore`).
+4. une intégration copie en fin de build le contenu de ce répertoire est copié dans le dossier de build ([parce qu'Astro ne permet pas à une page de rendre un deuxième fichier](https://github.com/withastro/roadmap/discussions/643)).
+
+### Articles écrits en MDX
+Pour pouvoir utiliser des composants directement dans les articles de ce blog, le format utilisé est MDX via le plugin [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/).
+
+## Conclusion
+Il y a encore plusieurs améliorations à effectuer sur le blog, si vous avez un problème, [n'hésitez pas à ouvrir une issue sur Github](https://github.com/tex0l/tex0l.github.io).
