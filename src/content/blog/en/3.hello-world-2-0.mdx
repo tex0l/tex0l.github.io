@@ -1,0 +1,63 @@
+---
+title: 'Hello world 2.0'
+date: '2024-03-01T00:00:00.000Z'
+image: '../../../resources/hello-world.png'
+description: "Why I stopped using Nuxt for Astro"
+---
+
+I created this blog a little over a year ago, and I've hardly added any content to it since then, contrary to what I would have liked. However, I have completely reworked the way it is built, migrating from [Nuxt 3](https://nuxt.com/v3) to [Astro](https://astro.build/).
+
+## Why migrate?
+I had a lot of bugs with Nuxt 3 (on static generation, on i18n, on images, etc.). Each time I dug a little deeper, the cause was inextricable or dependent on a poorly or badly maintained package.
+
+While digging out one of these bugs on the [nuxt-i18n](https://github.com/nuxt-modules/i18n) community module, I came across a comment exchange from [@riderx](https://github.com/riderx) who obviously had had enough and put a $300 bounty to migrate his site to Astro. The creator of Nuxt even stepped in to find out more: https://github.com/LeducIT/captime-website/issues/47.
+
+I have the impression that Nuxt turned away from the static generation usage I needed when it was upgraded to version 3, so I decided to migrate to Astro as well.
+
+PS: I also tested https://islandjs.dev, but it seems to have a smaller community, and the simplicity of a blank Astro project appealed to me, there's less "magic".
+
+As for styling, I'm sticking with my previous choice of [TailwindCSS](https://tailwindcss.com/).
+
+## How it works
+There are three types of content on the site:
+- pages: these are `*.astro` files in the `src/pages/` directory.
+- posts: these are `*.mdx` files in the `src/content/blog` directory.
+- i18n: this is a large javascript object containing all the phrases and words in the pages, located in the `src/i18n/index.ts` file.
+
+### Pages
+Each page uses a layout located in `src/layouts/Layout.astro` which defines the elements common to all pages.
+
+I produce an English version and a French version by means of a parameter named `[lang]` retrievable from the page with `const { lang } = Astro.params`, so that the languages are generated statically, I export a `getStaticPaths` function in each page that lists the languages.
+
+### Posts
+The `*.mdx` files are used by the `src/pages/[lang]/blog/[slug].astro` file, where `slug` is the name of the slugged `*.mdx` file. These files are divided into two folders `fr` and `en` located in `src/content/blog/`, each containing the French and English versions of the same articles.
+
+### i18n
+As Astro doesn't provide a mechanism for interpolation, and available libraries such as [i18next](https://www.i18next.com/) are too cumbersome for my taste, I've developed a few functions used for the project, but these will certainly have to be rewritten in the future as the current state is unsatisfactory.
+
+## Features
+### Sitemap
+A sitemap is generated automatically via the official integration [`@astrojs/sitemap`](https://docs.astro.build/en/guides/integrations-guide/sitemap/), enabling Google to index the site's pages.
+
+I also generate the `robots.txt` via an endpoint.
+
+### RSS
+An RSS feed is generated and made available for each language via the endpoint `src/pages/[lang]/rss.xml.ts`. For the current language, the link is [../../rss.xml](../../rss.xml).
+
+### Change language
+A language selector allows you to change languages dynamically. It's coded with [Alpine.js](https://alpinejs.dev/), which I didn't know existed, and allows you to write a bit of reactive code in components without using a gas factory like React or Vue.
+
+### OpenGraph tags
+Inspired by [this article on programmatic generation of OpenGraph images with Satori](https://techsquidtv.com/blog/generating-open-graph-images-for-astro/) from title, date and description, I developed something similar by:
+1. creating an Astro component `MetaOGImage.astro` that takes an image, title, description and date.
+2. this component then uses [Satori](https://github.com/vercel/satori) to convert a React component to the dimensions of the OpenGraph image to produce an SVG, then [resvg-js](https://github.com/yisibl/resvg-js) to produce a PNG.
+3. this image in PNG format is then saved in a `public/og` directory (which is in `.gitignore`).
+4. an integration copy at the end of build copies the contents of this directory into the build folder ([because Astro doesn't allow a page to render a second file](https://github.com/withastro/roadmap/discussions/643)).
+
+To see the implementation
+
+### Articles written in MDX
+To be able to use components directly in the articles of this blog, the format used is MDX via the plugin [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/).
+
+## Conclusion
+There are still a number of improvements to be made to the blog, so if you have a problem, [feel free to open an issue on Github](https://github.com/tex0l/tex0l.github.io).
