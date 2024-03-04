@@ -46,7 +46,7 @@ export const languages: Record<string, Locale> = {
         h1: 'Blog',
         subtitle: 'Dans ce blog, je parle de changement climatique, de politique, d\'économie, de religion, de cybersécurité et d\'autres sujets qui m\'intéressent.',
         disclaimer: 'Je n\'exprime ici que mon opinion, si vous pensez que j\'ai fait une erreur ou que mon opinion est faussée, n\'hésitez pas à me contacter !',
-        published: 'Publié {0}'
+        published: 'Publié '
       },
       layout: {
         'language-selector': 'Changer de langue',
@@ -106,7 +106,7 @@ export const languages: Record<string, Locale> = {
         h1: 'Blog',
         subtitle: 'In this blog, I talk about climate change, politics, economics, religion, cybersecurity, and other topics I find interesting.',
         disclaimer: 'I only express my opinion here, if you think I made a mistake or that my opinion is flawed, feel free to contact me!',
-        published: 'Published {0}'
+        published: 'Published '
       },
       layout: {
         'language-selector': 'Switch lang',
