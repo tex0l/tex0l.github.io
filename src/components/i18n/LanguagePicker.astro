@@ -15,29 +15,3 @@ const t = useTranslations(currentLang)
         </select>
     </label>
 </form>
-<script>
-    import { languages } from '~/i18n/index.ts'
-    import { navigate } from 'astro:transitions/client'
-
-    const switchLang = (path: string, lang: string): string => {
-        if (!Object.hasOwn(languages, lang)) throw new Error('Provided lang prefix is unknown')
-
-        const splitPath = path.split('/').filter(x => x !== '')
-
-        if (splitPath.length === 0) throw new Error('Once split, path is empty')
-        if (!Object.hasOwn(languages, splitPath[0])) throw new Error('Once split, lang prefix is unknown')
-        splitPath[0] = lang
-
-        return `/${splitPath.join('/')}/`
-    }
-
-    document.addEventListener('alpine:init', () => {
-        Alpine.data('languageSelector', () => ({
-            change($event: Event) {
-                const l = ($event.target as HTMLSelectElement).value
-                window.localStorage.setItem('i18n', l)
-                navigate(switchLang(window.location.pathname, l))
-            }
-        }))
-    })
-</script>

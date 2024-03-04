@@ -1,19 +1,18 @@
 ---
 import { readFile } from 'node:fs/promises'
-import { convertMDXToHTML } from '../../../../utils/mdxToHtml'
-import { languages } from '../../../../i18n'
+import { convertMDXToHTML } from '~/utils/mdxToHtml'
+import { languages } from '~/i18n'
 import {
-  formatDateAbsolute,
-  useFormatDate,
   useTranslations,
   validateLang
-} from '../../../../i18n/utils'
+} from '~/i18n/utils'
 import { Picture } from 'astro:assets'
-import Layout from '../../../../layouts/Layout.astro'
+import Layout from '~/layouts/Layout.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
-import { slugify } from '../../../../utils'
+import { slugify } from '~/utils'
 import sanitizeHtml from 'sanitize-html'
-import MetaOGImage from '../../../../components/MetaOGImage.astro'
+import MetaOGImage from '~/components/MetaOGImage.astro'
+import { DateTime } from 'luxon'
 
 export async function getStaticPaths (): Promise<Array<{ params: { lang: string, slug: string }, props: { post: CollectionEntry<'blog'> } }>> {
   const blogEntries = await getCollection('blog')
@@ -35,13 +34,17 @@ const { post } = Astro.props as Props
 const { Content } = await post.render()
 const { lang } = Astro.params
 validateLang(lang)
-const formatDate = useFormatDate(lang)
 const t = useTranslations(lang)
 
 const truncatedPost = sanitizeHtml(await convertMDXToHTML(post.body, 297), { allowedTags: [] })
 
-const imageFilePath = (post.data.image != null && Object.hasOwn(post.data.image, 'fsPath')) ? (post.data.image as unknown as { fsPath: string }).fsPath : ''
+const imageFilePath = (post.data.image != null && Object.hasOwn(post.data.image, 'fsPath')) ? (post.data.image as unknown as {
+  fsPath: string
+}).fsPath : ''
 const image = imageFilePath != null ? await readFile(imageFilePath) : undefined
+const date = DateTime.fromJSDate(post.data.date).setLocale(languages[lang].code)
+
+const formattedAbsoluteDate = date.toLocaleString(DateTime.DATE_FULL)
 ---
 
 <Layout title={post.data.title} description={post.data.description ?? `${truncatedPost}...`}>
@@ -49,20 +52,22 @@ const image = imageFilePath != null ? await readFile(imageFilePath) : undefined
         <meta property="og:type" content="article"/>
       {
         (image != null)
-          ? <MetaOGImage title={post.data.title}
-                         description={post.data.description ?? truncatedPost}
-                         author="Timothée Rebours"
-                         date={post.data.date}
-                         dateFormat={lang}
-                         image={image}
+          ?
+                <MetaOGImage title={post.data.title}
+                             description={post.data.description ?? truncatedPost}
+                             author="Timothée Rebours"
+                             date={post.data.date}
+                             dateFormat={lang}
+                             image={image}
                 />
-          : <></>
+          :
+                <></>
       }
     </Fragment>
     <div class="space-y-2 mb-2">
         <h1 class="text-5xl font-medium text-center">{post.data.title}</h1>
-        <p class="text-gray-500 text-center" title={formatDateAbsolute(post.data.date)}>
-          {t('blog.published', [formatDate(post.data.date)])}
+        <p class="text-gray-500 text-center" title={formattedAbsoluteDate} x-data={`formatDate("${post.data.date.toString()}", "${languages[lang].code}", false)`}>
+            {t('blog.published')}<span x-text="formattedDate">{`${lang === 'fr' ? 'le' : 'on'} ${formattedAbsoluteDate}`}</span>
         </p>
     </div>
     <div class="max-h-60 md:max-h-72 lg:max-h-96 overflow-hidden flex items-center justify-center">
