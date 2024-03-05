@@ -47,7 +47,7 @@ module.exports = {
       }
     },
     {
-      files: ['*.ts'],
+      files: ['*.ts', '*.tsx'],
       extends: 'standard-with-typescript',
       env: {
         es2020: true,
@@ -55,7 +55,7 @@ module.exports = {
       }
     },
     {
-      files: ['*.mjs', '*.cjs', '*.js'],
+      files: ['*.mjs', '*.cjs', '*.js', '*.jsx'],
       extends: 'standard',
       env: {
         es2020: true,
