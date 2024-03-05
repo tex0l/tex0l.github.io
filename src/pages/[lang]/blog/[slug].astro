@@ -38,21 +38,12 @@ const t = useTranslations(lang)
 
 const truncatedPost = sanitizeHtml(await convertMDXToHTML(post.body, 297), { allowedTags: [] })
 
-<<<<<<< Updated upstream:src/pages/[lang]/blog/[slug].astro
-const imageFilePath = (post.data.image != null && Object.hasOwn(post.data.image, 'fsPath')) ? (post.data.image as unknown as {
-  fsPath: string
-}).fsPath : ''
-=======
-<<<<<<< Updated upstream:src/pages/[lang]/blog/[slug]/index.astro
-const imageFilePath = (post.data.image != null && Object.hasOwn(post.data.image, 'fsPath')) ? (post.data.image as unknown as { fsPath: string }).fsPath : ''
-=======
 const imageFilePath = (post.data.image != null && Object.hasOwn(post.data.image, 'fsPath'))
   ? (post.data.image as unknown as {
       fsPath: string
     }).fsPath
   : ''
->>>>>>> Stashed changes:src/pages/[lang]/blog/[slug].astro
->>>>>>> Stashed changes:src/pages/[lang]/blog/[slug]/index.astro
+
 const image = imageFilePath != null ? await readFile(imageFilePath) : undefined
 const date = DateTime.fromJSDate(post.data.date).setLocale(languages[lang].code)
 
@@ -64,31 +55,14 @@ const formattedAbsoluteDate = date.toLocaleString(DateTime.DATE_FULL)
         <meta property="og:type" content="article"/>
       {
         (image != null)
-<<<<<<< Updated upstream:src/pages/[lang]/blog/[slug].astro
-          ?
-                <MetaOGImage title={post.data.title}
-=======
           ? <MetaOGImage title={post.data.title}
-<<<<<<< Updated upstream:src/pages/[lang]/blog/[slug]/index.astro
                          description={post.data.description ?? truncatedPost}
                          author="Timothée Rebours"
                          date={post.data.date}
                          dateFormat={lang}
                          image={image}
-=======
->>>>>>> Stashed changes:src/pages/[lang]/blog/[slug]/index.astro
-                             description={post.data.description ?? truncatedPost}
-                             author="Timothée Rebours"
-                             date={post.data.date}
-                             dateFormat={lang}
-                             image={image}
-<<<<<<< Updated upstream:src/pages/[lang]/blog/[slug].astro
-=======
->>>>>>> Stashed changes:src/pages/[lang]/blog/[slug].astro
->>>>>>> Stashed changes:src/pages/[lang]/blog/[slug]/index.astro
                 />
-          :
-                <></>
+          : <></>
       }
     </Fragment>
     <div class="space-y-2 mb-2">

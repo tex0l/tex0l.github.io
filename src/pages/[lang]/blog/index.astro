@@ -22,59 +22,14 @@ const localizePath = useTranslatedPath(lang)
 const blogPosts = (await getCollection('blog', ({ id }) => id.split('/')[0] === lang))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 
-<<<<<<< Updated upstream
-const formatDate = (jSDate: Date, lang: string): { formatted: string, absolute: string } => {
-  const date = DateTime.fromJSDate(jSDate).setLocale(lang)
-
-  const delta = Math.abs(date.diffNow().as('days'))
-
-  const formattedAbsoluteDate = date.toLocaleString(DateTime.DATE_FULL)
-  const formattedRelativeDate = date.toRelative()
-
-  if (delta <= 7) {
-    return {
-      formatted: formattedRelativeDate,
-      absolute: formattedAbsoluteDate
-    }
-  }
-
-  if (delta <= 30) {
-    return {
-      formatted: `${formattedRelativeDate} (${formattedAbsoluteDate})`,
-      absolute: formattedAbsoluteDate
-    }
-  }
-
-  return {
-    formatted: formattedAbsoluteDate,
-    absolute: formattedAbsoluteDate
-  }
-}
-
-const renderedBlogPosts = await Promise.all(blogPosts.map(async post => {
-  const { formatted, absolute } = formatDate(post.data.date, languages[lang].code)
-  return ({
-    ...post,
-    formattedAbsoluteDate: absolute,
-    formattedDate: formatted,
-=======
-<<<<<<< Updated upstream
-const renderedBlogPosts = await Promise.all(blogPosts.map(async post => ({ ...post, html: `${await convertMDXToHTML(post.body, 100)}...` })))
-const formatDate = useFormatDate(lang)
-=======
 const renderedBlogPosts = await Promise.all(blogPosts.map(async post => {
   return ({
     ...post,
     formattedAbsoluteDate: DateTime.fromJSDate(post.data.date).setLocale(languages[lang].code).toLocaleString(DateTime.DATE_FULL),
->>>>>>> Stashed changes
     html: `${await convertMDXToHTML(post.body, 100)}...`
   })
 }))
 
-<<<<<<< Updated upstream
-=======
->>>>>>> Stashed changes
->>>>>>> Stashed changes
 ---
 
 <Layout title={t('blog.title')}>
