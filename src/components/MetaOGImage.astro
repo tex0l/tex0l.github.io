@@ -6,7 +6,6 @@ import { existsSync } from 'node:fs'
 import AstroConfig, { PWD } from '../../astro.config'
 import { PNG } from '~/utils/createImage'
 import ogImage from './og-image'
-import { languages } from '~/i18n'
 
 export interface Props {
   title: string
@@ -15,8 +14,8 @@ export interface Props {
   width?: number
   height?: number
   author?: string
-  date?: Date,
-  dateFormat?: keyof languages
+  date?: Date
+  dateFormat?: string
 }
 
 const {

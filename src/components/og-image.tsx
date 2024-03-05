@@ -12,7 +12,7 @@ import { waterfall } from 'astro-pintora'
 //  will fail. Using the waterfall makes sure they wait for each other to finish.
 //  see: https://github.com/hikerpig/pintora/issues/237 and
 
-export default waterfall(async ({ image, title, description, author, date, width = 1200, height = 630, dateFormat }: { image: ArrayBuffer, title: string, description: string, width?: number, height?: number, author?: string, date?: Date, dateFormat: string }) => {
+export default waterfall(async ({ image, title, description, author, date, width = 1200, height = 630, dateFormat = 'en' }: { image: ArrayBuffer, title: string, description: string, width?: number, height?: number, author?: string, date?: Date, dateFormat?: string }) => {
   const resizedImage = await sharp(Buffer.from(image))
     .resize({ width: Math.floor(width / 3), height: 1.25 * Math.floor(width / 3), fit: 'cover' })
     .png()
