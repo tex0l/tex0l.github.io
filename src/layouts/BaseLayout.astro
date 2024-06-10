@@ -1,14 +1,12 @@
 ---
+import { useTranslations, validateLang } from '../i18n/utils'
 import { ViewTransitions } from 'astro:transitions'
 import { languages } from '../i18n'
 import { getAbsoluteLocaleUrl } from 'astro:i18n'
-interface Props {
-  title?: string
-  description?: string
-}
 
-const { title, description } = Astro.props
 const { lang } = Astro.params
+validateLang(lang)
+const t = useTranslations(lang)
 ---
 
 <!doctype html>
@@ -16,18 +14,20 @@ const { lang } = Astro.params
 <head>
     <meta charset="UTF-8"/>
     <meta name="google-site-verification" content="UiqMaJhYDWgjczHPVW5lDDdX6S2b4cnOgsl2gw3ms_4" />
-    <meta name="description" content={description}/>
     <meta name="viewport" content="width=device-width"/>
-    <meta name='author' content='Timothée Rebours'>
     <link rel="icon" type="image/png" href="/favicon.png"/>
     <link rel="sitemap" href="/sitemap-index.xml" />
     {Object.keys(languages).map(language =>
       <link rel="alternate" hreflang={languages[language].code} href={getAbsoluteLocaleUrl(language, Astro.url.pathname.substring(3))} />
+      <meta property="og:locale:alternate" content={languages[language].code} />
     )}
     <meta name="generator" content={Astro.generator}/>
-    <title>{title}</title>
-    <meta property="og:title" content={title} />
+    <meta property="og:locale" content={languages[lang].code} />
+    <link rel="canonical" content={Astro.url.href} />
     <meta property="og:url" content={Astro.url.href} />
+    <meta name="twitter:url" content={Astro.url.href} />
+    <link rel="alternate" type="application/rss+xml" title={t('rss.title')} href={`/${lang}/rss.xml`} />
+
     <ViewTransitions />
     <slot name="head"/>
 </head>

@@ -5,19 +5,13 @@ import { useTranslatedPath, useTranslations, validateLang } from '../i18n/utils'
 import Trans from '../components/i18n/Trans.astro'
 import { Icon } from 'astro-icon/components'
 
-interface Props {
-  title?: string
-  description?: string
-}
-
-const { title, description } = Astro.props
 const { lang } = Astro.params
 validateLang(lang)
 const localizePath = useTranslatedPath(lang)
 const t = useTranslations(lang)
 
 ---
-<BaseLayout title={title} description={description}>
+<BaseLayout>
     <slot name="head" slot="head"/>
 
     <div class="w-screen min-h-screen">
