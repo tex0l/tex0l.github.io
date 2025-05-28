@@ -29,7 +29,6 @@ interface Props {
   post: CollectionEntry<'blog'>
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
 const { post } = Astro.props as Props
 const { Content } = await post.render()
 const { lang } = Astro.params

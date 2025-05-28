@@ -44,7 +44,7 @@ export default defineConfig({
   site: 'https://tex0l.github.io',
   vite: {
     plugins: [arraybuffer()],
-    optimizeDeps: { exclude: ['@resvg/resvg-js'] }
+    optimizeDeps: { exclude: ['@resvg/resvg-js', 'fsevents'] }
   }
 })
 

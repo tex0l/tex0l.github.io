@@ -1,5 +1,5 @@
 // Register directive nodes in mdast:
-// eslint-disable-next-line @typescript-eslint/triple-slash-reference
+ 
 /// <reference types="mdast-util-directive" />
 // The reason why we have to use a triple slash reference here is because we just need the type to be registered in mdast,
 // but we don't use them namely, therefore importing types would result in unused types, and importing the module globally

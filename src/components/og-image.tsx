@@ -3,17 +3,9 @@ import sharp from 'sharp'
 import { findLargestUsableFontSize } from '@altano/satori-fit-text'
 import roboto400Normal from '@fontsource/roboto/files/roboto-latin-400-normal.woff?arraybuffer'
 import roboto700Normal from '@fontsource/roboto/files/roboto-latin-700-normal.woff?arraybuffer'
-import { waterfall } from 'astro-pintora'
 import type { OGImageOptions } from '~/utils/createImage.ts'
 
-// TODO: wrapping with waterfall from astro-pintora is due to the fact that @pintora/cli pollutes the globals with
-//  window, document, etc. which come from JSDom, it cleans up after each run, however, @altano/satori-fit-text tests
-//  the window global variable to check whether or not the headless implementation should be used, and if both an
-//  astro-pintora rendering and a @altano/satori-fit-text execution happen at the same time, @altano/satori-fit-text
-//  will fail. Using the waterfall makes sure they wait for each other to finish.
-//  see: https://github.com/hikerpig/pintora/issues/237 and
-
-export default waterfall(async ({
+export default async ({
   image,
   title,
   description,
@@ -122,4 +114,4 @@ export default waterfall(async ({
       </div>
     </div>
   </div>
-})
+}
