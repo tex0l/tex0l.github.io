@@ -23,7 +23,7 @@ const t = useTranslations(lang)
     )}
     <meta name="generator" content={Astro.generator}/>
     <meta property="og:locale" content={languages[lang].code} />
-    <link rel="canonical" content={Astro.url.href} />
+    <link rel="canonical" href={Astro.url.href} />
     <meta property="og:url" content={Astro.url.href} />
     <meta name="twitter:url" content={Astro.url.href} />
     <link rel="alternate" type="application/rss+xml" title={t('rss.title')} href={`/${lang}/rss.xml`} />

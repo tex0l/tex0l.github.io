@@ -3,7 +3,6 @@ import { languages } from '~/i18n/index.ts'
 import EncryptedBusinessCard from '~/components/EncryptedItems/EncryptedBusinessCard.client.vue'
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import { validateLang } from '~/i18n/utils'
-import MetaOGImage from '~/components/MetaOGImage.astro'
 import portrait from '~/resources/portrait-blog.png?arraybuffer'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
@@ -17,7 +16,6 @@ validateLang(lang)
 <BaseLayout title={'Encrypted business card'} description={'This page allows you to retrieve my contact information (if you have the password)'}>
     <slot slot="head">
         <meta property="og:type" content="website" />
-        <MetaOGImage title="Encrypted business card" description="This page allows you to retrieve my contact information (if you have the password)" image={portrait}/>
     </slot>
     <EncryptedBusinessCard
       client:only="vue"

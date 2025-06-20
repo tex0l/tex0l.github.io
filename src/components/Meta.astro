@@ -10,7 +10,7 @@ interface PropsWebsite {
   description: string // 160 chars
   type: 'website' // website or article
   twitter: string // declare the twitter handle
-  image: ArrayBuffer // image that will be used as base for generating other images
+  image: ArrayBuffer|Buffer // image that will be used as base for generating other images
 }
 
 interface PropsArticle {
@@ -19,12 +19,12 @@ interface PropsArticle {
   type: 'article' // website or article
   author: string // name of the author
   twitter: string // declare the twitter handle
-  image: ArrayBuffer // image that will be used as base for generating other images
+  image: ArrayBuffer|Buffer // image that will be used as base for generating other images
   publishedDate: Date
   modifiedDate: Date
 }
 
-const { title, description, twitter, type, author, rss, image, publishedDate, modifiedDate } = Astro.props as Props
+const { title, description, twitter, type, author, image, publishedDate, modifiedDate } = Astro.props as Props
 
 const { lang } = Astro.params
 validateLang(lang)
@@ -45,7 +45,8 @@ const options: OGImageOptions = type === 'website'
       height
     }
 
-const imageHref = await getCachedImage({ description: '', title: '', image })
+const imageHref = image != null ? await getCachedImage(options) : null
+
 ---
 <title>{title}</title>
 <meta property="og:title" content={title}/>
@@ -55,18 +56,18 @@ const imageHref = await getCachedImage({ description: '', title: '', image })
 <meta property="og:description" content={description}/>
 <meta name="twitter:description" content={description}/>
 
-<meta property="og:image" content="..."/>
+<meta property="og:image" content={imageHref}/>
 <meta property="og:image:type" content="image/png"/>
-<meta property="og:image:width" content="..."/>
-<meta property="og:image:height" content="..."/>
-<meta property="og:image:alt" content="..."/>
+<meta property="og:image:width" content={width.toString()}/>
+<meta property="og:image:height" content={height.toString()}/>
+<meta property="og:image:alt" content={title}/>
 
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:site" content={twitter}>
 <meta name="twitter:creator" content={twitter}>
 <meta name="twitter:title" content={title}>
 <meta name="twitter:description" content={description}>
-<meta name="twitter:image" content="..."/>
+<meta name="twitter:image" content={imageHref}/>
 
 <meta property="og:type" content={type}/>
 
@@ -74,8 +75,8 @@ const imageHref = await getCachedImage({ description: '', title: '', image })
 {type === 'article'
   ? (
 <meta name="author" content={author}/>
-<meta property="article:published_time" content={publishedDate}/>
-<meta property="article:modified_time" content={modifiedDate}/>
+<meta property="article:published_time" content={publishedDate.toISOString()}/>
+<meta property="article:modified_time" content={modifiedDate.toISOString()}/>
 <meta property="article:author" content={author}/>
     )
   : <></> }

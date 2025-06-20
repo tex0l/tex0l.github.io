@@ -4,9 +4,9 @@ import { Picture } from 'astro:assets'
 import Layout from '~/layouts/Layout.astro'
 import Trans from '~/components/i18n/Trans.astro'
 import profilePicture from '~/resources/IMG-20220515-WA0004-removebg.png'
-import portrait from '~/resources/portrait-blog.png?arraybuffer'
 import { useTranslations, validateLang } from '~/i18n/utils'
-import MetaOGImage from '~/components/MetaOGImage.astro'
+import portrait from '~/resources/portrait-blog.png?arraybuffer'
+import Meta from '~/components/Meta.astro'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
@@ -18,8 +18,12 @@ const t = useTranslations(lang)
 ---
 <Layout title="Timothée Rebours" description={t('index.description')}>
     <slot slot="head">
-        <MetaOGImage title="Timothée Rebours" description={t('index.description')} image={portrait}/>
-        <meta property="og:type" content="website" />
+        <Meta
+          title={t('index.title')}
+          description={t('index.description')}
+          type="website"
+          image={portrait}
+        />
     </slot>
     <div class="
     flex

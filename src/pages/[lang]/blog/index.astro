@@ -7,8 +7,8 @@ import { slugify } from '~/utils/index.ts'
 import { languages } from '~/i18n/index.ts'
 import { convertMDXToHTML } from '~/utils/mdxToHtml'
 import portrait from '~/resources/portrait-blog.png?arraybuffer'
-import MetaOGImage from '~/components/MetaOGImage.astro'
 import { DateTime } from 'luxon'
+import Meta from '~/components/Meta.astro'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
@@ -34,8 +34,12 @@ const renderedBlogPosts = await Promise.all(blogPosts.map(async post => {
 
 <Layout title={t('blog.title')}>
     <slot slot="head">
-        <MetaOGImage title="Timothée Rebours" description={t('index.description')} image={portrait}/>
-        <meta property="og:type" content="website" />
+        <Meta
+          title={t('blog.title')}
+          description={t('blog.description')}
+          type="website"
+          image={portrait}
+        />
     </slot>
     <div
             class="

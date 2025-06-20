@@ -42,6 +42,7 @@ export const languages: Record<string, Locale> = {
       },
       blog: {
         title: 'Blog',
+        author: 'Timothée Rebours',
         description: 'Mes élucubrations sur la technologie, la politique, le changement climatique, ...',
         h1: 'Blog',
         subtitle: 'Dans ce blog, je parle de changement climatique, de politique, d\'économie, de religion, de cybersécurité et d\'autres sujets qui m\'intéressent.',
@@ -102,6 +103,7 @@ export const languages: Record<string, Locale> = {
       },
       blog: {
         title: 'Blog',
+        author: 'Timothée Rebours',
         description: 'My ranting about tech, politics, climate change, ...',
         h1: 'Blog',
         subtitle: 'In this blog, I talk about climate change, politics, economics, religion, cybersecurity, and other topics I find interesting.',

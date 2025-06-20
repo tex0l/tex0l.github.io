@@ -11,8 +11,9 @@ import Layout from '~/layouts/Layout.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
 import { slugify } from '~/utils'
 import sanitizeHtml from 'sanitize-html'
-import MetaOGImage from '~/components/MetaOGImage.astro'
 import { DateTime } from 'luxon'
+import Meta from '../../../components/Meta.astro'
+
 
 export async function getStaticPaths (): Promise<Array<{ params: { lang: string, slug: string }, props: { post: CollectionEntry<'blog'> } }>> {
   const blogEntries = await getCollection('blog')
@@ -37,11 +38,7 @@ const t = useTranslations(lang)
 
 const truncatedPost = sanitizeHtml(await convertMDXToHTML(post.body, 297), { allowedTags: [] })
 
-const imageFilePath = (post.data.image != null && Object.hasOwn(post.data.image, 'fsPath'))
-  ? (post.data.image as unknown as {
-      fsPath: string
-    }).fsPath
-  : ''
+const imageFilePath = (/^\/@fs([^?]*)\??.*$/.exec(post.data.image?.src) ?? [, null])[1]
 
 const image = imageFilePath != null ? await readFile(imageFilePath) : undefined
 const date = DateTime.fromJSDate(post.data.date).setLocale(languages[lang].code)
@@ -49,20 +46,18 @@ const date = DateTime.fromJSDate(post.data.date).setLocale(languages[lang].code)
 const formattedAbsoluteDate = date.toLocaleString(DateTime.DATE_FULL)
 ---
 
-<Layout title={post.data.title} description={post.data.description ?? `${truncatedPost}...`}>
+<Layout>
     <Fragment slot="head">
-        <meta property="og:type" content="article"/>
-      {
-        (image != null)
-          ? <MetaOGImage title={post.data.title}
-                         description={post.data.description ?? truncatedPost}
-                         author="Timothée Rebours"
-                         date={post.data.date}
-                         dateFormat={lang}
-                         image={image}
-                />
-          : <></>
-      }
+        <Meta
+          title={post.data.title}
+          description={post.data.description ?? `${truncatedPost}...`}
+          type="article"
+          author={post.data.author ?? t('blog.author')}
+          twitter={post.data.twitter ?? t('blog.twitter')}
+          image={image}
+          publishedDate={post.data.date}
+          modifiedDate={post.data.date}
+        />
     </Fragment>
     <div class="space-y-2 mb-2">
         <h1 class="text-5xl font-medium text-center">{post.data.title}</h1>

@@ -8,7 +8,8 @@ import Trans from '~/components/i18n/Trans.astro'
 import ariaPicture from '~/resources/PXL_20230106_141516359.PORTRAIT.jpg'
 import portrait from '~/resources/portrait-blog.png?arraybuffer'
 import sealdLogo from '~/resources/seald-logo.png'
-import MetaOGImage from '~/components/MetaOGImage.astro'
+import Meta from '~/components/Meta.astro'
+
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
 }
@@ -18,10 +19,14 @@ validateLang(lang)
 
 const t = useTranslations(lang)
 ---
-<Layout title={t('about-me.title')}>
+<Layout>
     <slot slot="head">
-        <MetaOGImage title={t('about-me.title')} description={t('about-me.description')} image={portrait}/>
-        <meta property="og:type" content="website" />
+        <Meta
+          title={t('about-me.title')}
+          description={t('about-me.description')}
+          type="website"
+          image={portrait}
+        />
     </slot>
     <div
             class="
