@@ -11,7 +11,8 @@ export default function (): AstroIntegration {
     hooks: {
       'astro:build:done': async ({ dir, logger: _logger }) => {
         const logger = _logger.fork('MoveOGImages')
-        const inputDir = await opendir(path.resolve(PWD, AstroConfig.publicDir ?? 'public', 'og'))
+        const inputDirPath = path.resolve(PWD, AstroConfig.publicDir ?? 'public', 'og')
+        const inputDir = await opendir(inputDirPath)
         const outputDirPath = path.resolve(fileURLToPath(dir), 'og')
         if (!existsSync(outputDirPath)) {
           logger.info('Creating directory /og')
@@ -20,7 +21,7 @@ export default function (): AstroIntegration {
         for await (const entry of inputDir) {
           if (entry.isFile()) {
             logger.info(`Copying /og/${entry.name}`)
-            await copyFile(path.resolve(entry.path, entry.name), path.resolve(outputDirPath, entry.name))
+            await copyFile(path.resolve(inputDirPath, entry.name), path.resolve(outputDirPath, entry.name))
           }
         }
       }

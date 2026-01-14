@@ -1,23 +1,21 @@
 import { defineConfig } from 'astro/config'
 import vue from '@astrojs/vue'
-import tailwind from '@astrojs/tailwind'
 import mdx from '@astrojs/mdx'
 import sitemap from '@astrojs/sitemap'
 import AutoImport from 'astro-auto-import'
 import icon from 'astro-icon'
 import asides, { asideAutoImport } from './integrations/asides'
-import moveOgImages from './integrations/moveOGImages.ts'
 import arraybuffer from 'vite-plugin-arraybuffer'
 import alpinejs from '@astrojs/alpinejs'
-import react from '@astrojs/react'
 import { env } from 'node:process'
+import tailwindcss from '@tailwindcss/vite'
+
 // https://astro.build/config
 export default defineConfig({
   integrations: [
     AutoImport({ imports: [asideAutoImport] }),
     asides(),
     vue(),
-    tailwind(),
     mdx(),
     sitemap({
       i18n: {
@@ -30,8 +28,6 @@ export default defineConfig({
     }),
     icon(),
     alpinejs({ entrypoint: '/src/utils/alpineSetup' }),
-    react(),
-    moveOgImages()
   ],
   i18n: {
     defaultLocale: 'en',
@@ -43,7 +39,7 @@ export default defineConfig({
   },
   site: 'https://tex0l.github.io',
   vite: {
-    plugins: [arraybuffer()],
+    plugins: [arraybuffer(), tailwindcss()],
     optimizeDeps: { exclude: ['@resvg/resvg-js'] }
   }
 })
