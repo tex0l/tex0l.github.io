@@ -26,3 +26,5 @@ pnpm-debug.log*
 # Specific to the project
 public_to_encrypt/*
 public/og/
+
+.vscode/*
