@@ -8,3 +8,20 @@ export const slugify = (id: string): string => {
 }
 
 export function assertsType<T> (_val: unknown): asserts _val is T {}
+
+export function fsUrlToProjectRelativeSrc(input: string, projectRoot?: string): string {
+  // Drop query string (e.g., ?origWidth=...)
+  let cleaned = input.split('?')[0]
+  // Drop Vite's /@fs prefix
+  if (cleaned.startsWith('/@fs')) cleaned = cleaned.slice(4)
+  // If an absolute path is given, optionally strip the project root
+  if (projectRoot && cleaned.startsWith(projectRoot)) {
+    cleaned = cleaned.slice(projectRoot.length)
+  }
+  // Normalize to the first /src/ occurrence
+  const srcIndex = cleaned.indexOf('/src/')
+  if (srcIndex !== -1) cleaned = cleaned.slice(srcIndex)
+  // Ensure it starts with ./
+  if (!cleaned.startsWith('/')) cleaned = '/' + cleaned
+  return '.' + cleaned
+}

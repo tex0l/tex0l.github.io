@@ -40,7 +40,7 @@ const removeImportsAndExports = () => {
   return (tree: Root) => {
     tree.children = tree.children.filter((node: Node) => {
       return node.type !== 'mdxjsEsm' && // import tags
-        node.type !== 'mdxJsxFlowElement' // custom components (Image, Pintora)
+        node.type !== 'mdxJsxFlowElement' // custom components (Image)
     })
   }
 }

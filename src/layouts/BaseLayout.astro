@@ -1,5 +1,6 @@
 ---
-import { ViewTransitions } from 'astro:transitions'
+import '../styles/global.css' 
+import { ClientRouter } from 'astro:transitions'
 import { languages } from '../i18n'
 import { getAbsoluteLocaleUrl } from 'astro:i18n'
 interface Props {
@@ -27,8 +28,9 @@ const { lang } = Astro.params
     <meta name="generator" content={Astro.generator}/>
     <title>{title}</title>
     <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
     <meta property="og:url" content={Astro.url.href} />
-    <ViewTransitions />
+    <ClientRouter />
     <slot name="head"/>
 </head>
 <body>

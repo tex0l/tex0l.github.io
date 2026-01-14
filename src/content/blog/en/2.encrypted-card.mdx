@@ -5,7 +5,6 @@ image: '../../../resources/hands-holding-blank-business-card.jpg'
 description: 'How to share a vCard from a static website securely with E2EE.'
 ---
 import { Icon } from "astro-icon/components"
-import Pintora from 'astro-pintora'
 
 You may have already seen these reusable business cards which are not distributed, but scanned (by QRCode or NFC), and which allow the contact details to be downloaded directly (like [MyEverCard](https://myevercard.com/)).
 
@@ -23,6 +22,7 @@ The principle is as follows:
 4. retrieve and decrypt this data client-side from the browser of the person opening the link.
 5. display the contact data and download the contact form.
 
+```
 <Pintora code={`
 componentDiagram
 @param hideGroupType true
@@ -64,6 +64,7 @@ componentDiagram
         KEY --> KEYBROWSER
 
 `} renderOptions={{mimeType: 'image/png'}}/>
+```
 
 In fact, I literally created my company [Seald](https://www.seald.io) around the idea of client-side encryption in web and mobile applications.
 

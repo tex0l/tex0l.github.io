@@ -6,8 +6,6 @@ import { getCollection } from 'astro:content'
 import { slugify } from '~/utils/index.ts'
 import { languages } from '~/i18n/index.ts'
 import { convertMDXToHTML } from '~/utils/mdxToHtml'
-import portrait from '~/resources/portrait-blog.png?arraybuffer'
-import MetaOGImage from '~/components/MetaOGImage.astro'
 import { DateTime } from 'luxon'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
@@ -34,7 +32,6 @@ const renderedBlogPosts = await Promise.all(blogPosts.map(async post => {
 
 <Layout title={t('blog.title')}>
     <slot slot="head">
-        <MetaOGImage title="Timothée Rebours" description={t('index.description')} image={portrait}/>
         <meta property="og:type" content="website" />
     </slot>
     <div

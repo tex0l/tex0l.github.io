@@ -5,7 +5,6 @@ image: '../../../resources/hands-holding-blank-business-card.jpg'
 description: 'Comment mettre à disposition une vCard depuis un site statique de façon sécurisée avec du chiffrement de bout-en-bout.'
 ---
 import { Icon } from "astro-icon/components"
-import Pintora from 'astro-pintora'
 
 Vous avez peut-être déjà vu ces cartes de visite réutilisables que l'on ne distribue pas, mais que l'on fait scanner (par QRCode ou NFC), et qui permettent de télécharger directement la fiche contact (comme [MyEverCard](https://myevercard.com/)).
 
@@ -23,6 +22,7 @@ Le principe est le suivant :
 4. récupérer et déchiffrer côté client ces données depuis le navigateur de la personne ouvrant le lien.
 5. afficher les données de contact et permettre de télécharger la fiche du contact.
 
+```
 <Pintora code={`
 componentDiagram
 @param hideGroupType true
@@ -64,7 +64,7 @@ componentDiagram
         KEY --> KEYBROWSER
 
 `} renderOptions={{mimeType: 'image/png'}}/>
-
+```
 D'ailleurs, j'ai littéralement créé mon entreprise [Seald](https://www.seald.io) autour de l'idée du chiffrement côté client dans des applications web et mobile.
 
 ## Limites connues

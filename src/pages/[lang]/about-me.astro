@@ -6,9 +6,7 @@ import { languages } from '~/i18n/index.ts'
 import { useTranslations, validateLang } from '~/i18n/utils'
 import Trans from '~/components/i18n/Trans.astro'
 import ariaPicture from '~/resources/PXL_20230106_141516359.PORTRAIT.jpg'
-import portrait from '~/resources/portrait-blog.png?arraybuffer'
 import sealdLogo from '~/resources/seald-logo.png'
-import MetaOGImage from '~/components/MetaOGImage.astro'
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
 }
@@ -18,10 +16,10 @@ validateLang(lang)
 
 const t = useTranslations(lang)
 ---
-<Layout title={t('about-me.title')}>
+<Layout title={t('about-me.title')} description={t('about-me.description')}>
     <slot slot="head">
-        <MetaOGImage title={t('about-me.title')} description={t('about-me.description')} image={portrait}/>
         <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-about-me.png`} />
     </slot>
     <div
             class="
@@ -77,7 +75,7 @@ const t = useTranslations(lang)
                 </div>
             </div>
             <h2>{t('about-me.job-experiences')}</h2>
-            <div class="space-x-4"><span
+            <div class="flex flex-row gap-4"><span
                     class="italic">{t('about-me.job-1-date')}</span><span>{t('about-me.job-1-company')}</span><span>{t('about-me.job-1-title')}</span></div>
             <p>
                 <Trans keyPath="about-me.job-1-description">
@@ -87,7 +85,7 @@ const t = useTranslations(lang)
                 </Trans>
             </p>
             <h2>{t('about-me.education')}</h2>
-            <div class="space-x-4"><span class="italic">{t('about-me.education-1-date')}</span><span>{t('about-me.education-1-name')}</span></div>
+            <div class="flex flex-row gap-4"><span class="italic">{t('about-me.education-1-date')}</span><span>{t('about-me.education-1-name')}</span></div>
             <p>
                 <Trans keyPath="about-me.education-1-description"/>
             </p>
