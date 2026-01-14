@@ -34,11 +34,11 @@ const interpolateString = (i18nString: string, interpolationArgs: I18NArgument[]
         const index = Number.parseInt(variable, 10)
         if (!Number.isNaN(index) && index >= 0 && interpolationArgs.length > index) {
           if (interpolationArgs[index] instanceof Date) return `${interpolationArgs[index].toLocaleString()}`
-          else return `${interpolationArgs[index] as (string | number)}`
+          else return `${String(interpolationArgs[index])}`
         }
       } else if (Object.hasOwn(interpolationArgs, variable)) {
         if (interpolationArgs[variable] instanceof Date) return `${interpolationArgs[variable].toLocaleString()}`
-        else return `${interpolationArgs[variable] as (string | number)}`
+        else return `${String(interpolationArgs[variable])}`
       }
       console.warn(`Could not find "${variable}" in interpolation arguments for "${i18nString}"`)
     } else if (literal != null) {

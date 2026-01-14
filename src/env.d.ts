@@ -2,7 +2,6 @@
 /// <reference path="../.astro/types.d.ts" />
 /// <reference types="astro/client" />
 /// <reference types="vite-plugin-arraybuffer/types" />
-/* eslint-disable @typescript-eslint/consistent-type-imports */
 import type { AriaAttributes, DOMAttributes } from 'react'
 
 interface Window {
