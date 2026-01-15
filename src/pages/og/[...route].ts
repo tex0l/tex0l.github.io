@@ -10,7 +10,10 @@ const fr = useTranslations('fr')
 const en = useTranslations('en')
 
 const blogPages = Object.fromEntries(
-  blogEntries.map(({ data, id }) => [`blog-fr-${slugify(id)}`, { title: data.title, description: data.description }] as const)
+  blogEntries.map(({ data, id }) => {
+    const lang = id.startsWith('en/') ? 'en' : 'fr'
+    return [`blog-${lang}-${slugify(id)}`, { title: data.title, description: data.description }] as const
+  })
 ) as Record<string, PageData>
 
 export const { getStaticPaths, GET } = await OGImageRoute({
@@ -31,6 +34,23 @@ export const { getStaticPaths, GET } = await OGImageRoute({
   getImageOptions: (_path, page: PageData) => ({
     title: page.title,
     description: page.description,
-    logo: { path: './src/resources/portrait-blog.png', size: [350] },
+    logo: { path: './src/resources/portrait-blog.png', size: [200] },
+    bgGradient: [[30, 41, 59], [51, 65, 85]],
+    border: { color: [100, 116, 139], width: 20 },
+    padding: 60,
+    font: {
+      title: {
+        size: 64,
+        lineHeight: 1.2,
+        color: [248, 250, 252],
+        weight: 'Bold',
+      },
+      description: {
+        size: 32,
+        lineHeight: 1.4,
+        color: [203, 213, 225],
+        weight: 'Normal',
+      },
+    },
   }),
 })
