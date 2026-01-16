@@ -1,6 +1,6 @@
-import { createCipheriv, randomBytes, scrypt } from 'node:crypto'
+import { createCipheriv, createDecipheriv, randomBytes, scrypt } from 'node:crypto'
 import { promisify } from 'node:util'
-import { access, mkdir, readdir, readFile, stat, writeFile } from 'node:fs/promises'
+import { access, mkdir, readdir, readFile, rm, stat, writeFile } from 'node:fs/promises'
 import { constants } from 'node:fs'
 import { Buffer } from 'node:buffer'
 import path, { dirname } from 'node:path'
@@ -18,15 +18,15 @@ const saltFile = path.join(workingDirectory, 'public', isDummy ? 'saltDummy.txt'
 const toEncryptDir = path.join(workingDirectory, isDummy ? 'publicDummy_to_encrypt' : 'public_to_encrypt')
 const publicEncrypted = path.join(workingDirectory, 'public', isDummy ? 'encryptedDummy' : 'encrypted')
 
-const getSalt = async (path = saltFile) => {
+const getSalt = async (saltPath = saltFile) => {
   try {
-    await access(path, constants.F_OK)
-    const saltB64 = await readFile(path)
+    await access(saltPath, constants.F_OK)
+    const saltB64 = await readFile(saltPath)
     return Buffer.from(saltB64.toString(), 'base64')
-  } catch (error) {
-    console.log(`No salt was found at ${path}, generating one.`)
+  } catch {
+    console.log(`No salt was found at ${saltPath}, generating one.`)
     const salt = randomBytes(16)
-    await writeFile(path, salt.toString('base64'))
+    await writeFile(saltPath, salt.toString('base64'))
     return salt
   }
 }
@@ -45,26 +45,95 @@ const encryptFile = async (buf, key) => {
   const iv = randomBytes(12)
   const cipher = createCipheriv('aes-256-gcm', key, iv)
   const encryptedData = Buffer.concat([cipher.update(buf), cipher.final()])
-
   const authTag = cipher.getAuthTag()
-
   return Buffer.concat([iv, encryptedData, authTag])
 }
 
-const encryptDir = async (dir, key) => {
-  const files = await readdir(dir)
-  for (const file of files) {
-    if ((await stat(path.join(dir, file))).isDirectory()) return encryptDir(path.join(dir, file), key)
-    else {
-      const relativePath = path.relative(toEncryptDir, dir)
-      await mkdir(path.join(publicEncrypted, relativePath), { recursive: true })
-      const encryptedFileName = path.join(publicEncrypted, relativePath, file + '.encrypted')
-      try {
-        await access(encryptedFileName, constants.F_OK)
-      } catch {
-        await writeFile(encryptedFileName, await encryptFile(await readFile(path.join(toEncryptDir, relativePath, file)), key))
+const decryptFile = (encryptedBuf, key) => {
+  const iv = encryptedBuf.subarray(0, 12)
+  const authTag = encryptedBuf.subarray(-16)
+  const ciphertext = encryptedBuf.subarray(12, -16)
+
+  const decipher = createDecipheriv('aes-256-gcm', key, iv)
+  decipher.setAuthTag(authTag)
+
+  return Buffer.concat([decipher.update(ciphertext), decipher.final()])
+}
+
+const listFilesRecursively = async (dir, basePath = dir) => {
+  const files = []
+  try {
+    const entries = await readdir(dir)
+    for (const entry of entries) {
+      const fullPath = path.join(dir, entry)
+      const fileStat = await stat(fullPath)
+      if (fileStat.isDirectory()) {
+        files.push(...await listFilesRecursively(fullPath, basePath))
+      } else {
+        files.push(path.relative(basePath, fullPath))
       }
     }
+  } catch {
+    // Directory doesn't exist
+  }
+  return files.sort()
+}
+
+const dirExists = async (dir) => {
+  try {
+    await access(dir, constants.F_OK)
+    return true
+  } catch {
+    return false
+  }
+}
+
+const verifyEncryptedAssets = async (key) => {
+  const sourceFiles = await listFilesRecursively(toEncryptDir)
+  const encryptedFiles = (await listFilesRecursively(publicEncrypted))
+    .map(f => f.replace(/\.encrypted$/, ''))
+
+  // Check if file lists match
+  if (sourceFiles.length !== encryptedFiles.length ||
+      !sourceFiles.every((f, i) => f === encryptedFiles[i])) {
+    console.log(`[${isDummy ? 'dummy' : 'prod'}] File list mismatch, re-encrypting all assets...`)
+    return false
+  }
+
+  // Verify each encrypted file can be decrypted and matches source
+  for (const file of sourceFiles) {
+    const sourcePath = path.join(toEncryptDir, file)
+    const encryptedPath = path.join(publicEncrypted, file + '.encrypted')
+
+    try {
+      const sourceContent = await readFile(sourcePath)
+      const encryptedContent = await readFile(encryptedPath)
+      const decryptedContent = decryptFile(encryptedContent, key)
+
+      if (!sourceContent.equals(decryptedContent)) {
+        console.log(`[${isDummy ? 'dummy' : 'prod'}] Content mismatch for ${file}, re-encrypting all assets...`)
+        return false
+      }
+    } catch {
+      console.log(`[${isDummy ? 'dummy' : 'prod'}] Decryption failed for ${file}, re-encrypting all assets...`)
+      return false
+    }
+  }
+
+  return true
+}
+
+const encryptAllFiles = async (key) => {
+  const sourceFiles = await listFilesRecursively(toEncryptDir)
+
+  for (const file of sourceFiles) {
+    const sourcePath = path.join(toEncryptDir, file)
+    const encryptedPath = path.join(publicEncrypted, file + '.encrypted')
+
+    await mkdir(path.dirname(encryptedPath), { recursive: true })
+    const sourceContent = await readFile(sourcePath)
+    await writeFile(encryptedPath, await encryptFile(sourceContent, key))
+    console.log(`[${isDummy ? 'dummy' : 'prod'}] Encrypted: ${file}`)
   }
 }
 
@@ -73,7 +142,22 @@ const main = async () => {
   const password = getPassword()
   const key = await deriveKey(password, salt)
 
-  await encryptDir(toEncryptDir, key)
+  const encryptedDirExists = await dirExists(publicEncrypted)
+
+  if (encryptedDirExists) {
+    const isValid = await verifyEncryptedAssets(key)
+    if (isValid) {
+      console.log(`[${isDummy ? 'dummy' : 'prod'}] All encrypted assets are valid, skipping re-encryption.`)
+      return
+    }
+
+    // Remove invalid encrypted directory
+    await rm(publicEncrypted, { recursive: true, force: true })
+  }
+
+  // Encrypt all files
+  await encryptAllFiles(key)
+  console.log(`[${isDummy ? 'dummy' : 'prod'}] Encryption complete.`)
 }
 
 main()
