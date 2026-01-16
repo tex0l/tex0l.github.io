@@ -92,6 +92,9 @@ const t = useTranslations(lang)
                     <a href="https://www.linkedin.com/in/trebours/" target="_blank" rel="noopener" class="text-[--color-text-muted] hover:text-[--color-text-primary]" aria-label="LinkedIn">
                         <Icon name="mdi:linkedin" class="w-5 h-5"/>
                     </a>
+                    <a href="https://twitter.com/ReboursT" target="_blank" rel="noopener" class="text-[--color-text-muted] hover:text-[--color-text-primary]" aria-label="Twitter">
+                        <Icon name="mdi:twitter" class="w-5 h-5"/>
+                    </a>
                     <a href={localizePath('/rss.xml')} class="text-[--color-text-muted] hover:text-[--color-text-primary]" aria-label="RSS">
                         <Icon name="mdi:rss" class="w-5 h-5"/>
                     </a>
@@ -100,6 +103,8 @@ const t = useTranslations(lang)
                     <Trans keyPath="layout.hosted-at">
                         <a href="https://github.com/tex0l/tex0l.github.io" rel="noopener" class="underline hover:text-[--color-text-secondary]">{t('layout.available-here')}</a>
                     </Trans>
+                    <span class="mx-2">·</span>
+                    <a href={localizePath('/privacy')} class="underline hover:text-[--color-text-secondary]">{t('privacy.title')}</a>
                 </p>
             </div>
         </footer>

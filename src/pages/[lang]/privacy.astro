@@ -1,0 +1,70 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import { languages } from '~/i18n/index.ts'
+import { useTranslations, validateLang } from '~/i18n/utils'
+import Trans from '~/components/i18n/Trans.astro'
+import { DateTime } from 'luxon'
+
+export function getStaticPaths (): Array<{ params: { lang: string } }> {
+  return Object.keys(languages).map(lang => ({ params: { lang } }))
+}
+
+const { lang } = Astro.params
+validateLang(lang)
+const t = useTranslations(lang)
+
+const lastUpdated = DateTime.fromISO('2026-01-16').setLocale(languages[lang].code)
+const formattedLastUpdated = lastUpdated.toLocaleString(DateTime.DATE_FULL)
+---
+<Layout title={t('privacy.title')} description={t('privacy.description')}>
+    <Fragment slot="head">
+        <meta property="og:type" content="website" />
+    </Fragment>
+
+    <article class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
+        <header class="mb-12">
+            <h1 class="text-4xl font-semibold tracking-tight mb-4">
+                {t('privacy.h1')}
+            </h1>
+            <p class="text-sm text-[--color-text-muted]">
+                {t('privacy.last-updated')}: <time datetime={lastUpdated.toISODate()}>{formattedLastUpdated}</time>
+            </p>
+        </header>
+
+        <div class="prose prose-lg max-w-none">
+            <p class="text-lg text-[--color-text-secondary] leading-relaxed mb-8">
+                {t('privacy.no-tracking')}
+            </p>
+
+            <h2 class="text-2xl font-semibold tracking-tight mt-8 mb-4">
+                {t('privacy.hosting')}
+            </h2>
+            <p class="text-[--color-text-secondary] leading-relaxed">
+                <Trans keyPath="privacy.hosting-text">
+                    <a
+                        href="https://docs.github.com/en/site-policy/privacy-policies/github-general-privacy-statement"
+                        target="_blank"
+                        rel="noopener"
+                        class="text-[--color-accent] underline underline-offset-2 hover:text-[--color-text-secondary]"
+                    >
+                        {t('privacy.github-privacy')}
+                    </a>
+                </Trans>
+            </p>
+
+            <h2 class="text-2xl font-semibold tracking-tight mt-8 mb-4">
+                {t('privacy.analytics')}
+            </h2>
+            <p class="text-[--color-text-secondary] leading-relaxed">
+                {t('privacy.analytics-text')}
+            </p>
+
+            <h2 class="text-2xl font-semibold tracking-tight mt-8 mb-4">
+                {t('privacy.contact')}
+            </h2>
+            <p class="text-[--color-text-secondary] leading-relaxed">
+                {t('privacy.contact-text')}
+            </p>
+        </div>
+    </article>
+</Layout>

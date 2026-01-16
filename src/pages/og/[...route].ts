@@ -21,6 +21,22 @@ export const { getStaticPaths, GET } = await OGImageRoute({
 
   pages: {
     ...blogPages,
+    'fr-index': {
+      title: 'Timothée Rebours',
+      description: fr('index.description'),
+    },
+    'en-index': {
+      title: 'Timothée Rebours',
+      description: en('index.description'),
+    },
+    'fr-blog': {
+      title: fr('blog.title'),
+      description: fr('blog.subtitle'),
+    },
+    'en-blog': {
+      title: en('blog.title'),
+      description: en('blog.subtitle'),
+    },
     'fr-about-me': {
       title: fr('about-me.title'),
       description: fr('about-me.description'),

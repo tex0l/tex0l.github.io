@@ -1,0 +1,41 @@
+---
+import '../styles/global.css'
+import { defaultLang } from '~/i18n'
+import { useTranslations } from '~/i18n/utils'
+
+const lang = defaultLang
+const t = useTranslations(lang)
+---
+
+<!doctype html>
+<html lang={lang}>
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width"/>
+    <meta name="robots" content="noindex"/>
+    <link rel="icon" type="image/png" href="/favicon.png"/>
+    <title>{t('404.title')} - Timothée Rebours</title>
+</head>
+<body class="min-h-screen bg-[--color-surface] text-[--color-text-primary] flex items-center justify-center">
+    <div class="text-center px-4">
+        <h1 class="text-6xl font-bold mb-4">404</h1>
+        <p class="text-xl text-[--color-text-secondary] mb-8">
+            {t('404.description')}
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a
+                href="/en/"
+                class="px-6 py-3 bg-[--color-accent] text-white rounded-lg hover:opacity-90 transition-opacity"
+            >
+                English Home
+            </a>
+            <a
+                href="/fr/"
+                class="px-6 py-3 border border-[--color-border] rounded-lg hover:bg-gray-50 transition-colors"
+            >
+                Accueil Français
+            </a>
+        </div>
+    </div>
+</body>
+</html>

@@ -29,9 +29,11 @@ const renderedBlogPosts = blogPosts.map(post => {
 ---
 
 <Layout title={t('blog.title')}>
-    <slot slot="head">
+    <Fragment slot="head">
         <meta property="og:type" content="website" />
-    </slot>
+        <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-blog.png`} />
+        <meta name="twitter:image" content={`${Astro.url.origin}/og/${lang}-blog.png`} />
+    </Fragment>
 
     <div class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
         <!-- Page Header -->

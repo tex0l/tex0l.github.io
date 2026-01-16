@@ -15,12 +15,47 @@ export function getStaticPaths (): Array<{ params: { lang: string } }> {
 const { lang } = Astro.params
 validateLang(lang)
 const t = useTranslations(lang)
+
+// JSON-LD Person schema
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Timothée Rebours',
+  jobTitle: 'Co-Founder & CEO',
+  worksFor: {
+    '@type': 'Organization',
+    name: 'Seald',
+    url: 'https://www.seald.io'
+  },
+  alumniOf: [
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'École Polytechnique',
+      url: 'https://www.polytechnique.edu'
+    },
+    {
+      '@type': 'CollegeOrUniversity',
+      name: 'UC Berkeley',
+      url: 'https://www.berkeley.edu'
+    }
+  ],
+  sameAs: [
+    'https://github.com/tex0l',
+    'https://www.linkedin.com/in/trebours/',
+    'https://twitter.com/ReboursT',
+    'https://www.crunchbase.com/person/timothée-rebours'
+  ],
+  url: 'https://tex0l.github.io',
+  knowsAbout: ['Cryptography', 'End-to-end encryption', 'Cybersecurity', 'Software Development']
+}
 ---
 <Layout title={t('about-me.title')} description={t('about-me.description')}>
-    <slot slot="head">
+    <Fragment slot="head">
         <meta property="og:type" content="website" />
         <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-about-me.png`} />
-    </slot>
+        <meta name="twitter:image" content={`${Astro.url.origin}/og/${lang}-about-me.png`} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(personSchema)} />
+    </Fragment>
 
     <article class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
         <!-- Page Header -->

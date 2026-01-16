@@ -1,5 +1,5 @@
 ---
-import '../styles/global.css' 
+import '../styles/global.css'
 import { ClientRouter } from 'astro:transitions'
 import { languages } from '../i18n'
 import { getAbsoluteLocaleUrl } from 'astro:i18n'
@@ -10,26 +10,62 @@ interface Props {
 
 const { title, description } = Astro.props
 const { lang } = Astro.params
+const locale = lang != null && lang in languages ? languages[lang].code : 'en-US'
+const canonicalUrl = Astro.url.href
+
+// JSON-LD WebSite schema
+const websiteSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'Timothée Rebours',
+  url: 'https://tex0l.github.io',
+  author: {
+    '@type': 'Person',
+    name: 'Timothée Rebours'
+  },
+  inLanguage: ['en', 'fr']
+}
 ---
 
 <!doctype html>
 <html lang={lang}>
 <head>
     <meta charset="UTF-8"/>
+    <!-- Preconnect for performance -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.seald.io" />
+
     <meta name="google-site-verification" content="UiqMaJhYDWgjczHPVW5lDDdX6S2b4cnOgsl2gw3ms_4" />
     <meta name="description" content={description}/>
     <meta name="viewport" content="width=device-width"/>
     <meta name='author' content='Timothée Rebours'>
     <link rel="icon" type="image/png" href="/favicon.png"/>
     <link rel="sitemap" href="/sitemap-index.xml" />
+    <link rel="canonical" href={canonicalUrl} />
     {Object.keys(languages).map(language =>
       <link rel="alternate" hreflang={languages[language].code} href={getAbsoluteLocaleUrl(language, Astro.url.pathname.substring(3))} />
     )}
     <meta name="generator" content={Astro.generator}/>
     <title>{title}</title>
+
+    <!-- Open Graph -->
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
-    <meta property="og:url" content={Astro.url.href} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:site_name" content="Timothée Rebours" />
+    <meta property="og:locale" content={locale.replace('-', '_')} />
+
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:creator" content="@ReboursT" />
+    <meta name="twitter:site" content="@ReboursT" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <!-- JSON-LD Structured Data -->
+    <script is:inline type="application/ld+json" set:html={JSON.stringify(websiteSchema)} />
+
     <ClientRouter />
     <slot name="head"/>
 </head>

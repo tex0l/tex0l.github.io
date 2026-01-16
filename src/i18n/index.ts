@@ -46,7 +46,8 @@ export const languages: Record<string, Locale> = {
         h1: 'Blog',
         subtitle: 'Dans ce blog, je parle de changement climatique, de politique, d\'économie, de religion, de cybersécurité et d\'autres sujets qui m\'intéressent.',
         disclaimer: 'Je n\'exprime ici que mon opinion, si vous pensez que j\'ai fait une erreur ou que mon opinion est faussée, n\'hésitez pas à me contacter !',
-        published: 'Publié '
+        published: 'Publié ',
+        updated: 'Mis à jour '
       },
       layout: {
         'language-selector': 'Changer de langue',
@@ -58,6 +59,26 @@ export const languages: Record<string, Locale> = {
         note: 'Note',
         caution: 'Attention',
         danger: 'Danger'
+      },
+      '404': {
+        title: 'Page non trouvée',
+        h1: 'Page non trouvée',
+        description: 'La page que vous cherchez n\'existe pas ou a été déplacée.',
+        'back-home': 'Retour à l\'accueil'
+      },
+      privacy: {
+        title: 'Politique de confidentialité',
+        h1: 'Politique de confidentialité',
+        description: 'Politique de confidentialité du site tex0l.github.io',
+        'last-updated': 'Dernière mise à jour',
+        'no-tracking': 'Ce site ne collecte aucune donnée personnelle et n\'utilise pas de cookies de suivi.',
+        'hosting': 'Hébergement',
+        'hosting-text': 'Ce site est hébergé sur GitHub Pages. GitHub peut collecter des informations techniques de base (adresse IP, type de navigateur) dans le cadre de son service d\'hébergement. Consultez la {0} pour plus d\'informations.',
+        'github-privacy': 'politique de confidentialité de GitHub',
+        'analytics': 'Analytique',
+        'analytics-text': 'Ce site n\'utilise aucun outil d\'analyse ou de suivi.',
+        'contact': 'Contact',
+        'contact-text': 'Pour toute question concernant cette politique, vous pouvez me contacter via GitHub ou LinkedIn.'
       }
     }
   },
@@ -106,7 +127,8 @@ export const languages: Record<string, Locale> = {
         h1: 'Blog',
         subtitle: 'In this blog, I talk about climate change, politics, economics, religion, cybersecurity, and other topics I find interesting.',
         disclaimer: 'I only express my opinion here, if you think I made a mistake or that my opinion is flawed, feel free to contact me!',
-        published: 'Published '
+        published: 'Published ',
+        updated: 'Updated '
       },
       layout: {
         'language-selector': 'Switch lang',
@@ -118,6 +140,26 @@ export const languages: Record<string, Locale> = {
         note: 'Note',
         caution: 'Caution',
         danger: 'Danger'
+      },
+      '404': {
+        title: 'Page not found',
+        h1: 'Page not found',
+        description: 'The page you are looking for does not exist or has been moved.',
+        'back-home': 'Back to home'
+      },
+      privacy: {
+        title: 'Privacy Policy',
+        h1: 'Privacy Policy',
+        description: 'Privacy policy for tex0l.github.io',
+        'last-updated': 'Last updated',
+        'no-tracking': 'This website does not collect any personal data and does not use tracking cookies.',
+        'hosting': 'Hosting',
+        'hosting-text': 'This site is hosted on GitHub Pages. GitHub may collect basic technical information (IP address, browser type) as part of its hosting service. See {0} for more information.',
+        'github-privacy': 'GitHub\'s privacy policy',
+        'analytics': 'Analytics',
+        'analytics-text': 'This site does not use any analytics or tracking tools.',
+        'contact': 'Contact',
+        'contact-text': 'For any questions regarding this policy, you can contact me via GitHub or LinkedIn.'
       }
     }
   }

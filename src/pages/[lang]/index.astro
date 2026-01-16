@@ -15,9 +15,11 @@ validateLang(lang)
 const t = useTranslations(lang)
 ---
 <Layout title="Timothée Rebours" description={t('index.description')}>
-    <slot slot="head">
+    <Fragment slot="head">
         <meta property="og:type" content="website" />
-    </slot>
+        <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-index.png`} />
+        <meta name="twitter:image" content={`${Astro.url.origin}/og/${lang}-index.png`} />
+    </Fragment>
 
     <div class="min-h-[calc(100vh-12rem)] flex items-center justify-center px-4 sm:px-6">
         <div class="max-w-4xl mx-auto flex flex-col lg:flex-row lg:gap-16 items-center">
