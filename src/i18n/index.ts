@@ -42,7 +42,7 @@ export const languages: Record<string, Locale> = {
       },
       blog: {
         title: 'Blog',
-        description: 'Mes élucubrations sur la technologie, la politique, le changement climatique, ...',
+        description: 'Réflexions sur la technologie, la cybersécurité et d\'autres sujets.',
         h1: 'Blog',
         subtitle: 'Dans ce blog, je parle de changement climatique, de politique, d\'économie, de religion, de cybersécurité et d\'autres sujets qui m\'intéressent.',
         disclaimer: 'Je n\'exprime ici que mon opinion, si vous pensez que j\'ai fait une erreur ou que mon opinion est faussée, n\'hésitez pas à me contacter !',
@@ -102,7 +102,7 @@ export const languages: Record<string, Locale> = {
       },
       blog: {
         title: 'Blog',
-        description: 'My ranting about tech, politics, climate change, ...',
+        description: 'Thoughts on technology, cybersecurity and other topics.',
         h1: 'Blog',
         subtitle: 'In this blog, I talk about climate change, politics, economics, religion, cybersecurity, and other topics I find interesting.',
         disclaimer: 'I only express my opinion here, if you think I made a mistake or that my opinion is flawed, feel free to contact me!',
