@@ -149,6 +149,12 @@ Nommage des routes :
 
 ## Bonnes Pratiques
 
+### Communication et Placeholders
+
+- **Ne jamais inventer de données personnelles** (URLs de profils sociaux, emails, etc.) sans certitude
+- Si une information est incertaine ou inventée, le signaler explicitement à l'utilisateur pour vérification manuelle
+- Préférer demander les informations exactes plutôt que de deviner
+
 ### TypeScript
 
 - Toujours utiliser `validateLang()` pour valider les paramètres de langue
