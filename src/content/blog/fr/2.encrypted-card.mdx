@@ -22,48 +22,44 @@ Le principe est le suivant :
 4. récupérer et déchiffrer côté client ces données depuis le navigateur de la personne ouvrant le lien.
 5. afficher les données de contact et permettre de télécharger la fiche du contact.
 
-```
-<Pintora code={`
-componentDiagram
-@param hideGroupType true
-    rectangle "Mon PC" {
-        [Données de contact] as A
-        [Clé] as B
-        [Chiffrement] as C
-        [Données de contact chiffrées] as D
-        B --> C
+```mermaid
+flowchart TB
+    subgraph PC["Mon PC"]
+        A[Données de contact]
+        B[Clé]
+        C[Chiffrement]
+        D[Données de contact chiffrées]
         A --> C
+        B --> C
         C --> D
-    }
+    end
 
-    rectangle "GitHub" {
-        [Données de contact chiffrées] as G
-        D --> G
-    }
+    subgraph GH["GitHub"]
+        G[Données de contact chiffrées]
+    end
 
-    rectangle "Carte de visite" {
-        [tex0l.github.io\/fr\/encrypted-card\/#clé] as KEY
-    }
+    subgraph Card["Carte de visite"]
+        KEY["tex0l.github.io/fr/encrypted-card/#clé"]
+    end
 
-    rectangle "Le navigateur de mon contact" {
-        [Données de contact chiffrées] as K
-        [Clé] as KEYBROWSER
-        [Déchiffrement] as L
-        [Données de contact] as M
-        [Afficher] as N
-        [vCard] as O
-        KEYBROWSER --> L
-        G --> K
+    subgraph Browser["Le navigateur de mon contact"]
+        K[Données de contact chiffrées]
+        KEYBROWSER[Clé]
+        L[Déchiffrement]
+        M[Données de contact]
+        N[Afficher]
+        O[vCard]
         K --> L
+        KEYBROWSER --> L
         L --> M
         M --> N
         M --> O
-    }
+    end
 
-        B --> KEY
-        KEY --> KEYBROWSER
-
-`} renderOptions={{mimeType: 'image/png'}}/>
+    D --> G
+    G --> K
+    B --> KEY
+    KEY --> KEYBROWSER
 ```
 D'ailleurs, j'ai littéralement créé mon entreprise [Seald](https://www.seald.io) autour de l'idée du chiffrement côté client dans des applications web et mobile.
 

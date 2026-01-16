@@ -9,10 +9,12 @@ import arraybuffer from 'vite-plugin-arraybuffer'
 import alpinejs from '@astrojs/alpinejs'
 import { env } from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
+import mermaid from 'astro-mermaid'
 
 // https://astro.build/config
 export default defineConfig({
   integrations: [
+    mermaid({ theme: 'neutral' }),
     AutoImport({ imports: [asideAutoImport] }),
     asides(),
     vue(),

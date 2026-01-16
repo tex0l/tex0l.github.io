@@ -22,48 +22,44 @@ The principle is as follows:
 4. retrieve and decrypt this data client-side from the browser of the person opening the link.
 5. display the contact data and download the contact form.
 
-```
-<Pintora code={`
-componentDiagram
-@param hideGroupType true
-    rectangle "My PC" {
-        [Contact info] as A
-        [Key] as B
-        [Encryption] as C
-        [Encrypted contact info] as D
-        B --> C
+```mermaid
+flowchart TB
+    subgraph PC["My PC"]
+        A[Contact info]
+        B[Key]
+        C[Encryption]
+        D[Encrypted contact info]
         A --> C
+        B --> C
         C --> D
-    }
+    end
 
-    rectangle "GitHub" {
-        [Encrypted contact info] as G
-        D --> G
-    }
+    subgraph GH["GitHub"]
+        G[Encrypted contact info]
+    end
 
-    rectangle "Business card" {
-        [tex0l.github.io\/en\/encrypted-card\/#key] as KEY
-    }
+    subgraph Card["Business card"]
+        KEY["tex0l.github.io/en/encrypted-card/#key"]
+    end
 
-    rectangle "My contact's browser" {
-        [Encrypted contact info] as K
-        [Key] as KEYBROWSER
-        [Decryption] as L
-        [Contact info] as M
-        [Display] as N
-        [vCard] as O
-        KEYBROWSER --> L
-        G --> K
+    subgraph Browser["My contact's browser"]
+        K[Encrypted contact info]
+        KEYBROWSER[Key]
+        L[Decryption]
+        M[Contact info]
+        N[Display]
+        O[vCard]
         K --> L
+        KEYBROWSER --> L
         L --> M
         M --> N
         M --> O
-    }
+    end
 
-        B --> KEY
-        KEY --> KEYBROWSER
-
-`} renderOptions={{mimeType: 'image/png'}}/>
+    D --> G
+    G --> K
+    B --> KEY
+    KEY --> KEYBROWSER
 ```
 
 In fact, I literally created my company [Seald](https://www.seald.io) around the idea of client-side encryption in web and mobile applications.
