@@ -18,30 +18,41 @@ const t = useTranslations(lang)
     <slot slot="head">
         <meta property="og:type" content="website" />
     </slot>
-    <div class="
-    flex
-    flex-col
-    lg:flex-row lg:gap-12 min-h-[calc(100vh-5rem)] items-center justify-center px-4">
-        <div class="inline-block shrink-0 max-w-sm relative lg:mt-20 mx-16 md:mx-0">
-            <div class="rounded-b-full aspect-[10/11] relative overflow-hidden">
-                <div class="w-4/5 ml-[11%]">
-                    <Picture src={profilePicture} alt="Timothée Rebours"/>
+
+    <div class="min-h-[calc(100vh-12rem)] flex items-center justify-center px-4 sm:px-6">
+        <div class="max-w-4xl mx-auto flex flex-col lg:flex-row lg:gap-16 items-center">
+            <!-- Profile Picture -->
+            <div class="shrink-0 w-48 sm:w-56 lg:w-64 mb-8 lg:mb-0">
+                <div class="relative">
+                    <!-- Image container with bottom-rounded clipping -->
+                    <div class="rounded-b-full aspect-[10/11] relative overflow-hidden">
+                        <div class="w-4/5 ml-[10%]">
+                            <Picture src={profilePicture} alt="Timothée Rebours" class="w-full"/>
+                        </div>
+                    </div>
+                    <!-- Background circle positioned behind -->
+                    <div class="absolute bottom-0 left-0 rounded-full aspect-square bg-gradient-to-b from-slate-200 to-slate-300 w-full -z-10"></div>
                 </div>
             </div>
-            <div class="absolute bottom-0 left-0 rounded-full aspect-square bg-gradient-to-t from-gray-900 to-gray-500 w-full overflow-hidden -z-50"></div>
-        </div>
-        <div class="mt-6">
-            <h1 class="text-7xl font-bold">{t('index.h1')}</h1>
-            <h2 class="text-2xl font-light inline">
-                <Trans keyPath="index.subtitle">
-                    <a class="inline underline font-bold"
-                       href="https://www.seald.io/"
-                       target="_blank"
-                       rel="noopener">
-                        {t('index.seald')}
-                    </a>
-                </Trans>
-            </h2>
+
+            <!-- Text Content -->
+            <div class="text-center lg:text-left">
+                <h1 class="text-4xl sm:text-5xl lg:text-6xl font-semibold tracking-tight mb-4">
+                    {t('index.h1')}
+                </h1>
+                <p class="text-xl sm:text-2xl text-[--color-text-secondary] leading-relaxed">
+                    <Trans keyPath="index.subtitle">
+                        <a
+                            class="text-[--color-text-primary] underline underline-offset-2 hover:text-[--color-text-secondary]"
+                            href="https://www.seald.io/"
+                            target="_blank"
+                            rel="noopener"
+                        >
+                            {t('index.seald')}
+                        </a>
+                    </Trans>
+                </p>
+            </div>
         </div>
     </div>
 </Layout>

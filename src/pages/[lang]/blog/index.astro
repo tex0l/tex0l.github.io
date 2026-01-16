@@ -1,11 +1,9 @@
 ---
 import { useTranslatedPath, useTranslations, validateLang } from '~/i18n/utils'
-import { Picture } from 'astro:assets'
 import Layout from '~/layouts/Layout.astro'
 import { getCollection } from 'astro:content'
 import { slugify } from '~/utils/index.ts'
 import { languages } from '~/i18n/index.ts'
-import { convertMDXToHTML } from '~/utils/mdxToHtml'
 import { DateTime } from 'luxon'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
@@ -20,50 +18,55 @@ const localizePath = useTranslatedPath(lang)
 const blogPosts = (await getCollection('blog', ({ id }) => id.split('/')[0] === lang))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
 
-const renderedBlogPosts = await Promise.all(blogPosts.map(async post => {
-  return ({
+const renderedBlogPosts = blogPosts.map(post => {
+  const date = DateTime.fromJSDate(post.data.date).setLocale(languages[lang].code)
+  return {
     ...post,
-    formattedAbsoluteDate: DateTime.fromJSDate(post.data.date).setLocale(languages[lang].code).toLocaleString(DateTime.DATE_FULL),
-    html: `${await convertMDXToHTML(post.body, 100)}...`
-  })
-}))
-
+    formattedDate: date.toLocaleString({ month: 'long', year: 'numeric' }),
+    formattedAbsoluteDate: date.toLocaleString(DateTime.DATE_FULL)
+  }
+})
 ---
 
 <Layout title={t('blog.title')}>
     <slot slot="head">
         <meta property="og:type" content="website" />
     </slot>
-    <div
-            class="
-    flex
-    flex-col
-    min-h-[calc(100vh-5rem)] items-center px-2">
-        <h1 class="text-6xl font-bold my-6">
-            {t('blog.h1')}
-        </h1>
-        <div class="text-justify my-8">
-            <p>{t('blog.subtitle')}</p>
-            <p>{t('blog.disclaimer')}</p>
-        </div>
-        <div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-8">
 
-        {renderedBlogPosts.map(post => (
-                <div class="flex flex-col max-w-sm hover:scale-105 rounded-md overflow-hidden shadow-xl hover:shadow-2xl transition shadow transform duration-300">
-                    <a href={localizePath(`/blog/${slugify(post.id)}`)}>
-                        <div class="width-full aspect-video overflow-hidden flex items-center justify-center">
-                            {(post.data.image != null) ? (<Picture src={post.data.image} alt={post.data.alt} width="400"/>) : (<div class="flex-grow"></div>)}
-                        </div>
-                        <div class="width-full aspect-video overflow-hidden relative p-6">
-                            <h2 class="text-xl font-medium mb-4">{post.data.title}</h2>
-                            <div class="italic text-justify mb-4 line-clamp-3 px-1 text-ellipsis overflow-hidden"><Fragment set:html={post.data.description ?? post.html}/></div>
-                            <div class="absolute bottom-6 right-6 text-sm text-gray-600">
-                                <div class="first-letter:uppercase" x-data={`formatDate("${post.data.date.toString()}", "${languages[lang].code}", true)`} title={post.formattedAbsoluteDate} x-text="formattedDate">{`${post.formattedAbsoluteDate}`}</div>
-                            </div>
-                        </div>
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
+        <!-- Page Header -->
+        <header class="mb-16">
+            <h1 class="text-4xl font-semibold tracking-tight mb-4">
+                {t('blog.h1')}
+            </h1>
+            <p class="text-[--color-text-secondary] text-lg leading-relaxed">
+                {t('blog.subtitle')}
+            </p>
+        </header>
+
+        <!-- Blog Posts List -->
+        <div class="divide-y divide-[--color-border]">
+            {renderedBlogPosts.map(post => (
+                <article class="py-8 first:pt-0">
+                    <a href={localizePath(`/blog/${slugify(post.id)}`)} class="group block">
+                        <time
+                            class="text-sm uppercase tracking-wider text-[--color-text-muted] mb-2 block"
+                            datetime={post.data.date.toISOString()}
+                            title={post.formattedAbsoluteDate}
+                        >
+                            {post.formattedDate}
+                        </time>
+                        <h2 class="text-xl font-semibold text-[--color-text-primary] group-hover:text-[--color-text-secondary] mb-2">
+                            {post.data.title}
+                        </h2>
+                        {post.data.description && (
+                            <p class="text-[--color-text-secondary] leading-relaxed line-clamp-2">
+                                {post.data.description}
+                            </p>
+                        )}
                     </a>
-                </div>
-        ))}
-            </div>
+                </article>
+            ))}
+        </div>
     </div>
 </Layout>

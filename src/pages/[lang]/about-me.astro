@@ -7,13 +7,13 @@ import { useTranslations, validateLang } from '~/i18n/utils'
 import Trans from '~/components/i18n/Trans.astro'
 import ariaPicture from '~/resources/PXL_20230106_141516359.PORTRAIT.jpg'
 import sealdLogo from '~/resources/seald-logo.png'
+
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
 }
 
 const { lang } = Astro.params
 validateLang(lang)
-
 const t = useTranslations(lang)
 ---
 <Layout title={t('about-me.title')} description={t('about-me.description')}>
@@ -21,74 +21,105 @@ const t = useTranslations(lang)
         <meta property="og:type" content="website" />
         <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-about-me.png`} />
     </slot>
-    <div
-            class="
-    flex
-    flex-col mx-auto sm:shadow-2xl mb-12 px-6 py-12 min-h-[70vh] md:max-w-3xl lg:max-w-4xl">
-        <div class="prose lg:prose-lg prose-slate mx-auto text-justify">
-            <h1>{t('about-me.h1')}</h1>
-            {t('about-me.subtitle')}
-            <h2>{t('about-me.areas-of-interest')}</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-6 sm:gap-y-2">
+
+    <article class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
+        <!-- Page Header -->
+        <header class="mb-12">
+            <h1 class="text-4xl font-semibold tracking-tight mb-4">
+                {t('about-me.h1')}
+            </h1>
+            <p class="text-lg text-[--color-text-secondary] leading-relaxed">
+                {t('about-me.subtitle')}
+            </p>
+        </header>
+
+        <!-- Areas of Interest -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold tracking-tight mb-6 pb-2 border-b border-[--color-border]">
+                {t('about-me.areas-of-interest')}
+            </h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
                 <div>
-                    <h3>
-                        <Icon
-                                name="noto:man-technologist"
-                                class="inline mr-2 w-6"/>
+                    <h3 class="flex items-center gap-2 text-lg font-medium mb-2">
+                        <Icon name="noto:man-technologist" class="w-5 h-5"/>
                         {t('about-me.area-1-title')}
                     </h3>
-                    <p>
+                    <p class="text-[--color-text-secondary] leading-relaxed">
                         <Trans keyPath="about-me.area-1-p">
                             <Icon name="emojione:person-facepalming" class="inline w-4" />
                         </Trans>
                     </p>
                 </div>
                 <div>
-                    <h3>
-                        <Icon
-                                name="noto:man-scientist"
-                                class="inline mr-2 w-6"/>
+                    <h3 class="flex items-center gap-2 text-lg font-medium mb-2">
+                        <Icon name="noto:man-scientist" class="w-5 h-5"/>
                         {t('about-me.area-2-title')}
                     </h3>
-                    <p>{t('about-me.area-2-p')}</p>
+                    <p class="text-[--color-text-secondary] leading-relaxed">
+                        {t('about-me.area-2-p')}
+                    </p>
                 </div>
                 <div>
-                    <h3>
-                        <Icon
-                                name="emojione:ballot-box-with-ballot"
-                                class="inline mr-2 w-6"/>
+                    <h3 class="flex items-center gap-2 text-lg font-medium mb-2">
+                        <Icon name="emojione:ballot-box-with-ballot" class="w-5 h-5"/>
                         {t('about-me.area-3-title')}
                     </h3>
-                    <p>{t('about-me.area-3-p')}</p>
+                    <p class="text-[--color-text-secondary] leading-relaxed">
+                        {t('about-me.area-3-p')}
+                    </p>
                 </div>
                 <div>
-                    <h3>
-                        <Icon
-                                name="emojione:cat"
-                                class="inline mr-2 w-6"/>
+                    <h3 class="flex items-center gap-2 text-lg font-medium mb-2">
+                        <Icon name="emojione:cat" class="w-5 h-5"/>
                         {t('about-me.area-4-title')}
                     </h3>
-                    <p>{t('about-me.area-4-p')}</p>
-                    <div class="not-prose flex justify-center">
-                        <Picture src={ariaPicture} alt="Aria" width="400"></Picture>
-                    </div>
+                    <p class="text-[--color-text-secondary] leading-relaxed mb-4">
+                        {t('about-me.area-4-p')}
+                    </p>
+                    <Picture src={ariaPicture} alt="Aria" width="300" class="rounded-lg"/>
                 </div>
             </div>
-            <h2>{t('about-me.job-experiences')}</h2>
-            <div class="flex flex-row gap-4"><span
-                    class="italic">{t('about-me.job-1-date')}</span><span>{t('about-me.job-1-company')}</span><span>{t('about-me.job-1-title')}</span></div>
-            <p>
-                <Trans keyPath="about-me.job-1-description">
-                    <a class="not-prose" href="https://www.seald.io" target="_blank" rel="noopener">
-                        <Picture class="inline" src={sealdLogo} alt="Seald logo" width="80"/>
-                    </a>
-                </Trans>
-            </p>
-            <h2>{t('about-me.education')}</h2>
-            <div class="flex flex-row gap-4"><span class="italic">{t('about-me.education-1-date')}</span><span>{t('about-me.education-1-name')}</span></div>
-            <p>
-                <Trans keyPath="about-me.education-1-description"/>
-            </p>
-        </div>
-    </div>
+        </section>
+
+        <!-- Job Experiences -->
+        <section class="mb-12">
+            <h2 class="text-2xl font-semibold tracking-tight mb-6 pb-2 border-b border-[--color-border]">
+                {t('about-me.job-experiences')}
+            </h2>
+            <div class="space-y-6">
+                <div>
+                    <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-2">
+                        <span class="text-sm text-[--color-text-muted]">{t('about-me.job-1-date')}</span>
+                        <span class="font-medium">{t('about-me.job-1-company')}</span>
+                        <span class="text-[--color-text-secondary]">{t('about-me.job-1-title')}</span>
+                    </div>
+                    <p class="text-[--color-text-secondary] leading-relaxed">
+                        <Trans keyPath="about-me.job-1-description">
+                            <a class="inline-block align-middle" href="https://www.seald.io" target="_blank" rel="noopener">
+                                <Picture class="inline h-5 w-auto" src={sealdLogo} alt="Seald logo" width="80"/>
+                            </a>
+                        </Trans>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Education -->
+        <section>
+            <h2 class="text-2xl font-semibold tracking-tight mb-6 pb-2 border-b border-[--color-border]">
+                {t('about-me.education')}
+            </h2>
+            <div class="space-y-6">
+                <div>
+                    <div class="flex flex-wrap items-baseline gap-x-4 gap-y-1 mb-2">
+                        <span class="text-sm text-[--color-text-muted]">{t('about-me.education-1-date')}</span>
+                        <span class="font-medium">{t('about-me.education-1-name')}</span>
+                    </div>
+                    <p class="text-[--color-text-secondary] leading-relaxed">
+                        <Trans keyPath="about-me.education-1-description"/>
+                    </p>
+                </div>
+            </div>
+        </section>
+    </article>
 </Layout>
