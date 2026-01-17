@@ -5,10 +5,10 @@
   "scripts": {
     "prelint": "rm -rf dist .astro && astro sync",
     "lint": "eslint . --ext .js,.ts,.cjs,.mjs,.astro,.jsx,.tsx && astro check",
-    "prestart": "node --env-file=.env.local encryptAssets.js && DUMMY=true node encryptAssets.js",
+    "prestart": "([ -f .env.local ] && node --env-file=.env.local encryptAssets.js || node encryptAssets.js) && DUMMY=true node encryptAssets.js",
     "dev": "astro dev",
     "start": "astro dev",
-    "prebuild": "node --env-file=.env.local encryptAssets.js && DUMMY=true node encryptAssets.js",
+    "prebuild": "([ -f .env.local ] && node --env-file=.env.local encryptAssets.js || node encryptAssets.js) && DUMMY=true node encryptAssets.js",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"
