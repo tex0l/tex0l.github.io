@@ -193,6 +193,7 @@ Nommage des routes :
 
 ## Git
 
+- **JAMAIS de commit ou push sans demande explicite de l'utilisateur**
 - Ne pas ajouter de ligne `Co-Authored-By` dans les messages de commit
 - Séparer les changements en commits atomiques et cohérents (un commit par fonctionnalité, fix, ou changement logique)
 - Rédiger des messages de commit explicatifs décrivant le "pourquoi" du changement
