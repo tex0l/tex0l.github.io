@@ -7,7 +7,7 @@ export const languages: Record<string, Locale> = {
     translations: {
       rss: {
         title: 'Blog de Timothée Rebours',
-        description: 'Dans ce blog, je parle de changement climatique, de politique, d\'économie, de religion, de cybersécurité et d\'autres sujets qui m\'intéressent.'
+        description: 'Réflexions sur la technologie, la cybersécurité et d\'autres sujets.'
       },
       index: {
         h1: 'Bonjour!',
@@ -44,7 +44,7 @@ export const languages: Record<string, Locale> = {
         title: 'Blog',
         description: 'Réflexions sur la technologie, la cybersécurité et d\'autres sujets.',
         h1: 'Blog',
-        subtitle: 'Dans ce blog, je parle de changement climatique, de politique, d\'économie, de religion, de cybersécurité et d\'autres sujets qui m\'intéressent.',
+        subtitle: 'Réflexions sur la technologie, la cybersécurité et d\'autres sujets.',
         disclaimer: 'Je n\'exprime ici que mon opinion, si vous pensez que j\'ai fait une erreur ou que mon opinion est faussée, n\'hésitez pas à me contacter !',
         published: 'Publié ',
         updated: 'Mis à jour '
@@ -89,7 +89,7 @@ export const languages: Record<string, Locale> = {
     translations: {
       rss: {
         title: 'Timothée Rebours\'s blog',
-        description: 'In this blog, I talk about climate change, politics, economics, religion, cybersecurity, and other topics I find interesting.'
+        description: 'Thoughts on technology, cybersecurity and other topics.'
       },
       index: {
         h1: 'Hey!',
@@ -126,7 +126,7 @@ export const languages: Record<string, Locale> = {
         title: 'Blog',
         description: 'Thoughts on technology, cybersecurity and other topics.',
         h1: 'Blog',
-        subtitle: 'In this blog, I talk about climate change, politics, economics, religion, cybersecurity, and other topics I find interesting.',
+        subtitle: 'Thoughts on technology, cybersecurity and other topics.',
         disclaimer: 'I only express my opinion here, if you think I made a mistake or that my opinion is flawed, feel free to contact me!',
         published: 'Published ',
         updated: 'Updated '
