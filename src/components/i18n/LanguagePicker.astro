@@ -1,14 +1,20 @@
 ---
 import { languages } from '../../i18n'
 import { useTranslations, validateLang } from '../../i18n/utils'
+
+interface Props {
+  class?: string
+}
+
 const { lang: currentLang } = Astro.params
 validateLang(currentLang)
 const t = useTranslations(currentLang)
+const { class: className } = Astro.props
 ---
 <form x-data="languageSelector" class="inline-block" x-id="['language-selector']">
     <label :for="$id('language-selector')">
         <span class="hidden">{t('layout.language-selector')}</span>
-        <select @change="change($event)" :id="$id('language-selector')" class="p-2 bg-white">
+        <select @change="change($event)" :id="$id('language-selector')" class:list={["p-2 bg-[--color-surface]", className]}>
             {Object.entries(languages).map(([lang, entry]) => (
                     <option value={lang} selected={lang === currentLang}>{entry.label}</option>
             ))}
