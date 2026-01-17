@@ -5,6 +5,7 @@ import { getCollection } from 'astro:content'
 import { slugify } from '~/utils/index.ts'
 import { languages } from '~/i18n/index.ts'
 import { DateTime } from 'luxon'
+import { createBreadcrumbSchema } from '~/utils/breadcrumb'
 
 export function getStaticPaths (): Array<{ params: { lang: string } }> {
   return Object.keys(languages).map(lang => ({ params: { lang } }))
@@ -26,6 +27,10 @@ const renderedBlogPosts = blogPosts.map(post => {
     formattedAbsoluteDate: date.toLocaleString(DateTime.DATE_FULL)
   }
 })
+
+const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
+  { name: t('blog.title') }
+])
 ---
 
 <Layout title={t('blog.title')}>
@@ -33,6 +38,7 @@ const renderedBlogPosts = blogPosts.map(post => {
         <meta property="og:type" content="website" />
         <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-blog.png`} />
         <meta name="twitter:image" content={`${Astro.url.origin}/og/${lang}-blog.png`} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     </Fragment>
 
     <div class="max-w-2xl mx-auto px-4 sm:px-6 py-16">

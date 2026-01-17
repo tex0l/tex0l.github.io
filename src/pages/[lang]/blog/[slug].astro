@@ -3,12 +3,14 @@ import { convertMDXToHTML } from '~/utils/mdxToHtml'
 import { languages } from '~/i18n'
 import {
   validateLang,
-  useTranslations
+  useTranslations,
+  useTranslatedPath
 } from '~/i18n/utils'
 import { Picture } from 'astro:assets'
 import Layout from '~/layouts/Layout.astro'
 import { getCollection, type CollectionEntry } from 'astro:content'
 import { slugify } from '~/utils'
+import { createBreadcrumbSchema } from '~/utils/breadcrumb'
 import sanitizeHtml from 'sanitize-html'
 import { DateTime } from 'luxon'
 
@@ -33,6 +35,7 @@ const { Content } = await post.render()
 const { lang } = Astro.params
 validateLang(lang)
 const t = useTranslations(lang)
+const localizePath = useTranslatedPath(lang)
 
 const truncatedPost = sanitizeHtml(await convertMDXToHTML(post.body, 297), { allowedTags: [] })
 
@@ -69,6 +72,11 @@ const articleSchema = {
   },
   inLanguage: languages[lang].code
 }
+
+const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
+  { name: t('blog.title'), url: localizePath('/blog') },
+  { name: post.data.title }
+])
 ---
 
 <Layout title={post.data.title} description={post.data.description ?? `${truncatedPost}...`}>
@@ -79,6 +87,7 @@ const articleSchema = {
         <meta property="article:published_time" content={post.data.date.toISOString()} />
         {post.data.updatedDate != null && <meta property="article:modified_time" content={post.data.updatedDate.toISOString()} />}
         <script is:inline type="application/ld+json" set:html={JSON.stringify(articleSchema)} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     </Fragment>
 
     <article class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
@@ -117,6 +126,8 @@ const articleSchema = {
                     alt={post.data.alt}
                     width="1200"
                     class="w-full rounded-lg"
+                    loading="eager"
+                    fetchpriority="high"
                 />
             </figure>
         )}
