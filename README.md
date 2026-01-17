@@ -1,54 +1,36 @@
-# Astro Starter Kit: Basics
+# tex0l.github.io
 
-```sh
-npm create astro@latest -- --template basics
+My personal website and blog, hosted on GitHub Pages. Yes, another developer with a blog they'll probably abandon after 3 posts.
+
+## What's inside
+
+- A landing page (because every developer needs one)
+- An "About me" page where I pretend to be interesting
+- A bilingual blog (FR/EN) about tech, cybersecurity, and whatever crosses my mind
+- An end-to-end encrypted business card (because why make things simple when you can over-engineer them?)
+
+## Tech stack
+
+- **[Astro 5](https://astro.build)** — Static site generator
+- **[Vue 3](https://vuejs.org)** — For the interactive bits
+- **[Tailwind CSS 4](https://tailwindcss.com)** — Because writing actual CSS is so 2015
+- **[TypeScript](https://www.typescriptlang.org)** — Strict mode, obviously
+
+Fully static (no SSR), supports French and English.
+
+## Development
+
+```bash
+npm install     # Install dependencies
+npm run dev     # Dev server (localhost:4321)
+npm run build   # Production build
+npm run lint    # Check that I didn't mess up
 ```
 
-[![Open in StackBlitz](https://developer.stackblitz.com/img/open_in_stackblitz.svg)](https://stackblitz.com/github/withastro/astro/tree/latest/examples/basics)
-[![Open with CodeSandbox](https://assets.codesandbox.io/github/button-edit-lime.svg)](https://codesandbox.io/p/sandbox/github/withastro/astro/tree/latest/examples/basics)
-[![Open in GitHub Codespaces](https://github.com/codespaces/badge.svg)](https://codespaces.new/withastro/astro?devcontainer_path=.devcontainer/basics/devcontainer.json)
+## License
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+This project is licensed under [CC BY-NC 4.0](LICENSE) (Creative Commons Attribution-NonCommercial 4.0).
 
-![just-the-basics](https://github.com/withastro/astro/assets/2244813/a0a5533c-a856-4198-8470-2d67b1d7c554)
-
-## 🚀 Project Structure
-
-Inside of your Astro project, you'll see the following folders and files:
-
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src/
-│   ├── components/
-│   │   └── Card.astro
-│   ├── layouts/
-│   │   └── Layout.astro
-│   └── pages/
-│       └── index.astro
-└── package.json
-```
-
-Astro looks for `.astro` or `.md` files in the `src/pages/` directory. Each page is exposed as a route based on its file name.
-
-There's nothing special about `src/components/`, but that's where we like to put any Astro/React/Vue/Svelte/Preact components.
-
-Any static assets, like images, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+Feel free to reuse and adapt the code and content, as long as you:
+- Give credit where it's due
+- Don't use it to make money
