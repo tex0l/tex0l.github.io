@@ -29,7 +29,7 @@ const t = useTranslations(lang)
                     <!-- Image container with bottom-rounded clipping -->
                     <div class="rounded-b-full aspect-[10/11] relative overflow-hidden">
                         <div class="w-4/5 ml-[10%]">
-                            <Picture src={profilePicture} alt="Timothée Rebours" class="w-full"/>
+                            <Picture src={profilePicture} alt="Timothée Rebours" class="w-full" loading="eager" fetchpriority="high"/>
                         </div>
                     </div>
                     <!-- Background circle positioned behind -->
