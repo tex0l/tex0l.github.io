@@ -24,6 +24,7 @@ const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
 <Layout title={t('privacy.title')} description={t('privacy.description')}>
     <Fragment slot="head">
         <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-privacy.png`} />
         <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     </Fragment>
 

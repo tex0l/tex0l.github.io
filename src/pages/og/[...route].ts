@@ -45,6 +45,30 @@ export const { getStaticPaths, GET } = await OGImageRoute({
       title: en('about-me.title'),
       description: en('about-me.description'),
     },
+    'fr-encrypted-card': {
+      title: 'Carte de visite chiffrée',
+      description: 'Récupérez mes coordonnées (si vous avez le mot de passe)',
+    },
+    'en-encrypted-card': {
+      title: 'Encrypted business card',
+      description: 'Retrieve my contact information (if you have the password)',
+    },
+    'fr-encrypted-card-dummy': {
+      title: 'Carte de visite chiffrée (démo)',
+      description: 'Version de démonstration de la carte de visite chiffrée',
+    },
+    'en-encrypted-card-dummy': {
+      title: 'Encrypted business card (demo)',
+      description: 'Demo version of the encrypted business card',
+    },
+    'fr-privacy': {
+      title: fr('privacy.title'),
+      description: fr('privacy.description'),
+    },
+    'en-privacy': {
+      title: en('privacy.title'),
+      description: en('privacy.description'),
+    },
   },
 
   getImageOptions: (_path, page: PageData) => ({
