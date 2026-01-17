@@ -8,6 +8,7 @@
     "prestart": "node --env-file=.env.local encryptAssets.js && DUMMY=true node encryptAssets.js",
     "dev": "astro dev",
     "start": "astro dev",
+    "prebuild": "node --env-file=.env.local encryptAssets.js && DUMMY=true node encryptAssets.js",
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro"

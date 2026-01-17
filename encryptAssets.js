@@ -34,7 +34,7 @@ const getSalt = async (saltPath = saltFile) => {
 const getPassword = () => {
   if (isDummy) return normalizePassword('my-super-secret-password')
   else if (process.env.PASSWORD) return normalizePassword(process.env.PASSWORD)
-  else throw new Error('Password is undefined')
+  else return null // Skip prod encryption if PASSWORD not defined
 }
 
 const normalizePassword = password => Buffer.from(password.normalize('NFKC'), 'utf8')
@@ -138,8 +138,14 @@ const encryptAllFiles = async (key) => {
 }
 
 const main = async () => {
-  const salt = await getSalt()
   const password = getPassword()
+
+  if (password === null) {
+    console.log('[prod] PASSWORD not defined, skipping prod encryption.')
+    return
+  }
+
+  const salt = await getSalt()
   const key = await deriveKey(password, salt)
 
   const encryptedDirExists = await dirExists(publicEncrypted)

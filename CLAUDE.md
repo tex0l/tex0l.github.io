@@ -11,7 +11,7 @@ npm run dev       # Serveur de développement avec hot reload
 npm run preview   # Prévisualisation du build
 ```
 
-Le script `prestart` chiffre les assets avant le démarrage du serveur de dev.
+Les scripts `prestart` et `prebuild` chiffrent automatiquement les assets avant le démarrage du serveur de dev ou le build.
 
 ## Architecture du Projet
 
@@ -131,7 +131,7 @@ Chiffrement bout-en-bout pour la carte de visite :
 
 `encryptAssets.js` chiffre les fichiers de `public_to_encrypt/` vers `public/encrypted/`.
 
-Variable d'environnement `PASSWORD` requise, ou `DUMMY=true` pour la version de test.
+Les scripts `prebuild` et `prestart` lancent automatiquement les deux chiffrements (prod et dummy) via `.env.local`. Si `PASSWORD` n'est pas défini, seul le chiffrement dummy est exécuté.
 
 ### Runtime
 
@@ -207,4 +207,4 @@ Nommage des routes :
 
 3. **Erreurs de type après modification de contenu** : Lancer `npm run lint` (inclut `astro sync`)
 
-4. **Chiffrement échoue** : Vérifier que `PASSWORD` est défini ou utiliser `DUMMY=true`
+4. **Chiffrement échoue** : Vérifier que `PASSWORD` est défini dans `.env.local` (le chiffrement dummy fonctionne toujours)
