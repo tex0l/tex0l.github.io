@@ -1,6 +1,7 @@
 ---
 title: 'Hello world 2.0'
 date: '2024-03-01T00:00:00.000Z'
+updatedDate: '2026-01-17T00:00:00.000Z'
 image: '../../../resources/hello-world.png'
 description: "Why I stopped using Nuxt for Astro"
 ---
@@ -8,7 +9,7 @@ description: "Why I stopped using Nuxt for Astro"
 I created this blog a little over a year ago, and I've hardly added any content to it since then, contrary to what I would have liked. However, I have completely reworked the way it is built, migrating from [Nuxt 3](https://nuxt.com/) to [Astro](https://astro.build/).
 
 ## Why migrate?
-I had a lot of bugs with Nuxt 3 (on static generation, on i18n, on images, etc.). Each time I dug a little deeper, the cause was inextricable or dependent on a poorly or badly maintained package.
+I had a lot of bugs with Nuxt 3 (on static generation, on i18n, on images, etc.). Each time I dug a little deeper, the cause was inextricable or dependent on a poorly maintained package.
 
 While digging out one of these bugs on the [nuxt-i18n](https://github.com/nuxt-modules/i18n) community module, I came across a comment exchange from [@riderx](https://github.com/riderx) who obviously had had enough and put a $300 bounty to migrate his site to Astro. The creator of Nuxt even stepped in to find out more: https://github.com/LeducIT/captime-website/issues/47.
 
@@ -45,16 +46,14 @@ I also generate the `robots.txt` via an endpoint.
 An RSS feed is generated and made available for each language via the endpoint `src/pages/[lang]/rss.xml.ts`. For the current language, the link is [../../rss.xml](../../rss.xml).
 
 ### Change language
-A language selector allows you to change languages dynamically. It's coded with [Alpine.js](https://alpinejs.dev/), which I didn't know existed, and allows you to write a bit of reactive code in components without using a gas factory like React or Vue.
+A language selector allows you to change languages dynamically. It's coded with [Alpine.js](https://alpinejs.dev/), which I didn't know existed, and allows you to write a bit of reactive code in components without using a heavyweight framework like React or Vue.
 
 ### OpenGraph tags
 Inspired by [this article on programmatic generation of OpenGraph images with Satori](https://techsquidtv.com/blog/generating-open-graph-images-for-astro/) from title, date and description, I developed something similar by:
 1. creating an Astro component `MetaOGImage.astro` that takes an image, title, description and date.
 2. this component then uses [Satori](https://github.com/vercel/satori) to convert a React component to the dimensions of the OpenGraph image to produce an SVG, then [resvg-js](https://github.com/yisibl/resvg-js) to produce a PNG.
 3. this image in PNG format is then saved in a `public/og` directory (which is in `.gitignore`).
-4. an integration copy at the end of build copies the contents of this directory into the build folder ([because Astro doesn't allow a page to render a second file](https://github.com/withastro/roadmap/discussions/643)).
-
-To see the implementation
+4. an integration at the end of build copies the contents of this directory into the build folder ([because Astro doesn't allow a page to render a second file](https://github.com/withastro/roadmap/discussions/643)).
 
 ### Articles written in MDX
 To be able to use components directly in the articles of this blog, the format used is MDX via the plugin [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/).

@@ -20,7 +20,7 @@ export const languages: Record<string, Locale> = {
         title: 'À propos de moi',
         description: 'Expérience, formation, centres d\'intérêt, ...',
         h1: 'À propos de moi',
-        subtitle: 'Je suis né en 1993 près de Paris, j\'ai toujours été passionné de sciences et technologies. Je suis ingénieur diplômé de l\'École Polytechnique , et j\'ai créé mon entreprise dans le domaine de la cybersécurité.',
+        subtitle: 'Je suis né en 1993 près de Paris, j\'ai toujours été passionné de sciences et technologies. Je suis ingénieur diplômé de l\'École Polytechnique, et j\'ai créé mon entreprise dans le domaine de la cybersécurité.',
         'areas-of-interest': 'Centres d\'intérêt',
         'area-1-title': 'Numérique',
         'area-1-p': 'Nous avons tous un ordinateur dans notre poche, qui nous permet d\'apprendre n\'importe quoi, de commander n\'importe quoi, de communiquer avec tout le monde. Et nous l\'utilisons pour regarder des vidéos de chats {0}.',
@@ -93,7 +93,7 @@ export const languages: Record<string, Locale> = {
       },
       index: {
         h1: 'Hey!',
-        subtitle: 'I\'m a tech entrepreneur based in France, involved in bringing end-2-end encryption to developers with {0}.',
+        subtitle: 'I\'m a tech entrepreneur based in France, involved in bringing end-to-end encryption to developers with {0}.',
         seald: 'Seald',
         title: 'Timothée Rebours',
         description: 'My personal website, don\'t expect too much'
@@ -105,7 +105,7 @@ export const languages: Record<string, Locale> = {
         subtitle: 'I was born in 1993 near Paris, I have always been passionate about science and technology. I\'m an engineer from the École Polytechnique, and I founded my company in cybersecurity.',
         'areas-of-interest': 'Areas of interest',
         'area-1-title': 'Digital technologies',
-        'area-1-p': 'We all have a computer in our pockets, which allow us to learn anything, order anything, communicate with everybody. And we use it for watching cat videos {0}.',
+        'area-1-p': 'We all have a computer in our pockets, which allows us to learn anything, order anything, communicate with everybody. And we use it for watching cat videos {0}.',
         'area-2-title': 'Science',
         'area-2-p': 'I am deeply interested in understanding how things work at a fundamental level, whether it\'s physics (even if I\'m out of my depth), chemistry, mechanics, biology, engineering...',
         'area-3-title': 'Politics & geopolitics',

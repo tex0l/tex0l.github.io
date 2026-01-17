@@ -1,6 +1,7 @@
 ---
 title: 'Carte de visite chiffrée'
 date: '2023-01-24T00:00:00.000Z'
+updatedDate: '2026-01-17T00:00:00.000Z'
 image: '../../../resources/hands-holding-blank-business-card.jpg'
 description: 'Comment mettre à disposition une vCard depuis un site statique de façon sécurisée avec du chiffrement de bout-en-bout.'
 ---
@@ -64,7 +65,7 @@ flowchart TB
 D'ailleurs, j'ai littéralement créé mon entreprise [Seald](https://www.seald.io) autour de l'idée du chiffrement côté client dans des applications web et mobile.
 
 ## Limites connues
-La donnée plus sensible que je veux protéger avec ce projet est mon numéro de téléphone, qui est certainement déjà accessible en ligne publiquement vu le nombre d'appels de prospection que je reçois, je ne cherche donc pas à remplir de véritables objectifs de sécurité.
+La donnée la plus sensible que je veux protéger avec ce projet est mon numéro de téléphone, qui est certainement déjà accessible en ligne publiquement vu le nombre d'appels de prospection que je reçois, je ne cherche donc pas à remplir de véritables objectifs de sécurité.
 
 En particulier, les attaques que j'ignore volontairement sont :
 1. GitHub injectant du code dans le site statique qui pourrait alors exfiltrer les données une fois chiffrées.
@@ -130,7 +131,7 @@ Le mode GCM retenu pour AES requiert :
 - que le message ne dépasse pas 64Go, sinon cela dépasse le compteur utilisé par AES-CTR (utilisé en interne par AES-GCM).
 
 Dans mon cas :
-- je tolère que le nonce soit aléatoire dans la mesure où le nombre de chiffrés est très faible, bien en deça des 6 milliards au-delà desquels le nonce ne serait plus "unique".
+- je tolère que le nonce soit aléatoire dans la mesure où le nombre de chiffrés est très faible, bien en deçà des 6 milliards au-delà desquels le nonce ne serait plus "unique".
 - je ne chiffre pas de fichier de plus de 64Go.
 :::
 

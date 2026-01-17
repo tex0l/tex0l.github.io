@@ -1,6 +1,7 @@
 ---
 title: 'Bonjour world 2.0'
 date: '2024-03-01T00:00:00.000Z'
+updatedDate: '2026-01-17T00:00:00.000Z'
 image: '../../../resources/hello-world.png'
 description: "Pourquoi j'ai arrêté d'utiliser Nuxt au profit d'Astro"
 ---
@@ -25,12 +26,12 @@ Il y a trois types de contenus sur le site :
 - l'i18n : il s'agit d'un gros objet javascript contenant toutes les phrases et mots présents dans les pages, il est situé dans le fichier `src/i18n/index.ts`.
 
 ### Pages
-Chaque page utilise un layout situé dans `src/layouts/Layout.astro` qui définit les élements communs à toutes les pages.
+Chaque page utilise un layout situé dans `src/layouts/Layout.astro` qui définit les éléments communs à toutes les pages.
 
 Je produis une version en anglais et une version en français au moyen d'un paramètre nommé `[lang]` récupérable dans la page avec `const { lang } = Astro.params`, pour que les langues soient générées statiquement, j'exporte une fonction `getStaticPaths` dans chaque page qui liste les langues.
 
 ### Posts
-Les fichiers `*.mdx` sont utilisés par le fichier `src/pages/[lang]/blog/[slug].astro` où `slug` correspond au nom du fichier `*.mdx` slugifié. Ces fichiers sont répartis en deux dossiers `fr` et `en` situées dans `src/content/blog/` contenant chacun les versions françaises et anglaises des mêmes articles.
+Les fichiers `*.mdx` sont utilisés par le fichier `src/pages/[lang]/blog/[slug].astro` où `slug` correspond au nom du fichier `*.mdx` slugifié. Ces fichiers sont répartis en deux dossiers `fr` et `en` situés dans `src/content/blog/` contenant chacun les versions françaises et anglaises des mêmes articles.
 
 ### i18n
 Astro ne fournissant pas de mécanisme pour faire l'interpolation, et les bibliothèques disponibles comme [i18next](https://www.i18next.com/) étant trop lourdes à mon gout, j'ai développé quelques fonctions utilisées pour le projet, mais cela sera certainement amené à être réécrit à l'avenir parce que l'état actuel n'est pas satisfaisant.
@@ -52,7 +53,7 @@ En m'inspirant de [cet article sur la génération programmatique d'images OpenG
 1. créant un composant Astro `MetaOGImage.astro` qui prend une image, un titre, une description et une date.
 2. ce composant utilise ensuite [Satori](https://github.com/vercel/satori) pour convertir un composant React aux dimensions de l'image OpenGraph pour produire un SVG, puis [resvg-js](https://github.com/yisibl/resvg-js) pour produire un PNG.
 3. cette image au format PNG est ensuite enregistrée dans un répertoire `public/og` (qui est dans le `.gitignore`).
-4. une intégration copie en fin de build le contenu de ce répertoire est copié dans le dossier de build ([parce qu'Astro ne permet pas à une page de rendre un deuxième fichier](https://github.com/withastro/roadmap/discussions/643)).
+4. une intégration copie en fin de build le contenu de ce répertoire dans le dossier de build ([parce qu'Astro ne permet pas à une page de rendre un deuxième fichier](https://github.com/withastro/roadmap/discussions/643)).
 
 ### Articles écrits en MDX
 Pour pouvoir utiliser des composants directement dans les articles de ce blog, le format utilisé est MDX via le plugin [@astrojs/mdx](https://docs.astro.build/en/guides/integrations-guide/mdx/).
