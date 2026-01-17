@@ -91,6 +91,13 @@ const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
     </Fragment>
 
     <article class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
+        <!-- Breadcrumb -->
+        <nav class="mb-8 text-sm text-[--color-text-muted]" aria-label="Breadcrumb">
+            <a href={localizePath('/blog')} class="hover:text-[--color-text-primary] transition-colors">
+                ← {t('blog.title')}
+            </a>
+        </nav>
+
         <!-- Article Header -->
         <header class="text-center mb-12">
             <div class="text-sm uppercase tracking-wider text-[--color-text-muted] mb-4">
