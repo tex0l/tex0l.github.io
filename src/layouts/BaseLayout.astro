@@ -68,6 +68,35 @@ const websiteSchema = {
 
     <ClientRouter />
     <slot name="head"/>
+
+    <!-- Workaround for astro-mermaid view transitions issue -->
+    <script>
+      document.addEventListener('astro:page-load', async () => {
+        const diagrams = document.querySelectorAll('pre.mermaid:not([data-processed])')
+        if (diagrams.length === 0) return
+
+        const { default: mermaid } = await import('mermaid')
+        mermaid.initialize({ startOnLoad: false, theme: 'neutral' })
+
+        for (const diagram of diagrams) {
+          if (!diagram.getAttribute('data-diagram')) {
+            diagram.setAttribute('data-diagram', diagram.textContent || '')
+          }
+          const definition = diagram.getAttribute('data-diagram') || ''
+          const id = 'mermaid-' + Math.random().toString(36).slice(2, 11)
+          try {
+            const { svg } = await mermaid.render(id, definition)
+            diagram.innerHTML = svg
+            diagram.setAttribute('data-processed', 'true')
+            // Reset code block styling for mermaid diagrams
+            diagram.style.backgroundColor = 'transparent'
+            diagram.style.padding = '0'
+          } catch (e) {
+            console.error('[mermaid workaround]', e)
+          }
+        }
+      })
+    </script>
 </head>
 <body>
 <slot/>
