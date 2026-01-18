@@ -78,7 +78,8 @@ const websiteSchema = {
         const { default: mermaid } = await import('mermaid')
         mermaid.initialize({ startOnLoad: false, theme: 'neutral' })
 
-        for (const diagram of diagrams) {
+        for (const el of diagrams) {
+          const diagram = el as HTMLElement
           if (!diagram.getAttribute('data-diagram')) {
             diagram.setAttribute('data-diagram', diagram.textContent || '')
           }

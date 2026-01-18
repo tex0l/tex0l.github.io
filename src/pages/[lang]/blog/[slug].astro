@@ -45,7 +45,6 @@ const formattedAbsoluteDate = date.toLocaleString(DateTime.DATE_FULL)
 
 const updatedDate = post.data.updatedDate != null ? DateTime.fromJSDate(post.data.updatedDate).setLocale(languages[lang].code) : null
 const formattedUpdatedDate = updatedDate?.toLocaleString({ month: 'long', year: 'numeric' })
-// eslint-disable-next-line @typescript-eslint/no-unsafe-assignment -- Content collection types not resolved by astro-eslint-parser
 const modifiedDate: Date = post.data.updatedDate ?? post.data.date
 
 // JSON-LD Article schema
