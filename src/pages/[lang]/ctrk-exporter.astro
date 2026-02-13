@@ -1,0 +1,91 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import { languages } from '~/i18n/index.ts'
+import { useTranslations, useTranslatedPath, validateLang } from '~/i18n/utils'
+import { createBreadcrumbSchema } from '~/utils/breadcrumb'
+import FileUpload from '@tex0l/ctrk-astro/components/FileUpload.vue'
+import AnalyzePage from '@tex0l/ctrk-astro/components/AnalyzePage.vue'
+import Toast from '@tex0l/ctrk-astro/components/Toast.vue'
+
+export function getStaticPaths (): Array<{ params: { lang: string } }> {
+  return Object.keys(languages).map(lang => ({ params: { lang } }))
+}
+
+const { lang } = Astro.params
+validateLang(lang)
+const t = useTranslations(lang)
+const localizePath = useTranslatedPath(lang)
+
+const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
+  { name: t('projects.title'), url: localizePath('/projects') },
+  { name: t('ctrk-exporter.title') }
+])
+---
+<Layout title={t('ctrk-exporter.title')} description={t('ctrk-exporter.description')}>
+    <Fragment slot="head">
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-ctrk-exporter.png`} />
+        <meta name="twitter:image" content={`${Astro.url.origin}/og/${lang}-ctrk-exporter.png`} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+        <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    </Fragment>
+
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 py-16">
+        <header class="mb-12 text-center">
+            <h1 class="text-4xl font-semibold tracking-tight mb-4">
+                {t('ctrk-exporter.h1')}
+            </h1>
+            <p class="text-lg text-[--color-text-secondary] leading-relaxed max-w-2xl mx-auto">
+                {t('ctrk-exporter.subtitle')}
+            </p>
+        </header>
+
+        <FileUpload client:only="vue" />
+        <AnalyzePage client:only="vue" />
+    </div>
+
+    <Toast client:only="vue" />
+</Layout>
+
+<style is:global>
+  /*
+   * Bridge CSS custom properties expected by @tex0l/ctrk-astro components
+   * to this site's light theme. The package was designed with its own dark
+   * theme variables; we remap them here to light-theme-compatible values.
+   */
+  :root {
+    --color-bg: #FAFAFA;
+    --color-bg-secondary: #FFFFFF;
+    --color-bg-tertiary: #F3F4F6;
+    --color-text: var(--color-text-primary);
+    --color-accent-hover: #1E293B;
+    --color-success: #16a34a;
+    --color-error: #dc2626;
+    --color-warning: #d97706;
+    --color-info: #2563eb;
+    --color-success-bg: rgba(22, 163, 74, 0.08);
+    --color-error-bg: rgba(220, 38, 38, 0.08);
+    --color-warning-bg: rgba(217, 119, 6, 0.08);
+    --color-info-bg: rgba(37, 99, 235, 0.08);
+    --radius-sm: 0.375rem;
+    --radius-md: 0.5rem;
+    --radius-lg: 0.75rem;
+    --transition-fast: 150ms ease;
+    --transition-normal: 250ms ease;
+  }
+
+  /* .card class used by ctrk-astro's AnalyzePage and FileUpload */
+  .card {
+    background: var(--color-bg-secondary);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Ensure Leaflet map renders correctly */
+  .leaflet-container {
+    z-index: 1;
+    border-radius: 0.5rem;
+  }
+</style>

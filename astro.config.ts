@@ -10,6 +10,7 @@ import alpinejs from '@astrojs/alpinejs'
 import { env } from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
 import mermaid from 'astro-mermaid'
+import ctrk from '@tex0l/ctrk-astro'
 
 // https://astro.build/config
 export default defineConfig({
@@ -30,6 +31,7 @@ export default defineConfig({
     }),
     icon(),
     alpinejs({ entrypoint: '/src/utils/alpineSetup' }),
+    ctrk(),
   ],
   i18n: {
     defaultLocale: 'en',
@@ -42,7 +44,15 @@ export default defineConfig({
   site: 'https://tex0l.github.io',
   vite: {
     plugins: [arraybuffer(), tailwindcss()],
-    optimizeDeps: { exclude: ['@resvg/resvg-js'] }
+    resolve: {
+      alias: [
+        { find: /^leaflet$/, replacement: 'leaflet/dist/leaflet-src.esm.js' },
+      ],
+    },
+    optimizeDeps: {
+      exclude: ['@resvg/resvg-js'],
+      include: ['leaflet'],
+    }
   }
 })
 

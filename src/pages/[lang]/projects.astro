@@ -1,0 +1,101 @@
+---
+import Layout from '~/layouts/Layout.astro'
+import { Icon } from 'astro-icon/components'
+import { languages } from '~/i18n/index.ts'
+import { useTranslations, useTranslatedPath, validateLang } from '~/i18n/utils'
+import { createBreadcrumbSchema } from '~/utils/breadcrumb'
+
+export function getStaticPaths (): Array<{ params: { lang: string } }> {
+  return Object.keys(languages).map(lang => ({ params: { lang } }))
+}
+
+const { lang } = Astro.params
+validateLang(lang)
+const t = useTranslations(lang)
+const localizePath = useTranslatedPath(lang)
+
+const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
+  { name: t('projects.title') }
+])
+
+const projects = [
+  {
+    title: t('projects.ctrk-exporter-title'),
+    description: t('projects.ctrk-exporter-description'),
+    icon: 'carbon:analytics',
+    link: localizePath('/ctrk-exporter'),
+    blogPost: localizePath('/blog/ctrk-exporter'),
+    github: 'https://github.com/tex0l/ctrk-exporter',
+    tags: ['TypeScript', 'Vue', 'WebWorker', 'Reverse Engineering'],
+  },
+  {
+    title: t('projects.encrypted-card-title'),
+    description: t('projects.encrypted-card-description'),
+    icon: 'carbon:locked',
+    link: localizePath('/encrypted-card-dummy') + '#my-super-secret-password',
+    blogPost: localizePath('/blog/encrypted-card'),
+    github: 'https://github.com/tex0l/tex0l.github.io',
+    tags: ['AES-256-GCM', 'Scrypt', 'Vue', 'E2EE'],
+  },
+]
+---
+<Layout title={t('projects.title')} description={t('projects.description')}>
+    <Fragment slot="head">
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-projects.png`} />
+        <meta name="twitter:image" content={`${Astro.url.origin}/og/${lang}-projects.png`} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    </Fragment>
+
+    <article class="max-w-2xl mx-auto px-4 sm:px-6 py-16">
+        <header class="mb-12">
+            <h1 class="text-4xl font-semibold tracking-tight mb-4">
+                {t('projects.h1')}
+            </h1>
+            <p class="text-lg text-[--color-text-secondary] leading-relaxed">
+                {t('projects.subtitle')}
+            </p>
+        </header>
+
+        <div class="space-y-8">
+            {projects.map(project => (
+                <div class="border border-[--color-border] rounded-lg p-6 hover:border-[--color-accent] transition-colors">
+                    <div class="flex items-start gap-4">
+                        <div class="shrink-0 mt-1">
+                            <Icon name={project.icon} class="w-8 h-8 text-[--color-accent]" />
+                        </div>
+                        <div class="flex-1 min-w-0">
+                            <h2 class="text-xl font-semibold mb-2">
+                                {project.title}
+                            </h2>
+                            <p class="text-[--color-text-secondary] leading-relaxed mb-4">
+                                {project.description}
+                            </p>
+                            <div class="flex flex-wrap gap-2 mb-4">
+                                {project.tags.map(tag => (
+                                    <span class="text-xs px-2 py-1 rounded-full bg-[--color-surface] text-[--color-text-muted] border border-[--color-border]">
+                                        {tag}
+                                    </span>
+                                ))}
+                            </div>
+                            <div class="flex flex-wrap gap-4 text-sm">
+                                <a href={project.link} class="text-[--color-accent] hover:underline flex items-center gap-1">
+                                    <Icon name="carbon:launch" class="w-4 h-4" />
+                                    {t('projects.view-project')}
+                                </a>
+                                <a href={project.blogPost} class="text-[--color-accent] hover:underline flex items-center gap-1">
+                                    <Icon name="carbon:document" class="w-4 h-4" />
+                                    {t('projects.read-blog-post')}
+                                </a>
+                                <a href={project.github} target="_blank" rel="noopener" class="text-[--color-accent] hover:underline flex items-center gap-1">
+                                    <Icon name="mdi:github" class="w-4 h-4" />
+                                    GitHub
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            ))}
+        </div>
+    </article>
+</Layout>
