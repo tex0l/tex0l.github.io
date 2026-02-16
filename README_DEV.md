@@ -36,9 +36,20 @@ src/
 ├── utils/          # TypeScript utilities
 └── resources/      # Images and assets
 integrations/       # Custom remark plugins
-projects/           # Git submodules for extracted packages
+projects/           # Local clones of project repos (see below)
 scripts/            # Build-time scripts (encryption)
 ```
+
+### Projects Directory
+
+The `projects/` directory contains local git clones of the repositories for packages used by this blog (e.g. `@tex0l/encrypted-card`, `@tex0l/ctrk-astro`). These are **not** git submodules — they must be cloned manually:
+
+```bash
+git clone https://github.com/tex0l/encrypted-card.git projects/encrypted-card
+git clone https://github.com/tex0l/ctrk-astro.git projects/ctrk-astro
+```
+
+This allows developing and releasing these packages alongside the blog. The blog itself depends on them via npm (not `file:` links).
 
 ### Naming Conventions
 

@@ -32,7 +32,7 @@
     "@tailwindcss/typography": "^0.5.16",
     "@tailwindcss/vite": "^4.1.12",
     "@tex0l/ctrk-astro": "0.1.0",
-    "@tex0l/encrypted-card": "0.1.0",
+    "@tex0l/encrypted-card": "^0.1.5",
     "alpinejs": "^3.14.9",
     "astro": "^5.13.5",
     "astro-auto-import": "^0.4.4",

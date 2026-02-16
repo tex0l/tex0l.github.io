@@ -18,6 +18,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 - `README_DEV.md` — comprehensive developer guide (English)
 - `.claude/` added to `.gitignore`
 - CLAUDE.md rules: mandatory tests, documentation updates, changelog maintenance, no publishing without approval
+- Documentation for `projects/` directory (local clones of package repos)
+
+### Fixed
+
+- Bump `@tex0l/encrypted-card` to 0.1.5 (fix missing `dist/` in published npm tarball that broke CI)
 
 ## [0.0.2] - 2026-02-13
 
