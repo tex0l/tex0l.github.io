@@ -1,7 +1,7 @@
 {
   "name": "tex0l-github-io-astro",
   "type": "module",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "scripts": {
     "prelint": "rm -rf dist .astro && astro sync",
     "lint": "eslint . --ext .js,.ts,.cjs,.mjs,.astro,.jsx,.tsx && astro check",
