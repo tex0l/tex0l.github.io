@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.3] - 2026-02-16
+
 ### Changed
 
 - Switch `@tex0l/encrypted-card` and `@tex0l/ctrk-astro` from `file:` dependencies to npm packages
