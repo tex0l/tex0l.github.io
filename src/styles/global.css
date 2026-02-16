@@ -1,5 +1,5 @@
-/* Import Inter font for a clean, modern look */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+/* Import Inter font locally via @fontsource-variable */
+@import '@fontsource-variable/inter';
 
 @import "tailwindcss";
 @import "@tex0l/encrypted-card";
@@ -7,7 +7,7 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --font-family-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  --font-family-sans: 'Inter Variable', 'Inter', ui-sans-serif, system-ui, sans-serif;
 
   /* Custom colors for the minimal design */
   --color-surface: #FAFAFA;

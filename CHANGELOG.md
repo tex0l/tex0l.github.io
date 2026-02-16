@@ -7,6 +7,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/).
 
 ## [Unreleased]
 
+## [0.0.4] - 2026-02-16
+
+### Changed
+
+- Self-host Inter font via `@fontsource-variable/inter` instead of Google Fonts CDN
+- Self-host Leaflet CSS from npm package instead of unpkg CDN
+- Remove Google Fonts `preconnect` links from layout (no longer needed)
+
 ## [0.0.3] - 2026-02-16
 
 ### Changed
