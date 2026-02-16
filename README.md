@@ -20,12 +20,7 @@ Fully static (no SSR), supports French and English.
 
 ## Development
 
-```bash
-npm install     # Install dependencies
-npm run dev     # Dev server (localhost:4321)
-npm run build   # Production build
-npm run lint    # Check that I didn't mess up
-```
+See [README_DEV.md](README_DEV.md).
 
 ## License
 
