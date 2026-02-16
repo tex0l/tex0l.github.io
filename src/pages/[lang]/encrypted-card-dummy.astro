@@ -1,6 +1,6 @@
 ---
 import { languages } from '~/i18n/index.ts'
-import EncryptedBusinessCard from '~/components/EncryptedItems/EncryptedBusinessCard.client.vue'
+import EncryptedBusinessCard from '@tex0l/encrypted-card/components/EncryptedBusinessCard.client.vue'
 import BaseLayout from '~/layouts/BaseLayout.astro'
 import { validateLang } from '~/i18n/utils'
 
@@ -22,4 +22,7 @@ validateLang(lang)
       contact-info-path="/encryptedDummy/contactInfo.json.encrypted"
       image-path="/encryptedDummy/stock-portrait.png.encrypted"
   />
+    <p class="mt-2 text-center text-xs text-(--color-text-muted)">
+      <a class="underline hover:text-(--color-text-secondary) transition-colors" href={`/${lang}/blog/encrypted-card`}>{lang === 'fr' ? 'En savoir plus sur le chiffrement' : 'Learn more about the encryption'}</a>
+    </p>
 </BaseLayout>

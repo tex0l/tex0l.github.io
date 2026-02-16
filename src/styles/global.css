@@ -2,6 +2,8 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 @import "tailwindcss";
+@import "@tex0l/encrypted-card";
+@import "@tex0l/ctrk-astro";
 @plugin "@tailwindcss/typography";
 
 @theme {
@@ -14,6 +16,18 @@
   --color-text-muted: #9CA3AF;
   --color-border: #E5E7EB;
   --color-accent: #0F172A;
+  --color-accent-hover: #1E293B;
+  --color-bg-secondary: #ffffff;
+  --color-bg-tertiary: #f3f4f6;
+  --color-success: #16a34a;
+  --color-error: #dc2626;
+  --color-warning: #d97706;
+  --color-info: #2563eb;
+  --color-highlight-success: #f0fdf4;
+  --color-highlight-success-hover: #dcfce7;
+  --color-highlight-info: #eff6ff;
+  --color-highlight-info-subtle: rgba(59, 130, 246, 0.08);
+  --color-highlight-error: rgba(239, 68, 68, 0.08);
 }
 
 /* Base styles */

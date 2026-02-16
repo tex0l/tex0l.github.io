@@ -10,6 +10,7 @@ export default tseslint.config(
       '.astro/**/*',
       'encryptAssets.js',
       'tailwind.config.js',
+      'projects/**/*',
     ],
   },
   eslint.configs.recommended,

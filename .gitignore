@@ -32,3 +32,7 @@ public/og/
 
 # Personal notes
 todo.md
+
+# Local project checkouts
+projects/*
+!projects/.gitkeep
