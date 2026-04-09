@@ -28,19 +28,28 @@ const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
         <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
     </slot>
 
-    <div class="visionary-idle-fullscreen">
+    <div class="visionary-idle-wrapper">
         <a href={localizePath('/projects')} class="visionary-idle-back" aria-label="Back to projects">&larr;</a>
-
-        <VisionaryIdle client:only="vue" />
+        <div class="visionary-idle-game">
+            <VisionaryIdle client:only="vue" />
+        </div>
     </div>
     <style>
-        .visionary-idle-back {
+        .visionary-idle-wrapper {
             position: fixed;
-            top: 8px;
-            left: 8px;
-            z-index: 10;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #000;
+            display: flex;
+            flex-direction: column;
+        }
+        .visionary-idle-back {
+            flex-shrink: 0;
             width: 48px;
             height: 48px;
+            margin: 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -56,6 +65,10 @@ const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
         .visionary-idle-back:active {
             background: rgba(255, 255, 255, 0.25);
             color: #fff;
+        }
+        .visionary-idle-game {
+            flex: 1;
+            min-height: 0;
         }
     </style>
 </BaseLayout>
