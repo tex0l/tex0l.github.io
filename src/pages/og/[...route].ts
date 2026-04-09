@@ -77,6 +77,14 @@ export const { getStaticPaths, GET } = await OGImageRoute({
       title: en('projects.title'),
       description: en('projects.description'),
     },
+    'fr-visionary-idle': {
+      title: fr('visionary-idle.title'),
+      description: fr('visionary-idle.description'),
+    },
+    'en-visionary-idle': {
+      title: en('visionary-idle.title'),
+      description: en('visionary-idle.description'),
+    },
     'fr-ctrk-exporter': {
       title: fr('ctrk-exporter.title'),
       description: fr('ctrk-exporter.description'),

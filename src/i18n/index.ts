@@ -77,8 +77,16 @@ export const languages: Record<string, Locale> = {
         'encrypted-card-description': 'Un système de carte de visite avec chiffrement de bout en bout, hébergé sur un site statique. Les données de contact sont chiffrées avec AES-256-GCM et le mot de passe est transmis via le hash de l\'URL.',
         'ctrk-exporter-title': 'CTRK Exporter',
         'ctrk-exporter-description': 'Un outil de parsing et de visualisation de fichiers de télémétrie Yamaha Y-Trac (.CTRK), entièrement dans le navigateur. Rétro-ingénierie de la bibliothèque native propriétaire.',
+        'visionary-idle-title': 'Visionary — An Idle Descent',
+        'visionary-idle-description': 'Un jeu idle satirique en 12 phases où le joueur incarne un génie de la tech dont l\'ascension brillante se transforme en descente cosmique. Écrit en Rust, compilé en WebAssembly.',
         'view-project': 'Voir le projet',
         'read-blog-post': 'Lire l\'article',
+      },
+      'visionary-idle': {
+        title: 'Visionary — An Idle Descent',
+        description: 'Un jeu idle satirique en 12 phases, en Rust/WebAssembly.',
+        h1: 'Visionary — An Idle Descent',
+        subtitle: 'Un jeu idle satirique en 12 phases où le joueur incarne un génie de la tech dont l\'ascension brillante se transforme en descente cosmique. Entièrement dans le navigateur.',
       },
       'ctrk-exporter': {
         title: 'CTRK Exporter',
@@ -178,8 +186,16 @@ export const languages: Record<string, Locale> = {
         'encrypted-card-description': 'An end-to-end encrypted business card system hosted on a static site. Contact data is encrypted with AES-256-GCM and the password is passed via the URL hash.',
         'ctrk-exporter-title': 'CTRK Exporter',
         'ctrk-exporter-description': 'A parser and visualizer for Yamaha Y-Trac motorcycle telemetry files (.CTRK), running entirely in the browser. Reverse-engineered from the proprietary native library.',
+        'visionary-idle-title': 'Visionary — An Idle Descent',
+        'visionary-idle-description': 'A satirical idle game in 12 phases where the player embodies a tech genius whose brilliant rise turns into a cosmic descent. Written in Rust, compiled to WebAssembly.',
         'view-project': 'View project',
         'read-blog-post': 'Read blog post',
+      },
+      'visionary-idle': {
+        title: 'Visionary — An Idle Descent',
+        description: 'A satirical idle game in 12 phases, in Rust/WebAssembly.',
+        h1: 'Visionary — An Idle Descent',
+        subtitle: 'A satirical idle game in 12 phases where the player embodies a tech genius whose brilliant rise turns into a cosmic descent. Runs entirely in the browser.',
       },
       'ctrk-exporter': {
         title: 'CTRK Exporter',

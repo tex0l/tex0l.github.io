@@ -1,0 +1,98 @@
+---
+title: 'Building an idle game is an idle game'
+date: '2026-04-09T00:00:00.000Z'
+description: 'How a lifetime of idle game addiction led me to build one in Rust and WebAssembly — with a twist of Silicon Valley satire and a lot of help from Claude.'
+tags: ['rust', 'webassembly', 'gamedev', 'idle-game', 'claude']
+---
+
+## A confession
+
+I need to come clean about something. I have lost *years* of my life to idle games. Not collectively — individually. Each one individually took years.
+
+It started, as it does for everyone, with [Cookie Clicker](https://orteil.dashnet.org/cookieclicker/). Behavioral psychology disguised as a game about baked goods.
+
+<figure>
+![Cookie Clicker](../../../resources/cookie-clicker.png)
+<figcaption style="text-align: center;">Cookie Clicker — the gateway drug.</figcaption>
+</figure>
+
+The moment my relationship with Cookie Clicker turned from fun to hatred was in college. There was a shared computer in the floor kitchen — the one you needed to use to log the food you'd taken from the communal fridge. One evening I walked in after grabbing my pasta, pesto and ground beef from the fridge, and found someone frantically clicking cookies on it. Just hammering the screen. Refusing to move. I stood there with my dinner getting cold, waiting for this person to finish clicking virtual baked goods so I could log my groceries.
+
+It angered me. So I leaned over, opened the browser console, and broke his save. `Game.cookies = Infinity`. Everything unlocked, nothing left to earn. The game was ruined.
+
+I then reused this technique anytime I found myself stuck in the dopamine loop of an idle game: open the console, give yourself everything, and watch the compulsion evaporate. Cookie Clicker, [Pokéclicker](https://www.pokeclicker.com/) — same treatment, same result.
+
+## The paperclip incident
+
+You'd think the Cookie Clicker episode would have immunized me. It did not. Next came [Universal Paperclips](https://www.decisionproblem.com/paperclips/), Frank Lantz's thought experiment about an AI whose sole purpose is to make paperclips.
+
+<figure>
+![Universal Paperclips](../../../resources/universal-paperclips.png)
+<figcaption style="text-align: center;">Universal Paperclips — the one that made me think.</figcaption>
+</figure>
+
+You start by clicking a button to make one paperclip. You start by clicking a button to make one paperclip. Within an hour, you've converted the entire observable universe into paperclips. It's a game about exponential growth, resource optimization, and the quiet horror of realizing that you — the player — are the paperclip maximizer. You are the alignment problem.
+
+Universal Paperclips is the only idle game I've played that made me feel genuinely unsettled when it ended. It's also the only one I finished in a single sitting, because it has an actual ending, which is frankly an act of mercy that most idle game developers refuse to extend to their players.
+
+It didn't cure me. It made things worse. It proved that idle games could be *smart*, that they could have something to say. This was the worst possible discovery.
+
+## The NGU years
+
+Then I discovered [NGU Idle](https://www.kongregate.com/games/somethingggg/ngu-idle).
+
+<figure>
+![NGU Idle](../../../resources/ngu-idle.jpg)
+<figcaption style="text-align: center;">NGU Idle — objectively terrible, subjectively irresistible.</figcaption>
+</figure>
+
+If you haven't heard of it — congratulations, you still have those years ahead of you. "NGU" stands for "Numbers Go Up," which is simultaneously the most honest and most damning name for a game ever conceived.
+
+NGU Idle is, objectively, a terrible game. The art is deliberately awful. The humor is a mix of dad jokes and poop & fart jokes. The mechanics are essentially: watch numbers go up, reset everything to make the numbers go up faster next time, repeat until heat death of the universe.
+
+I played it for *years*.
+
+The real problem I had with NGU was pragmatic: I was in a stupid race with a co-worker, and a bug in the web build was slowing me down. NGU ran on Windows or web, not macOS. My co-worker could install the desktop app from Steam, but I was on a Mac — stuck with the web build. Switch to another tab? The game freezes. Browsers throttle inactive tabs to save resources, which means your numbers stop going up. The tab is still open, the game is still *right there*, but it's frozen in time, silently refusing to progress. My numbers. Not going up. Unacceptable.
+
+So I did the only rational thing: I rented a Shadow cloud gaming PC. A full virtual machine in the cloud, with a dedicated GPU, running 24/7 — so that a free idle game could keep running while I slept. I was paying real money, monthly, to ensure that imaginary numbers would continue to increase while I wasn't looking at them. If you explained this to someone from the 19th century, they would assume you had lost your mind.
+
+I knew at the time that it was pathetic. I was a software engineer who builds encryption systems for a living, paying for a cloud gaming PC that I used for absolutely nothing else, just so a free game about making numbers bigger could keep running while I slept.
+
+<figure>
+![What is my purpose? You pass butter.](../../../resources/you-pass-butter.gif)
+<figcaption style="text-align: center;">"What is my purpose?" — "You run NGU Idle." — "Oh my god."</figcaption>
+</figure>
+
+## The idea
+
+At some point during these wasted years, a thought started forming. There's an arc we've all seen play out: an engineer starts a company in a garage, genuinely wants to change the world, builds things people love. Then the money comes, the ego inflates, and somewhere along the way he turns into an unhinged billionaire who lets hubris and ideology take the wheel, driving the business into a ditch while posting about it at 3 AM. See who I'm talking about?
+
+What if that entire trajectory was an idle game?
+
+The more I thought about it, the more it fit. Click to code. Hire interns. Watch numbers go up. And at some point, without noticing, stop building and start destroying.
+
+## Building it with Claude
+
+I'd had this idea for years but never built it because, well, building a game is hard. Building a game engine is harder. Building both while also having a job and a tendency to get distracted by other idle games is basically impossible.
+
+Then Claude happened.
+
+Here's the thing about building an idle game with an AI assistant: it becomes *meta*. You're building a game about clicking buttons and watching progress bars fill up, and the process of building it is... clicking buttons and watching progress bars fill up. You describe what you want. Claude writes code. You test it. You describe the next thing. It's idle game development as an idle game.
+
+Why Rust? Because it's trendy. Also because compiling to WebAssembly means the game logic lives outside the JS context — no more opening the console and typing `Game.cookies = Infinity`. The save format uses HMAC integrity checking, because if idle games taught me anything, it's that the first thing players will do is try to hack their save files. And I want them to at least have to *work for it*.
+
+## The game
+
+The game is still very early — Phase 1 only, and it's going to change a lot. If you have feedback, feel free to send it my way.
+
+You start in a garage. Click to write code. Code becomes users. Users become revenue. Revenue buys you interns, developers, offices. You've seen this story before. Where it goes from there... well, there's a reason the game is called "An Idle Descent."
+
+It's built in a pixel art style — think 8-bit retro, runs in the browser.
+
+## Try it
+
+You can [play it here](/en/visionary-idle). It's Phase 1 only for now — the garage era. Click things. Watch numbers go up. Buy the modem upgrade. Hire some interns. Try not to think about how many hours you're about to lose.
+
+And if you find yourself at 3 AM weighing the ROI of your 50th developer versus saving up for the bank partnership, just remember: I warned you.
+
+The npm package is [`@tex0l/visionary-idle`](https://www.npmjs.com/package/@tex0l/visionary-idle) if you want to embed it in your own site, because misery loves company.

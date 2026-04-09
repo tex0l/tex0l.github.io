@@ -20,6 +20,14 @@ const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
 
 const projects = [
   {
+    title: t('projects.visionary-idle-title'),
+    description: t('projects.visionary-idle-description'),
+    icon: 'carbon:game-console',
+    link: localizePath('/visionary-idle'),
+    blogPost: localizePath('/blog/visionary-idle'),
+    tags: ['Rust', 'WebAssembly', 'Canvas', 'Idle Game'],
+  },
+  {
     title: t('projects.ctrk-exporter-title'),
     description: t('projects.ctrk-exporter-description'),
     icon: 'carbon:analytics',
@@ -83,14 +91,18 @@ const projects = [
                                     <Icon name="carbon:launch" class="w-4 h-4" />
                                     {t('projects.view-project')}
                                 </a>
+                                {project.blogPost && (
                                 <a href={project.blogPost} class="text-[--color-accent] hover:underline flex items-center gap-1">
                                     <Icon name="carbon:document" class="w-4 h-4" />
                                     {t('projects.read-blog-post')}
                                 </a>
+                                )}
+                                {project.github && (
                                 <a href={project.github} target="_blank" rel="noopener" class="text-[--color-accent] hover:underline flex items-center gap-1">
                                     <Icon name="mdi:github" class="w-4 h-4" />
                                     GitHub
                                 </a>
+                                )}
                             </div>
                         </div>
                     </div>

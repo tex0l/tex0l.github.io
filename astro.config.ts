@@ -11,6 +11,7 @@ import { env } from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
 import mermaid from 'astro-mermaid'
 import ctrk from '@tex0l/ctrk-astro'
+import visionary from '@tex0l/visionary-idle'
 
 // https://astro.build/config
 export default defineConfig({
@@ -32,6 +33,7 @@ export default defineConfig({
     icon(),
     alpinejs({ entrypoint: '/src/utils/alpineSetup' }),
     ctrk(),
+    visionary(),
   ],
   i18n: {
     defaultLocale: 'en',

@@ -1,0 +1,59 @@
+---
+import BaseLayout from '~/layouts/BaseLayout.astro'
+import { languages } from '~/i18n/index.ts'
+import { useTranslations, useTranslatedPath, validateLang } from '~/i18n/utils'
+import { createBreadcrumbSchema } from '~/utils/breadcrumb'
+import VisionaryIdle from '@tex0l/visionary-idle/components/VisionaryIdle.client.vue'
+import '@tex0l/visionary-idle/index.css'
+
+export function getStaticPaths (): Array<{ params: { lang: string } }> {
+  return Object.keys(languages).map(lang => ({ params: { lang } }))
+}
+
+const { lang } = Astro.params
+validateLang(lang)
+const t = useTranslations(lang)
+const localizePath = useTranslatedPath(lang)
+
+const breadcrumbSchema = createBreadcrumbSchema(lang, Astro.url.origin, [
+  { name: t('projects.title'), url: localizePath('/projects') },
+  { name: t('visionary-idle.title') }
+])
+---
+<BaseLayout title={t('visionary-idle.title')} description={t('visionary-idle.description')}>
+    <slot slot="head">
+        <meta property="og:type" content="website" />
+        <meta property="og:image" content={`${Astro.url.origin}/og/${lang}-visionary-idle.png`} />
+        <meta name="twitter:image" content={`${Astro.url.origin}/og/${lang}-visionary-idle.png`} />
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(breadcrumbSchema)} />
+    </slot>
+
+    <div class="visionary-idle-fullscreen">
+        <a href={localizePath('/projects')} class="visionary-idle-back" aria-label="Back to projects">&larr;</a>
+
+        <VisionaryIdle client:only="vue" />
+    </div>
+    <style>
+        .visionary-idle-back {
+            position: fixed;
+            top: 12px;
+            left: 12px;
+            z-index: 10;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 18px;
+            text-decoration: none;
+            transition: background 0.15s, color 0.15s;
+        }
+        .visionary-idle-back:hover {
+            background: rgba(255, 255, 255, 0.25);
+            color: #fff;
+        }
+    </style>
+</BaseLayout>
